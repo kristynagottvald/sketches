@@ -4,118 +4,118 @@
     "title": "Industry Swapper Plug-in",
     "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "direct-mail-engine/thumbnail.png?v=4",
+    "thumbnail": "direct-mail-engine/thumbnail.jpg?v=5",
     "url": "direct-mail-engine/",
     "blurb": "A real-time customizable direct mail mock-up generator across industries.",
     "clientName": "Lob",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "direct-mail-engine/thumbnail.png",
+        "src": "direct-mail-engine/thumbnail.jpg",
         "alt": "Industry Swapper Plug-in"
       }
     ],
-    "preview": "clips/direct-mail-engine.webp?v=4"
+    "preview": "clips/direct-mail-engine.webp?v=5"
   },
   {
     "id": "ribbon-text",
     "title": "Postmark Awards",
     "category": "Generative Art",
     "year": 2026,
-    "thumbnail": "ribbon-text/thumbnail.png?v=4",
+    "thumbnail": "ribbon-text/thumbnail.jpg?v=5",
     "url": "ribbon-text/",
     "blurb": "Text that flows along noise-driven ribbons, with live controls and SVG export.",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "ribbon-text/thumbnail.png",
+        "src": "ribbon-text/thumbnail.jpg",
         "alt": "Postmark Awards"
       }
     ],
-    "preview": "clips/ribbon-text.webp?v=4"
+    "preview": "clips/ribbon-text.webp?v=5"
   },
   {
     "id": "wisps",
     "title": "Wisp Network",
     "category": "Generative Art",
     "year": 2026,
-    "thumbnail": "wisps/thumbnail.png?v=4",
+    "thumbnail": "wisps/thumbnail.jpg?v=5",
     "url": "wisps/",
     "blurb": "Click to grow a web of thin wisps between two points over a blurred sky.",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "wisps/thumbnail.png",
+        "src": "wisps/thumbnail.jpg",
         "alt": "Wisp Network"
       }
     ],
-    "preview": "clips/wisps.webp?v=4"
+    "preview": "clips/wisps.webp?v=5"
   },
   {
     "id": "marketing-mine",
     "title": "Marketing Minesweeper",
     "category": "Interactive Game",
     "year": 2026,
-    "thumbnail": "marketing-mine/thumbnail.png?v=4",
+    "thumbnail": "marketing-mine/thumbnail.jpg?v=5",
     "url": "marketing-mine/",
     "blurb": "A minesweeper where every mine reveals a direct mail marketing tip.",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "marketing-mine/thumbnail.png",
+        "src": "marketing-mine/thumbnail.jpg",
         "alt": "Marketing Minesweeper"
       }
     ],
-    "preview": "clips/marketing-mine.webp?v=4"
+    "preview": "clips/marketing-mine.webp?v=5"
   },
   {
     "id": "kickoff-type-lab",
     "title": "Kick Off Type Lab",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "kickoff-type-lab/thumbnail.png?v=4",
+    "thumbnail": "kickoff-type-lab/thumbnail.jpg?v=5",
     "url": "kickoff-type-lab/",
     "blurb": "A type tool for groovy, gooey, western lettering, with live spacing, warp and SVG export.",
     "clientName": "Lob",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "kickoff-type-lab/thumbnail.png",
+        "src": "kickoff-type-lab/thumbnail.jpg",
         "alt": "Kick Off Type Lab"
       }
     ],
-    "preview": "clips/kickoff-type-lab.webp?v=4"
+    "preview": "clips/kickoff-type-lab.webp?v=5"
   },
   {
     "id": "palette-compositions",
     "title": "Palette Compositions",
     "category": "Generative Art",
     "year": 2026,
-    "thumbnail": "palette-compositions/thumbnail.png?v=4",
+    "thumbnail": "palette-compositions/thumbnail.jpg?v=5",
     "url": "palette-compositions/",
     "blurb": "Click to cycle palettes through randomly composed line, grid and stripe layouts.",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "palette-compositions/thumbnail.png",
+        "src": "palette-compositions/thumbnail.jpg",
         "alt": "Palette Compositions"
       }
     ],
-    "preview": "clips/palette-compositions.webp?v=4"
+    "preview": "clips/palette-compositions.webp?v=5"
   },
   {
     "id": "integratron",
     "title": "Integratron",
     "category": "Generative Art",
     "year": 2026,
-    "thumbnail": "integratron/thumbnail.png?v=4",
+    "thumbnail": "integratron/thumbnail.jpg?v=5",
     "url": "integratron/",
     "blurb": "A 3D desert dome cycling from day to night, with sound bath bowls on click and scroll.",
-    "preview": "clips/integratron.webp?v=4",
+    "preview": "clips/integratron.webp?v=5",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "integratron/thumbnail.png",
+        "src": "integratron/thumbnail.jpg",
         "alt": "Integratron"
       }
     ]
@@ -125,14 +125,14 @@
     "title": "Bento Brand Showcase",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "restaurant-tiles/thumbnail.png?v=4",
+    "thumbnail": "restaurant-tiles/thumbnail.jpg?v=5",
     "url": "restaurant-tiles/",
     "blurb": "A tile layout of restaurant UI details: tip pools, guest checks, type specimens and palette cards you can click.",
-    "preview": "clips/restaurant-tiles.webp?v=4",
+    "preview": "clips/restaurant-tiles.webp?v=5",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "restaurant-tiles/thumbnail.png",
+        "src": "restaurant-tiles/thumbnail.jpg",
         "alt": "Bento Brand Showcase"
       }
     ]
@@ -142,14 +142,14 @@
     "title": "No-Code Binary Motif",
     "category": "Generative Art",
     "year": 2026,
-    "thumbnail": "binary-grid/thumbnail.png?v=4",
+    "thumbnail": "binary-grid/thumbnail.jpg?v=5",
     "url": "binary-grid/",
     "blurb": "Move the mouse and a diagonal wave flips a grid of 0s and 1s into colour.",
-    "preview": "clips/binary-grid.webp?v=4",
+    "preview": "clips/binary-grid.webp?v=5",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "binary-grid/thumbnail.png",
+        "src": "binary-grid/thumbnail.jpg",
         "alt": "No-Code Binary Motif"
       }
     ]
@@ -159,14 +159,14 @@
     "title": "Temporary Notes",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "sound-bars/thumbnail.png?v=4",
+    "thumbnail": "sound-bars/thumbnail.jpg?v=5",
     "url": "sound-bars/",
     "blurb": "Brush across drifting bars to play notes; each bar fades into a rising echo.",
-    "preview": "clips/sound-bars.webp?v=4",
+    "preview": "clips/sound-bars.webp?v=5",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "sound-bars/thumbnail.png",
+        "src": "sound-bars/thumbnail.jpg",
         "alt": "Temporary Notes"
       }
     ]
@@ -176,14 +176,14 @@
     "title": "Text Repeater",
     "category": "Generative Art",
     "year": 2026,
-    "thumbnail": "text-repeater/thumbnail.png?v=4",
+    "thumbnail": "text-repeater/thumbnail.jpg?v=5",
     "url": "text-repeater/",
     "blurb": "One word repeats outward in ever larger lines, pulsing from the centre in a ripple.",
-    "preview": "clips/text-repeater.webp?v=4",
+    "preview": "clips/text-repeater.webp?v=5",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "text-repeater/thumbnail.png",
+        "src": "text-repeater/thumbnail.jpg",
         "alt": "Text Repeater"
       }
     ]
