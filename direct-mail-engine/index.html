@@ -21,7 +21,7 @@
 
         /* Reset & Base */
         * { box-sizing: border-box; }
-        body { margin: 0; padding: 0; overflow: hidden; background-color: var(--app-bg); font-family: 'Inter', sans-serif; }
+        body { --nav-h: 76px; margin: 0; padding: 0; overflow: hidden; background-color: var(--app-bg); font-family: 'Inter', sans-serif; }
         
         .dynamic-color, .dynamic-text, .dynamic-bg, .dynamic-fill { transition: all 0.5s ease-in-out; }
         .pill { border-radius: 9999px; background-color: var(--mock-primary); }
@@ -29,8 +29,8 @@
         .check-icon { width: 14px; height: 14px; color: var(--mock-primary); margin-bottom: 2px; }
 
         /* Layout */
-        .canvas-bg { background-color: var(--app-bg); background-image: radial-gradient(var(--dot-color) 2px, transparent 2px); background-size: 24px 24px; background-position: 0 0, 12px 12px; width: 100%; height: 100%; position: absolute; z-index: 1; }
-        .canvas-container { display: flex; align-items: center; justify-content: center; width: calc(100vw - 320px); height: 100vh; position: relative; z-index: 2; overflow: auto; }
+        .canvas-bg { background-color: var(--app-bg); background-image: radial-gradient(var(--dot-color) 2px, transparent 2px); background-size: 24px 24px; background-position: 0 0, 12px 12px; width: 100%; height: calc(100vh - var(--nav-h)); position: absolute; top: var(--nav-h); left: 0; z-index: 1; }
+        .canvas-container { display: flex; align-items: center; justify-content: center; width: calc(100vw - 320px); height: calc(100vh - var(--nav-h)); position: relative; z-index: 2; overflow: auto; }
         .artboard { position: relative; width: 900px; height: 800px; transform-origin: center center; transition: transform 0.2s ease-out; margin: auto; }
 
         /* Mock Letter */
@@ -76,8 +76,8 @@
         .floating-lines { display: flex; flex-direction: column; gap: 8px; flex: 1; }
 
         /* Sidebar */
-        .sidebar { position: fixed; top: 0; right: 0; width: 320px; height: 100vh; background: white; box-shadow: -4px 0 15px rgba(0,0,0,0.05); z-index: 10; display: flex; flex-direction: column; }
-        .sidebar-header { padding: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; background: white; margin-top: 50px; }
+        .sidebar { position: fixed; top: var(--nav-h); right: 0; width: 320px; height: calc(100vh - var(--nav-h)); background: white; box-shadow: -4px 0 15px rgba(0,0,0,0.05); z-index: 10; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; background: white; }
         .sidebar-title { font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 8px; font-size: 16px; margin: 0; }
         .sidebar-title svg { width: 16px; height: 16px; color: #6366f1; }
         
@@ -112,33 +112,45 @@
         .zoom-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: #F1F5F9; color: #334155; font-weight: 600; transition: background 0.2s; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px; }
         .zoom-btn:hover { background: #E2E8F0; }
         .zoom-label { width: auto; padding: 0 12px; font-size: 12px; }
+        /* Top nav: in-flow black bar above the sketch (not sticky) */
+        .site-nav { position: relative; z-index: 50; height: var(--nav-h); background: #000; color: #fff; display: flex; align-items: center; padding: 0 28px; gap: 28px; }
+        .site-nav .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+        .site-nav .logo { color: #fff; text-decoration: none; font-weight: 700; transform: none; font-size: 28px; letter-spacing: -0.5px; }
+        .site-nav .nav-label { font: 400 15px/1.2 'Barlow Semi Condensed', sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #989898; white-space: nowrap; }
+        .nav-toggle { background: none; border: 0; color: #989898; cursor: pointer; display: flex; align-items: center; padding: 8px; margin-left: -12px; }
+        .nav-toggle svg { width: 18px; height: 18px; transition: transform .3s ease; transform: rotate(-90deg); }
+        .site-nav.open .nav-toggle svg { transform: rotate(-90deg) scale(1.1); color: #fff; }
+        .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: #000; border-top: 1px solid rgba(255,255,255,.1); box-shadow: 0 20px 40px rgba(0,0,0,.35); padding: 24px 28px 28px; display: none; }
+        .site-nav.open .nav-menu { display: block; }
+        .nav-projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 260px)); gap: 20px; margin-bottom: 24px; }
+        .nav-proj { display: flex; flex-direction: column; gap: 10px; color: #989898; text-decoration: none; font: 400 14px/1.3 'Inter', sans-serif; }
+        .nav-proj img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; background: #1c1c1c; }
+        .nav-proj:hover, .nav-proj[aria-current] { color: #fff; }
+        .nav-links { display: flex; gap: 28px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.1); font: 400 11px/1.3 'Inter', sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+        .nav-links a { color: #989898; text-decoration: none; }
+        .nav-links a:hover { color: #fff; }
     </style>
 </head>
 <body>
 
-    <!-- Fixed Black Header matching your Hub Home Page -->
-    <header class="hb" id="hb">
-        <div class="hb-pill">
-            <div class="hb-bar">
-                <a class="logo" href="../" aria-label="Kristyna Gottvald, home">KRISTYNA</a>
-                <span class="hb-label" id="hb-label">Direct Mail Engine</span>
-                <button class="hb-toggle" id="hb-toggle" type="button" aria-expanded="false" aria-controls="hb-menu">
-                    <span class="sr">Toggle menu</span>
-                    <svg class="nav-ptr" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M7.2 6.4l8.4 3.3-3.6 1.4-1.4 3.6z" fill="currentColor"/>
-                    </svg>
-                </button>
+    <!-- Black nav bar sits above the sketch (in flow, not sticky) -->
+    <header class="site-nav" id="siteNav">
+        <a class="logo" href="../" aria-label="Kristyna Gottvald, home">KRISTYNA</a>
+        <span class="nav-label">Direct Mail Engine</span>
+        <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu">
+            <span class="sr">Toggle menu</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 6.4l8.4 3.3-3.6 1.4-1.4 3.6z" fill="currentColor"/></svg>
+        </button>
+        <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+            <div class="nav-projects" id="navProjects"></div>
+            <div class="nav-links">
+                <a href="../">All Sketches</a>
+                <a href="https://kristynagottvald.github.io/" target="_blank" rel="noopener noreferrer">Portfolio</a>
+                <a href="../#about">About</a>
+                <a href="https://github.com/kristynagottvald/sketches" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+                <a href="https://openprocessing.org/user/500421/#sketches" target="_blank" rel="noopener noreferrer">OpenProcessing</a>
             </div>
-            <nav class="hb-menu" id="hb-menu" aria-label="Main Navigation">
-                <a href="../" data-nav="sketches"><b>Sketches</b><span>All experiments</span></a>
-                <a href="https://kristynagottvald.github.io/" target="_blank" rel="noopener noreferrer"><b>Portfolio</b><span>Full design portfolio</span></a>
-                <a href="../#about" data-nav="about"><b>About</b><span>Info & links</span></a>
-                <div class="hb-channels">
-                    <a href="https://github.com/kristynagottvald/sketches" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
-                    <a href="https://openprocessing.org/user/500421/#sketches" target="_blank" rel="noopener noreferrer">OpenProcessing</a>
-                </div>
-            </nav>
-        </div>
+        </nav>
     </header>
 
     <div class="canvas-bg"></div>
@@ -299,20 +311,22 @@
     </aside>
 
     <script>
-        // Header toggle script for subpage
-        const hbPill = document.querySelector('.hb-pill');
-        const hbToggle = document.getElementById('hb-toggle');
-        const hb = document.getElementById('hb');
-
-        hbPill.addEventListener('mouseleave', () => {
-            hb.classList.remove('open');
-            hbToggle.setAttribute('aria-expanded', 'false');
-        });
-
-        hbToggle.addEventListener('click', () => {
-            hb.classList.toggle('open');
-            hbToggle.setAttribute('aria-expanded', String(hb.classList.contains('open')));
-        });
+        // Nav dropdown: lists all projects from ../projects.json
+        const siteNav = document.getElementById('siteNav');
+        const navToggle = document.getElementById('navToggle');
+        const setNav = (open) => { siteNav.classList.toggle('open', open); navToggle.setAttribute('aria-expanded', String(open)); };
+        navToggle.addEventListener('click', () => setNav(!siteNav.classList.contains('open')));
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setNav(false); });
+        document.addEventListener('click', (e) => { if (!siteNav.contains(e.target)) setNav(false); });
+        fetch('../projects.json').then((r) => r.json()).then((list) => {
+            const here = location.pathname.replace(/\/index\.html$/, '/');
+            document.getElementById('navProjects').innerHTML = list.map((p) => {
+                const href = '../' + (p.url || '#' + p.id);
+                const cur = here.endsWith('/' + p.id + '/') ? ' aria-current="page"' : '';
+                const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+                return `<a class="nav-proj" href="${esc(href)}"${cur}><img src="../${esc(p.thumbnail)}" alt=""><span>${esc(p.title)}</span></a>`;
+            }).join('');
+        }).catch(() => {});
 
         // SVG Icon Definitions
         const iconPin = `<svg class="icon-svg dynamic-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>`;
