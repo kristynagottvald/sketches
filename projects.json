@@ -204,5 +204,22 @@
         "alt": "IEU Prompt Machine"
       }
     ]
+  },
+  {
+    "id": "mail-stack",
+    "title": "Mail Stack",
+    "category": "Generative Art",
+    "year": 2026,
+    "thumbnail": "mail-stack/thumbnail.jpg?v=1",
+    "url": "mail-stack/",
+    "blurb": "A ribbon of postcards flows along a curve; hover one to reveal its heatmap and reshape the path with the controls.",
+    "preview": "clips/mail-stack.webp?v=1",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "mail-stack/thumbnail.jpg",
+        "alt": "Mail Stack"
+      }
+    ]
   }
 ]
