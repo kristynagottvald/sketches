@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Direct Mail Mockup Engine • Kristyna Gottvald</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@300;400&display=swap">
+    <!-- Link to your hub's global design system styles for the header pill -->
+    <link rel="stylesheet" href="../styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            --app-bg: #EAE6FE; 
+            --dot-color: #CFC7FA;
+            --mock-primary: #3B33F0;
+            --mock-pale: #CEC8FC;
+            --mock-postcard-bg: #1E2247;
+        }
+
+        /* Reset & Base */
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; overflow: hidden; background-color: var(--app-bg); font-family: 'Inter', sans-serif; }
+        
+        .dynamic-color, .dynamic-text, .dynamic-bg, .dynamic-fill { transition: all 0.5s ease-in-out; }
+        .pill { border-radius: 9999px; background-color: var(--mock-primary); }
+        .icon-svg { width: 20px; height: 20px; color: white; }
+        .check-icon { width: 14px; height: 14px; color: var(--mock-primary); margin-bottom: 2px; }
+
+        /* Layout */
+        .canvas-bg { background-color: var(--app-bg); background-image: radial-gradient(var(--dot-color) 2px, transparent 2px); background-size: 24px 24px; background-position: 0 0, 12px 12px; width: 100%; height: 100%; position: absolute; z-index: 1; }
+        .canvas-container { display: flex; align-items: center; justify-content: center; width: calc(100vw - 320px); height: 100vh; position: relative; z-index: 2; overflow: auto; }
+        .artboard { position: relative; width: 900px; height: 800px; transform-origin: center center; transition: transform 0.2s ease-out; margin: auto; }
+
+        /* Mock Letter */
+        .mock-letter { position: absolute; top: 70px; left: 80px; width: 510px; height: 638px; background: white; box-shadow: 0 20px 40px rgba(0,0,0,0.06); display: flex; flex-direction: column; padding: 32px; }
+        .letter-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .letter-logo { font-weight: 700; font-size: 9px; letter-spacing: 0.05em; color: #1e293b; margin-bottom: 24px; text-transform: uppercase; }
+        .address-blocks { display: flex; flex-direction: column; gap: 4px; }
+        .address-line { padding: 2px 8px; border-radius: 2px; width: max-content; }
+        .address-line span { font-size: 7px; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 0.1em; }
+        .account-block { display: flex; flex-direction: column; align-items: flex-end; }
+        .account-label { font-size: 7px; font-weight: 700; letter-spacing: 0.1em; color: #64748b; margin-bottom: 12px; }
+        
+        .dotted-divider { border-top: 1px dotted #D1D5DB; margin: 20px 0; width: 100%; }
+        
+        .letter-body { flex: 1; }
+        .letter-headline { font-size: 18px; font-weight: 500; color: #0f172a; line-height: 1.25; margin-bottom: 24px; width: 91.666%; margin-top: 0; }
+        .grid-box { border-radius: 2px; padding: 24px; display: flex; justify-content: space-between; }
+        .grid-col { display: flex; flex-direction: column; gap: 10px; width: 25%; }
+        
+        .letter-footer { display: flex; align-items: flex-start; gap: 24px; padding-bottom: 8px; }
+        .abstract-graphic { width: 144px; height: 144px; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; flex-shrink: 0; }
+        .footer-lines { flex: 1; display: flex; flex-direction: column; padding-top: 8px; }
+        .line-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+        .qr-section { display: flex; align-items: center; gap: 16px; }
+        .qr-icon { width: 40px; height: 40px; color: #cbd5e1; }
+        .qr-lines { display: flex; flex-direction: column; gap: 8px; width: 33.333%; }
+
+        /* Mock Postcard */
+        .mock-postcard { position: absolute; top: 229px; left: 542px; width: 480px; height: 320px; background-color: var(--mock-postcard-bg); box-shadow: 0 25px 50px rgba(0,0,0,0.22); overflow: hidden; color: white; display: flex; border-radius: 2px; }
+        .postcard-left { width: 58.333%; padding: 32px; display: flex; flex-direction: column; justify-content: space-between; position: relative; z-index: 10; }
+        .postcard-logo-wrap { display: inline-block; padding: 8px 16px; margin-bottom: 40px; border: 1px solid rgba(255,255,255,0.2); }
+        .postcard-logo { font-weight: 700; font-size: 8px; letter-spacing: 0.05em; color: white; text-transform: uppercase; }
+        .postcard-headline { font-size: 25px; font-weight: 500; line-height: 1.25; margin: 0; }
+        .postcard-footer { display: flex; align-items: center; gap: 16px; }
+        .postcard-icon-wrap { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.1); }
+        .postcard-lines { display: flex; flex-direction: column; gap: 8px; width: 115px; }
+        .postcard-line { background: white; height: 6px; border-radius: 9999px; }
+        
+        .postcard-right { width: 41.666%; height: 100%; position: relative; }
+        .postcard-grid { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 100%; height: 100%; }
+        .postcard-stripes { background: repeating-linear-gradient(0deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2) 2px, transparent 2px, transparent 6px); }
+        .floating-card { position: absolute; bottom: 16px; left: 0; transform: translateX(-48px); width: 208px; background: white; padding: 20px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); border-radius: 2px; display: flex; align-items: center; gap: 16px; }
+        .floating-lines { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+
+        /* Sidebar */
+        .sidebar { position: fixed; top: 0; right: 0; width: 320px; height: 100vh; background: white; box-shadow: -4px 0 15px rgba(0,0,0,0.05); z-index: 10; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; background: white; margin-top: 50px; }
+        .sidebar-title { font-weight: 600; color: #1e293b; display: flex; align-items: center; gap: 8px; font-size: 16px; margin: 0; }
+        .sidebar-title svg { width: 16px; height: 16px; color: #6366f1; }
+        
+        .sidebar-search { padding: 16px; border-bottom: 1px solid #f1f5f9; position: relative; }
+        .search-icon { width: 16px; height: 16px; position: absolute; left: 28px; top: 26px; color: #94a3b8; }
+        .search-input { width: 100%; box-sizing: border-box; background: #f8fafc; border: 1px solid #e2e8f0; font-size: 14px; border-radius: 6px; padding: 8px 12px 8px 36px; }
+        .search-input:focus { outline: none; border-color: #6366f1; }
+        
+        .sidebar-list { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+        .sidebar-list::-webkit-scrollbar { width: 6px; }
+        .sidebar-list::-webkit-scrollbar-track { background: #f1f1f1; }
+        .sidebar-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        
+        .industry-card { border: 1px solid #E2E8F0; border-radius: 6px; padding: 12px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; }
+        .industry-card:hover { border-color: #94A3B8; background-color: #F8FAFC; }
+        .industry-card.active { border-color: #6366F1; background-color: #EEF2FF; box-shadow: 0 2px 4px rgba(99, 102, 241, 0.1); }
+        .card-left { display: flex; align-items: center; gap: 12px; }
+        .card-icon-bg { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.05); }
+        .card-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .card-text { display: flex; flex-direction: column; }
+        .card-cat { font-size: 13px; font-weight: 600; color: #1e293b; line-height: 1.2; }
+        .card-var { font-size: 11px; color: #64748b; margin-top: 2px; }
+        .active-icon { width: 16px; height: 16px; color: #6366f1; }
+
+        .sidebar-footer { padding: 16px; border-top: 1px solid #f1f5f9; background: #f8fafc; }
+        .reset-btn { width: 100%; padding: 8px; background: white; border: 1px solid #cbd5e1; color: #334155; font-size: 14px; font-weight: 500; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s; }
+        .reset-btn:hover { background: #f8fafc; }
+        .reset-btn svg { width: 16px; height: 16px; }
+
+        /* Zoom Panel */
+        .zoom-panel { position: fixed; bottom: 24px; left: 24px; background: white; padding: 8px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; gap: 8px; z-index: 10; }
+        .zoom-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: #F1F5F9; color: #334155; font-weight: 600; transition: background 0.2s; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px; }
+        .zoom-btn:hover { background: #E2E8F0; }
+        .zoom-label { width: auto; padding: 0 12px; font-size: 12px; }
+    </style>
+</head>
+<body>
+
+    <!-- Fixed Black Header matching your Hub Home Page -->
+    <header class="hb" id="hb">
+        <div class="hb-pill">
+            <div class="hb-bar">
+                <a class="logo" href="../" aria-label="Kristyna Gottvald, home">KRISTYNA</a>
+                <span class="hb-label" id="hb-label">Direct Mail Engine</span>
+                <button class="hb-toggle" id="hb-toggle" type="button" aria-expanded="false" aria-controls="hb-menu">
+                    <span class="sr">Toggle menu</span>
+                    <svg class="nav-ptr" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M7.2 6.4l8.4 3.3-3.6 1.4-1.4 3.6z" fill="currentColor"/>
+                    </svg>
+                </button>
+            </div>
+            <nav class="hb-menu" id="hb-menu" aria-label="Main Navigation">
+                <a href="../" data-nav="sketches"><b>Sketches</b><span>All experiments</span></a>
+                <a href="https://kristynagottvald.github.io/" target="_blank" rel="noopener noreferrer"><b>Portfolio</b><span>Full design portfolio</span></a>
+                <a href="../#about" data-nav="about"><b>About</b><span>Info & links</span></a>
+                <div class="hb-channels">
+                    <a href="https://github.com/kristynagottvald/sketches" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+                    <a href="https://openprocessing.org/user/500421/#sketches" target="_blank" rel="noopener noreferrer">OpenProcessing</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <div class="canvas-bg"></div>
+
+    <div class="canvas-container" id="canvasContainer">
+        <!-- Zoom Controls -->
+        <div class="zoom-panel">
+            <button class="zoom-btn" onclick="setZoom(-0.1)" title="Zoom Out">-</button>
+            <button class="zoom-btn zoom-label" onclick="resetZoom()" id="zoomLabel">100%</button>
+            <button class="zoom-btn" onclick="setZoom(0.1)" title="Zoom In">+</button>
+        </div>
+
+        <div class="artboard" id="artboard">
+            
+            <div class="mock-letter">
+                <!-- Header Section -->
+                <div class="letter-header">
+                    <div style="width: 50%;">
+                        <div class="letter-logo dynamic-text" id="letterLogo">// FINANCIAL SERVICES CO.</div>
+                        <div class="address-blocks">
+                            <div class="address-line dynamic-bg" style="background-color: var(--mock-pale)"><span>Timothy Robinson</span></div>
+                            <div class="address-line dynamic-bg" style="background-color: var(--mock-pale)"><span>87 Ridgeview Dr &nbsp;&nbsp; Apt 3</span></div>
+                            <div class="address-line dynamic-bg" style="background-color: var(--mock-pale)"><span>San Francisco CA</span></div>
+                            <div class="address-line dynamic-bg" style="background-color: var(--mock-pale)"><span>94102-5705</span></div>
+                        </div>
+                    </div>
+                    <div class="account-block" style="width: 50%;">
+                        <div class="account-label">YOUR ACCOUNT</div>
+                        <div class="pill dynamic-bg" style="width: 80px; height: 8px; margin-bottom: 6px;"></div>
+                        <div class="pill dynamic-bg" style="width: 96px; height: 8px; margin-bottom: 6px;"></div>
+                        <div class="pill dynamic-bg" style="width: 64px; height: 8px;"></div>
+                    </div>
+                </div>
+
+                <div class="dotted-divider"></div>
+
+                <!-- Middle Section -->
+                <div class="letter-body">
+                    <h1 class="letter-headline dynamic-text" id="letterHeadline">
+                        Timothy, you might be eligible for a special mortgage rate discount
+                    </h1>
+                    
+                    <div class="grid-box dynamic-bg" style="background-color: var(--mock-pale)">
+                        <div class="grid-col">
+                            <svg class="check-icon dynamic-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            <div class="pill dynamic-bg" style="width: 100%; height: 10px;"></div>
+                            <div class="pill dynamic-bg" style="width: 100%; height: 10px;"></div>
+                            <div class="pill dynamic-bg" style="width: 75%; height: 10px;"></div>
+                        </div>
+                        <div class="grid-col">
+                            <svg class="check-icon dynamic-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            <div class="pill dynamic-bg" style="width: 100%; height: 10px;"></div>
+                            <div class="pill dynamic-bg" style="width: 100%; height: 10px;"></div>
+                            <div class="pill dynamic-bg" style="width: 75%; height: 10px;"></div>
+                        </div>
+                        <div class="grid-col">
+                            <svg class="check-icon dynamic-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                            <div class="pill dynamic-bg" style="width: 100%; height: 10px;"></div>
+                            <div class="pill dynamic-bg" style="width: 100%; height: 10px;"></div>
+                            <div class="pill dynamic-bg" style="width: 75%; height: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dotted-divider"></div>
+
+                <div class="letter-footer">
+                    <div class="abstract-graphic">
+                        <div class="dynamic-bg" style="background-color: var(--mock-primary)"></div>
+                        <div class="postcard-stripes dynamic-bg" style="background-color: var(--mock-primary); opacity: 0.8"></div>
+                        <div class="dynamic-bg" style="background-color: var(--mock-pale)"></div>
+                        <div class="dynamic-bg" style="background-color: var(--mock-primary)"></div>
+                    </div>
+
+                    <div class="footer-lines">
+                        <div class="line-group">
+                            <div class="pill dynamic-bg" style="width: 100%; height: 8px; opacity: 0.4"></div>
+                            <div class="pill dynamic-bg" style="width: 100%; height: 8px; opacity: 0.4"></div>
+                            <div class="pill dynamic-bg" style="width: 75%; height: 8px; opacity: 0.4"></div>
+                        </div>
+                        
+                        <div class="qr-section">
+                            <svg class="qr-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M7 3H3v4 M17 3h4v4 M3 17v4h4 M21 17v4h-4" stroke-linecap="square"/></svg>
+                            <div class="qr-lines">
+                                <div class="pill dynamic-bg" style="width: 100%; height: 8px; opacity: 0.4"></div>
+                                <div class="pill dynamic-bg" style="width: 66%; height: 8px; opacity: 0.4"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mock-postcard dynamic-bg flex rounded-sm">
+                
+                <div class="postcard-left">
+                    <div>
+                        <div class="postcard-logo-wrap dynamic-bg" style="background-color: var(--mock-primary)">
+                            <div class="postcard-logo dynamic-text" id="postcardLogo">// FINANCIAL SERVICES CO.</div>
+                        </div>
+                        <h2 class="postcard-headline dynamic-text" id="postcardHeadline">
+                            Priya, visit your local branch in Oakwood
+                        </h2>
+                    </div>
+
+                    <div class="postcard-footer">
+                        <div class="postcard-icon-wrap" id="postcardIconContainer"></div>
+                        <div class="postcard-lines">
+                            <div class="postcard-line" style="width: 100%;"></div>
+                            <div class="postcard-line" style="width: 80%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="postcard-right">
+                    <div class="postcard-grid">
+                        <div class="dynamic-bg" style="background-color: var(--mock-primary); opacity: 0.9;"></div>
+                        <div class="postcard-stripes dynamic-bg" style="background-color: var(--mock-primary)"></div>
+                        <div class="dynamic-bg" style="background-color: var(--mock-pale)"></div>
+                        <div class="dynamic-bg" style="background-color: var(--mock-primary)"></div>
+                    </div>
+
+                    <div class="floating-card">
+                        <svg class="qr-icon" style="flex-shrink: 0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M7 3H3v4 M17 3h4v4 M3 17v4h4 M21 17v4h-4" stroke-linecap="square"/></svg>
+                        <div class="floating-lines">
+                            <div class="pill dynamic-bg" style="width: 100%; height: 10px;"></div>
+                            <div class="pill dynamic-bg" style="width: 75%; height: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM6 6v12h12V6H6zm3 3h6v2H9V9zm0 4h6v2H9v-2z"/></svg>
+                Mock Library
+            </h2>
+        </div>
+
+        <div class="sidebar-search">
+            <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" id="searchInput" placeholder="Search variants..." class="search-input">
+        </div>
+
+        <div class="sidebar-list" id="industryList">
+            <!-- Injected via JS -->
+        </div>
+
+        <div class="sidebar-footer">
+            <button onclick="resetApp()" class="reset-btn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                Reset Default
+            </button>
+        </div>
+    </aside>
+
+    <script>
+        // Header toggle script for subpage
+        const hbPill = document.querySelector('.hb-pill');
+        const hbToggle = document.getElementById('hb-toggle');
+        const hb = document.getElementById('hb');
+
+        hbPill.addEventListener('mouseleave', () => {
+            hb.classList.remove('open');
+            hbToggle.setAttribute('aria-expanded', 'false');
+        });
+
+        hbToggle.addEventListener('click', () => {
+            hb.classList.toggle('open');
+            hbToggle.setAttribute('aria-expanded', String(hb.classList.contains('open')));
+        });
+
+        // SVG Icon Definitions
+        const iconPin = `<svg class="icon-svg dynamic-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>`;
+        const iconCloud = `<svg class="icon-svg dynamic-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>`;
+        const iconShield = `<svg class="icon-svg dynamic-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>`;
+        const iconDollar = `<svg class="icon-svg dynamic-text" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`;
+
+        const industries = [
+            { id: 'fin-mortgage', name: 'Finance - Mortgage', logoText: '// FINANCIAL SERVICES CO.', letterHeadline: 'Timothy, you might be eligible for a special mortgage rate discount', postcardHeadline: 'Priya, visit your local branch to discuss rates', primaryColor: '#3B33F0', paleColor: '#CEC8FC', postcardBg: '#1E2247', iconSvg: iconDollar },
+            { id: 'fin-credit', name: 'Finance - Credit Card', logoText: '// FINANCIAL SERVICES CO.', letterHeadline: 'Timothy, unlock premium rewards with your new pre-approval', postcardHeadline: 'Priya, claim your 50,000 bonus points today', primaryColor: '#3B33F0', paleColor: '#CEC8FC', postcardBg: '#1E2247', iconSvg: iconDollar },
+            { id: 'fin-bank', name: 'Finance - Retail Banking', logoText: '// FINANCIAL SERVICES CO.', letterHeadline: 'Timothy, your checking account statement is ready to view', postcardHeadline: 'Priya, open a high-yield savings account easily', primaryColor: '#3B33F0', paleColor: '#CEC8FC', postcardBg: '#1E2247', iconSvg: iconDollar },
+            { id: 'tech-cloud', name: 'Tech - Cloud Storage', logoText: 'CLOUD CO.', letterHeadline: 'Timothy, upgrade your storage tier to keep your files secure', postcardHeadline: 'Priya, back up your entire team in seconds', primaryColor: '#4BD8ED', paleColor: '#D4F8FD', postcardBg: '#163E44', iconSvg: iconCloud },
+            { id: 'tech-sec', name: 'Tech - Cyber Security', logoText: 'CYBER CO.', letterHeadline: 'Timothy, critical security alerts and monthly report summary', postcardHeadline: 'Priya, secure your digital footprint today', primaryColor: '#4BD8ED', paleColor: '#D4F8FD', postcardBg: '#163E44', iconSvg: iconCloud },
+            { id: 'tech-crm', name: 'Tech - CRM Software', logoText: 'CLOUD CO.', letterHeadline: 'Timothy, close deals 30% faster with our new automation update', postcardHeadline: 'Priya, sync your contacts on the go', primaryColor: '#4BD8ED', paleColor: '#D4F8FD', postcardBg: '#163E44', iconSvg: iconCloud },
+            { id: 'ret-bf', name: 'Retail - Black Friday', logoText: 'RETAIL CO.', letterHeadline: 'Timothy, get early access to our biggest Black Friday doorbusters', postcardHeadline: 'Priya, shop the Black Friday sales event', primaryColor: '#DB6DF7', paleColor: '#F6CEFA', postcardBg: '#5C2261', iconSvg: iconPin },
+            { id: 'ret-apparel', name: 'Retail - Apparel', logoText: 'RETAIL CO.', letterHeadline: 'Timothy, preview the upcoming fall collection early access', postcardHeadline: 'Priya, shop the new denim drop in-store', primaryColor: '#DB6DF7', paleColor: '#F6CEFA', postcardBg: '#5C2261', iconSvg: iconPin },
+            { id: 'ret-home', name: 'Retail - Home Goods', logoText: 'LIVING CO.', letterHeadline: 'Timothy, design your perfect living space with our experts', postcardHeadline: 'Priya, refresh your bedroom aesthetic', primaryColor: '#DB6DF7', paleColor: '#F6CEFA', postcardBg: '#5C2261', iconSvg: iconPin },
+            { id: 'auto-sales', name: 'Automotive - Sales Event', logoText: ' APEX AUTO', letterHeadline: 'Timothy, our year-end clearance event is happening now', postcardHeadline: 'Priya, test drive the newest models today', primaryColor: '#DB6DF7', paleColor: '#F6CEFA', postcardBg: '#5C2261', iconSvg: iconPin },
+            { id: 'auto-first', name: 'Automotive - First Service', logoText: ' APEX AUTO', letterHeadline: 'Timothy, it is time for your complimentary first maintenance visit', postcardHeadline: 'Priya, schedule your first oil change', primaryColor: '#DB6DF7', paleColor: '#F6CEFA', postcardBg: '#5C2261', iconSvg: iconPin },
+            { id: 'auto-service', name: 'Automotive - Service Reminder', logoText: ' APEX AUTO', letterHeadline: 'Timothy, your vehicle is due for its scheduled 30,000-mile service', postcardHeadline: 'Priya, keep your vehicle running smoothly', primaryColor: '#DB6DF7', paleColor: '#F6CEFA', postcardBg: '#5C2261', iconSvg: iconPin },
+            { id: 'auto-loan', name: 'Automotive - Auto Loan', logoText: ' APEX AUTO', letterHeadline: 'Timothy, you are pre-approved for an exclusive low auto loan rate', postcardHeadline: 'Priya, finance your dream car with us', primaryColor: '#DB6DF7', paleColor: '#F6CEFA', postcardBg: '#5C2261', iconSvg: iconPin },
+            { id: 'ins-home', name: 'Insurance - Home', logoText: 'COVERAGE CO.', letterHeadline: 'Timothy, review your updated home insurance policy documents', postcardHeadline: 'Priya, bundle and save on home insurance', primaryColor: '#BED812', paleColor: '#EBF6A5', postcardBg: '#1E2247', iconSvg: iconShield },
+            { id: 'ins-car', name: 'Insurance - Car', logoText: 'INSURANCE CO.', letterHeadline: 'Timothy, lower your premium with our new safe driver discount', postcardHeadline: 'Priya, get a free auto insurance quote', primaryColor: '#BED812', paleColor: '#EBF6A5', postcardBg: '#1E2247', iconSvg: iconShield },
+            { id: 'ins-life', name: 'Insurance - Life', logoText: 'INSURANCE CO.', letterHeadline: 'Timothy, secure your family’s future with comprehensive life coverage', postcardHeadline: 'Priya, find the right life plan for you', primaryColor: '#BED812', paleColor: '#EBF6A5', postcardBg: '#1E2247', iconSvg: iconShield },
+            { id: 'hlth-ins', name: 'Health - Insurance', logoText: 'HEALTH CO.', letterHeadline: 'Timothy, review your open enrollment options and coverage details', postcardHeadline: 'Priya, comprehensive coverage starts here', primaryColor: '#FC755A', paleColor: '#FDCAC2', postcardBg: '#1E2247', iconSvg: iconPin },
+            { id: 'hlth-dent', name: 'Health - Dental', logoText: 'DENTAL CO.', letterHeadline: 'Timothy, it is time to schedule your bi-annual cleaning appointment', postcardHeadline: 'Priya, keep your smile bright and healthy', primaryColor: '#FC755A', paleColor: '#FDCAC2', postcardBg: '#1E2247', iconSvg: iconPin },
+            { id: 'hlth-well', name: 'Health - Wellness', logoText: 'FITNESS CO.', letterHeadline: 'Timothy, your personalized fitness and nutrition plan is ready', postcardHeadline: 'Priya, join our premium wellness classes', primaryColor: '#FC755A', paleColor: '#FDCAC2', postcardBg: '#1E2247', iconSvg: iconPin }
+        ];
+
+        let activeId = 'fin-mortgage';
+        let currentZoom = 1;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSidebar();
+            applyIndustryData(activeId);
+            
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                renderSidebar(e.target.value.toLowerCase());
+            });
+        });
+
+        function renderSidebar(filter = '') {
+            const list = document.getElementById('industryList');
+            list.innerHTML = '';
+
+            industries.forEach(ind => {
+                if(filter && !ind.name.toLowerCase().includes(filter)) return;
+
+                const isSelected = ind.id === activeId;
+                
+                const card = document.createElement('div');
+                card.className = `industry-card ${isSelected ? 'active' : ''}`;
+                card.onclick = () => selectIndustry(ind.id);
+                
+                const nameParts = ind.name.split(' - ');
+                const cat = nameParts[0];
+                const variant = nameParts[1];
+
+                card.innerHTML = `
+                    <div class="card-left">
+                        <div class="card-icon-bg" style="background-color: ${ind.paleColor};">
+                            <div class="card-dot" style="background-color: ${ind.primaryColor}"></div>
+                        </div>
+                        <div class="card-text">
+                            <div class="card-cat">${cat}</div>
+                            <div class="card-var">${variant}</div>
+                        </div>
+                    </div>
+                    ${isSelected ? `<svg class="active-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>` : ''}
+                `;
+                
+                list.appendChild(card);
+            });
+        }
+
+        function selectIndustry(id) {
+            activeId = id;
+            renderSidebar(document.getElementById('searchInput').value.toLowerCase());
+            applyIndustryData(id);
+        }
+
+        function applyIndustryData(id) {
+            const data = industries.find(i => i.id === id);
+            if(!data) return;
+
+            document.getElementById('letterLogo').textContent = data.logoText;
+            document.getElementById('postcardLogo').textContent = data.logoText;
+            document.getElementById('letterHeadline').textContent = data.letterHeadline;
+            document.getElementById('postcardHeadline').textContent = data.postcardHeadline;
+            document.getElementById('postcardIconContainer').innerHTML = data.iconSvg;
+
+            const root = document.documentElement;
+            root.style.setProperty('--mock-primary', data.primaryColor);
+            root.style.setProperty('--mock-pale', data.paleColor);
+            root.style.setProperty('--mock-postcard-bg', data.postcardBg);
+
+            setTimeout(updateOpenProcessingCanvas, 600);
+        }
+
+        function resetApp() {
+            document.getElementById('searchInput').value = '';
+            selectIndustry('fin-mortgage');
+            resetZoom();
+        }
+
+        function setZoom(delta) {
+            currentZoom += delta;
+            currentZoom = Math.max(0.5, Math.min(1.5, currentZoom));
+            applyZoom();
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            applyZoom();
+            setTimeout(updateOpenProcessingCanvas, 250);
+        }
+
+        function applyZoom() {
+            const artboard = document.getElementById('artboard');
+            const label = document.getElementById('zoomLabel');
+            
+            artboard.style.transform = `scale(${currentZoom})`;
+            label.textContent = `${Math.round(currentZoom * 100)}%`;
+        }
+
+        document.getElementById('canvasContainer').addEventListener('wheel', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                setZoom(delta);
+            }
+        }, { passive: false });
+
+        function updateOpenProcessingCanvas() {
+            const targetElement = document.getElementById('canvasContainer'); 
+            html2canvas(targetElement, { 
+                backgroundColor: '#EAE6FE', 
+                scale: 1,
+                useCORS: true
+            }).then(canvas => {
+                // Snapshot generation complete
+            });
+        }
+    </script>
+</body>
+</html>
