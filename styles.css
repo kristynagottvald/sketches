@@ -364,3 +364,13 @@ a.next:hover .hint-arrow { transform: translate(2px, -2px); }
 .bl { display: inline-block; }
 .bl.hop { animation: bl-hop .6s var(--ease) both; }
 @keyframes bl-hop { 0% { transform: translateY(0); } 35% { transform: translateY(-.16em); } 100% { transform: translateY(0); } }
+
+/* Text links: an underline draws in from the left on hover */
+.hb-channels a, .contact-row a, .about-cols p a, .foot a, .widget .copy {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  padding-bottom: 2px;
+  transition: background-size .35s var(--ease), color .2s;
+}
+.hb-channels a { align-self: flex-start; }
+.hb-channels a:hover, .contact-row a:hover, .about-cols p a:hover, .foot a:hover, .widget .copy:hover { background-size: 100% 1px; }
+@media (prefers-reduced-motion: reduce) { .hb-channels a, .contact-row a, .about-cols p a, .foot a, .widget .copy { transition: color .2s; } }
