@@ -56,20 +56,6 @@
   const SERVICES = ['Creative Coding', 'Generative Art', 'Interactive Engines', 'Visual Systems'];
 
   function renderGrid() {
-    if (!cardsEl) return;
-    cardsEl.innerHTML = projects
-      .map((p) => `
-      <article class="card" data-pid="${esc(p.id)}">
-        <a href="${p.url ? esc(p.url) : '#' + esc(p.slug)}" aria-label="${esc(p.title)}">
-          <div class="card-media"><img src="${esc(p.thumbnail)}" alt="" loading="lazy"></div>
-          <div class="card-meta">
-            <h3 class="card-title">${esc(p.title)}</h3>
-            ${subtitle(p) ? `<p class="card-sub">${esc(subtitle(p))}</p>` : ''}${ARROW}
-          </div>
-        </a>
-      </article>`)
-      .join('');
-    
     const serviceListEl = $('#service-list');
     if (serviceListEl) {
       serviceListEl.innerHTML = SERVICES.map((t, i) => `<li><span class="n">${String(i + 1).padStart(2, '0')}</span><span>${esc(t)}</span></li>`).join('');
