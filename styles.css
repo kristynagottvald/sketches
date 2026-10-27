@@ -138,7 +138,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
      edge and are visible while the first project is active. */
   .work { --card-h: calc((100vw - 24px) * 0.3516); padding-top: 0; }
   .work .pj-grid { padding-top: min(15svh, 120px); }
-  .work-side-in { position: sticky; top: 0; height: 100svh; padding: min(15svh, 120px) 0 16px; gap: 0; }
+  .work-side-in { position: static; padding: min(15svh, 120px) 0 16px; gap: 0; }
   #work-active { display: block; min-height: 1.2em; max-width: 12em; padding-right: 24px; text-wrap: balance; transition: opacity .2s; }
   .work-side-foot { display: flex; flex-direction: column; gap: 48px; margin-top: auto; }
   .work-desc { max-width: 66%; white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 9; -webkit-box-orient: vertical; overflow: hidden; }
