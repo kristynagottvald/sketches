@@ -187,5 +187,22 @@
         "alt": "Text Repeater"
       }
     ]
+  },
+  {
+    "id": "prompt-machine",
+    "title": "IEU Prompt Machine",
+    "category": "Interactive Tool",
+    "year": 2026,
+    "thumbnail": "prompt-machine/thumbnail.jpg?v=1",
+    "url": "prompt-machine/",
+    "blurb": "Rewrites a basic prompt into a metacognitive Identify, Evaluate, Update prompt with the Gemini API.",
+    "preview": "clips/prompt-machine.webp?v=1",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "prompt-machine/thumbnail.jpg",
+        "alt": "IEU Prompt Machine"
+      }
+    ]
   }
 ]
