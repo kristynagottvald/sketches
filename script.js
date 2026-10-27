@@ -85,21 +85,36 @@
   }
 
 
-  /* ---------- Hover plays the sketch's stop-motion clip ---------- */
+  /* ---------- Stop-motion clips: a checkerboard of tiles plays, then the other half takes over ---------- */
+  const CLIP_MS = 5000;
+  let clipTimer = null;
   function bindClipHover(grid) {
+    clearInterval(clipTimer);
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    // warm the cache so the clip starts the instant you hover
-    grid.querySelectorAll('img[data-preview]').forEach((im) => { if (im.dataset.preview) new Image().src = im.dataset.preview; });
-    const swap = (e, play) => {
-      const tile = e.target.closest('.pj-tile');
-      if (!tile || (e.relatedTarget && tile.contains(e.relatedTarget))) return;
-      const im = tile.querySelector('img[data-preview]');
+    const imgs = [...grid.querySelectorAll('.pj-tile')].sort((a, b) => a.dataset.i - b.dataset.i).map((tile) => tile.querySelector('img[data-preview]'));
+    imgs.forEach((im) => { if (im && im.dataset.preview) new Image().src = im.dataset.preview; });   // warm the cache
+    let phase = 0;
+    const set = (im, play) => {
       if (!im || !im.dataset.preview) return;
-      // a fresh query string restarts the clip from its first frame
-      im.src = play ? `${im.dataset.preview}?t=${Date.now()}` : im.dataset.still;
+      // a fresh <img> on the cached clip always starts from its first frame
+      const fresh = im.cloneNode();
+      fresh.src = play ? im.dataset.preview : im.dataset.still;
+      im.replaceWith(fresh);
+      imgs[imgs.indexOf(im)] = fresh;
     };
-    grid.addEventListener('mouseover', (e) => swap(e, true));
-    grid.addEventListener('mouseout', (e) => swap(e, false));
+    const tick = () => {
+      if (document.hidden) return;
+      // checkerboard over the two-column layout: tile i sits in column i % 2, row floor(i / 2)
+      imgs.slice().forEach((im, i) => {
+        const on = (((i % 2) + Math.floor(i / 2)) % 2) === phase;
+        if ((im.dataset.on === '1') === on && im.dataset.on !== undefined) return;
+        set(im, on);
+        imgs[i].dataset.on = on ? '1' : '0';
+      });
+      phase = 1 - phase;
+    };
+    tick();
+    clipTimer = setInterval(tick, CLIP_MS);
   }
 
   /* ---------- Projects Cycle Animation ---------- */
