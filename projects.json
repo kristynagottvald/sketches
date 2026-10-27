@@ -219,5 +219,22 @@
         "alt": "Mail Stack"
       }
     ]
+  },
+  {
+    "id": "motion-character",
+    "title": "Motion Character",
+    "category": "Generative Art",
+    "year": 2026,
+    "thumbnail": "motion-character/thumbnail.jpg?v=1",
+    "url": "motion-character/",
+    "blurb": "Four colour panels wipe in and out in a staggered, eased sequence.",
+    "preview": "clips/motion-character.webp?v=1",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "motion-character/thumbnail.jpg",
+        "alt": "Motion Character"
+      }
+    ]
   }
 ]
