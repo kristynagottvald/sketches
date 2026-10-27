@@ -50,7 +50,7 @@
   },
   {
     "id": "marketing-mine",
-    "title": "Marketing Mine",
+    "title": "Marketing Minesweeper",
     "category": "Interactive Game",
     "year": 2026,
     "thumbnail": "marketing-mine/thumbnail.png",
@@ -60,7 +60,7 @@
       {
         "type": "image",
         "src": "marketing-mine/thumbnail.png",
-        "alt": "Marketing Mine"
+        "alt": "Marketing Minesweeper"
       }
     ]
   },

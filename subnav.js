@@ -32,7 +32,7 @@
   }
   const go = (d) => { start = Math.max(0, Math.min(list.length - 1, start + d * (layout.per || 1))); layout(); };
 
-  fetch('../projects.json').then((r) => r.json()).then((items) => {
+  fetch('../projects.json', { cache: 'no-cache' }).then((r) => r.json()).then((items) => {
     list = items;
     const here = location.pathname.replace(/index\.html$/, '');
     const cur = Math.max(0, list.findIndex((p) => here.endsWith('/' + p.id + '/')));

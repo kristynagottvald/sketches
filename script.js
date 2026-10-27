@@ -24,7 +24,7 @@
 
   async function load() {
     try {
-      const res = await fetch('projects.json?v=20261027v');
+      const res = await fetch('projects.json', { cache: 'no-cache' });
       if (!res.ok) throw new Error(res.status);
       projects = await res.json();
       projects.forEach((p) => { 
