@@ -2,7 +2,7 @@
   'use strict';
 
   const SITE = 'Kristyna Gottvald';
-  const TAGLINE = 'Creative Coding Hub';
+  const TAGLINE = 'Interactive Brand Tools';
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const views = { home: $('#view-sketches'), case: $('#view-case'), projects: $('#view-projects'), about: $('#view-about') };
@@ -237,7 +237,7 @@
     });
     currentView = name;
     const hbLabel = $('#hb-label');
-    if (hbLabel) hbLabel.textContent = { home: 'Sketches', case: 'Projects', projects: 'Projects', about: 'About' }[name] || 'Sketches';
+    if (hbLabel) hbLabel.textContent = { home: 'Tools', case: 'Projects', projects: 'Projects', about: 'About' }[name] || 'Tools';
     const hb = $('#hb');
     if (hb) hb.classList.remove('open');
     requestAnimationFrame(updateWork);
