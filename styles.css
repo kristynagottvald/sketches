@@ -13,7 +13,7 @@
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --ease: cubic-bezier(0.15, 0, 0.15, 1);
   --pad: 8px;      /* margin around the hero, images and tiles */
-  --indent: 12px;  /* left indent for text that sits at the far left edge */
+  --indent: 22px;  /* 8px pad + 22px = 30px, the left edge of the K in the nav logo */
   --r-sm: 4px;
   --r-md: 8px;
 }
