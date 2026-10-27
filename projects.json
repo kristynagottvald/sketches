@@ -156,7 +156,7 @@
   },
   {
     "id": "sound-bars",
-    "title": "Sound Bars",
+    "title": "Temporary Notes",
     "category": "Interactive Tool",
     "year": 2026,
     "thumbnail": "sound-bars/thumbnail.png",
@@ -167,7 +167,7 @@
       {
         "type": "image",
         "src": "sound-bars/thumbnail.png",
-        "alt": "Sound Bars"
+        "alt": "Temporary Notes"
       }
     ]
   }
