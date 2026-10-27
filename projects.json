@@ -39,7 +39,7 @@
     "title": "Wisp Network",
     "category": "Generative Art",
     "year": 2026,
-    "thumbnail": "wisps/thumbnail.jpg?v=5",
+    "thumbnail": "wisps/thumbnail.jpg?v=6",
     "url": "wisps/",
     "blurb": "Click to grow a web of thin wisps between two points over a blurred sky.",
     "caseStudyContent": [
@@ -49,7 +49,7 @@
         "alt": "Wisp Network"
       }
     ],
-    "preview": "clips/wisps.webp?v=5"
+    "preview": "clips/wisps.webp?v=6"
   },
   {
     "id": "marketing-mine",
@@ -73,7 +73,7 @@
     "title": "Kick Off Type Lab",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "kickoff-type-lab/thumbnail.jpg?v=5",
+    "thumbnail": "kickoff-type-lab/thumbnail.jpg?v=6",
     "url": "kickoff-type-lab/",
     "blurb": "A type tool for groovy, gooey, western lettering, with live spacing, warp and SVG export.",
     "clientName": "Lob",
@@ -84,7 +84,7 @@
         "alt": "Kick Off Type Lab"
       }
     ],
-    "preview": "clips/kickoff-type-lab.webp?v=5"
+    "preview": "clips/kickoff-type-lab.webp?v=6"
   },
   {
     "id": "palette-compositions",
