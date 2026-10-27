@@ -12,6 +12,7 @@
   const host = document.getElementById('navProjects');
   const PAD = 30, PEEK = 70, GAP = 20;
   const arrow = (dir) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${dir < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'}"/></svg>`;
+  const EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
   let list = [], start = 0, track, prev, next;
 
   function layout() {
@@ -40,7 +41,7 @@
     const cur = Math.max(0, list.findIndex((p) => here.endsWith('/' + p.id + '/')));
     start = cur;
     host.innerHTML = `<div class="np-track">${list.map((p, i) =>
-      `<a class="nav-proj" href="../${esc(p.url || '#' + p.id)}"${i === cur ? ' aria-current="page"' : ''}><img src="../${esc(p.thumbnail)}" alt=""><span>${esc(p.title)}</span></a>`).join('')}</div>
+      `<a class="nav-proj" href="../${esc(p.url || '#' + p.id)}"${i === cur ? ' aria-current="page"' : ''}><span class="np-img"><img src="../${esc(p.thumbnail)}" alt="">${i === cur ? `<span class="np-seen">${EYE}Just seen</span>` : ''}</span><span>${esc(p.title)}</span></a>`).join('')}</div>
       <button class="np-btn" type="button" aria-label="Previous projects" hidden>${arrow(-1)}</button>
       <button class="np-btn" type="button" aria-label="Next projects" hidden>${arrow(1)}</button>`;
     track = host.querySelector('.np-track');
