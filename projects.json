@@ -19,7 +19,7 @@
   },
   {
     "id": "ribbon-text",
-    "title": "Wavy Ribbon Text",
+    "title": "Postmark Awards Generative Text",
     "category": "Generative Art",
     "year": 2026,
     "thumbnail": "ribbon-text/thumbnail.png",
@@ -29,7 +29,7 @@
       {
         "type": "image",
         "src": "ribbon-text/thumbnail.png",
-        "alt": "Wavy Ribbon Text"
+        "alt": "Postmark Awards Generative Text"
       }
     ],
     "preview": "clips/ribbon-text.webp"
@@ -102,5 +102,22 @@
       }
     ],
     "preview": "clips/palette-compositions.webp"
+  },
+  {
+    "id": "integratron",
+    "title": "Integratron",
+    "category": "Generative Art",
+    "year": 2026,
+    "thumbnail": "integratron/thumbnail.png",
+    "url": "integratron/",
+    "blurb": "A 3D desert dome cycling from day to night, with sound bath bowls on click and scroll.",
+    "preview": "clips/integratron.webp",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "integratron/thumbnail.png",
+        "alt": "Integratron"
+      }
+    ]
   }
 ]
