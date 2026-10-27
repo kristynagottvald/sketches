@@ -1,7 +1,7 @@
 [
   {
     "id": "direct-mail-engine",
-    "title": "Dynamic Direct Mail Mockup Engine",
+    "title": "Industry Swapper Plug-in",
     "category": "Interactive Engine",
     "year": 2026,
     "thumbnail": "direct-mail-engine/thumbnail.png",
@@ -12,7 +12,7 @@
       {
         "type": "image",
         "src": "direct-mail-engine/thumbnail.png",
-        "alt": "Dynamic Direct Mail Mockup Engine"
+        "alt": "Industry Swapper Plug-in"
       }
     ]
   },
