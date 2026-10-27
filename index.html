@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kristyna Gottvald • Creative Coding Hub</title>
+  <meta name="description" content="A repository hub and gallery of creative coding experiments and generative sketches.">
+  <meta name="theme-color" content="#000000">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@300;400&display=swap">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <!-- Floating Navigation Pill -->
+  <header class="hb" id="hb">
+    <div class="hb-pill">
+      <div class="hb-bar">
+        <a class="logo" href="#" aria-label="Kristyna Gottvald">KRISTYNA</a>
+        <span class="hb-label" id="hb-label">Sketches</span>
+        <button class="hb-toggle" id="hb-toggle" type="button" aria-expanded="false" aria-controls="hb-menu">
+          <span class="sr">Toggle menu</span>
+          <svg class="nav-ptr" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7.2 6.4l8.4 3.3-3.6 1.4-1.4 3.6z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      <nav class="hb-menu" id="hb-menu" aria-label="Main Navigation">
+        <a href="#" data-nav="sketches"><b>Sketches</b><span>All experiments</span></a>
+        <a href="#about" data-nav="about"><b>About</b><span>Info & links</span></a>
+        <div class="hb-channels">
+          <a href="https://github.com/kristynagottvald/sketches" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+          <a href="https://openprocessing.org/user/500421/#sketches" target="_blank" rel="noopener noreferrer">OpenProcessing</a>
+          <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- View 1: Sketches Gallery -->
+    <section id="view-sketches" class="work" aria-label="Creative Coding Sketches">
+      <div class="work-side">
+        <div class="work-side-in">
+          <h1 class="t-condensed">Creative Coding</h1>
+          <h2 class="t-condensed grey" id="work-active">&nbsp;</h2>
+          <div class="work-side-foot">
+            <p class="work-desc grey" id="work-desc">Hover over or scroll to a sketch to preview details.</p>
+            <div class="work-meta">
+              <img id="work-thumb" alt="" width="40" height="40" style="display:none;">
+              <div><p class="caps grey" id="work-tag"></p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Cards populated dynamically via script.js -->
+      <div class="work-list" id="cards"></div>
+    </section>
+
+    <!-- View 2: Minimal About Page -->
+    <section id="view-about" class="about" aria-labelledby="about-title" hidden>
+      <div class="about-inner">
+        <h1 id="about-title" class="t-condensed">Generative Art &amp; Interactive Experiments</h1>
+        <div class="about-cols">
+          <p>A personal sandbox for algorithmic art, custom Canvas physics, WebGL, and p5.js sketches. Every project lives as a standalone subpage hosted directly from this GitHub repository.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="contact" id="contact" aria-label="Contact">
+    <div class="contact-base">
+      <div class="widget">
+        <div class="widget-body">
+          <span class="caps grey">GitHub</span>
+          <span class="widget-mail">kristynagottvald/sketches</span>
+        </div>
+        <a href="https://github.com/kristynagottvald/sketches" target="_blank" class="copy">View Repo</a>
+      </div>
+      <div class="foot">
+        <span>© Kristyna Gottvald</span>
+        <a href="#">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
