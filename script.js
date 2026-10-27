@@ -1,119 +1,275 @@
 (() => {
   'use strict';
 
+  const SITE = 'Kristyna Gottvald';
+  const TAGLINE = 'Creative Coding Hub';
+
   const $ = (sel, root = document) => root.querySelector(sel);
-  const views = { sketches: $('#view-sketches'), about: $('#view-about') };
+  const views = { home: $('#view-home'), case: $('#view-case'), projects: $('#view-projects'), about: $('#view-about') };
   const cardsEl = $('#cards');
+  const stackEl = $('#case-stack');
   const navLinks = document.querySelectorAll('[data-nav]');
 
-  let sketches = [];
+  let projects = [];
   let currentView = null;
+  let homeScroll = 0;
+  let projectsScroll = 0;
+
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  const esc = (s) =>
+    String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  /* ---------- Data Loading ---------- */
 
   async function load() {
     try {
-      const res = await fetch('sketches.json');
+      const res = await fetch('projects.json?v=20261027v');
       if (!res.ok) throw new Error(res.status);
-      sketches = await res.json();
+      projects = await res.json();
+      projects.forEach((p) => { 
+        if (!p.url) {
+          p.slug = String(p.title).toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); 
+        }
+      });
     } catch (err) {
-      console.error('Error loading sketches:', err);
+      console.error(err);
     }
-
-    if (!sketches.length) {
-      cardsEl.innerHTML = '<p class="grey" style="padding: 24px;">No sketches found. Ensure sketches.json is present.</p>';
+    if (!projects.length) {
+      if (cardsEl) cardsEl.innerHTML = '<p class="load-error">Could not load projects.json.</p>';
       return;
     }
-
     renderGrid();
     route();
   }
 
+  const firstHeading = (p) => ((p.caseStudyContent || []).find((b) => b.type === 'text' && b.heading) || {}).heading || '';
+  const subtitle = (p) => {
+    if (p.blurb) return p.blurb;
+    const h = firstHeading(p), t = p.title.toLowerCase(), l = h.toLowerCase();
+    return h && !l.includes(t) && !t.includes(l) ? h : '';
+  };
+
+  /* ---------- Rendering Grid & Projects ---------- */
+
   const ARROW = '<svg class="card-arrow" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
+  const SERVICES = ['Creative Coding', 'Generative Art', 'Interactive Engines', 'Visual Systems'];
 
   function renderGrid() {
-    cardsEl.innerHTML = sketches
-      .map((s) => `
-      <article class="card" data-id="${s.id}">
-        <a href="${s.url}" aria-label="${s.title}">
-          <div class="card-media">
-            <img src="${s.thumbnail}" alt="${s.title} Screenshot" loading="lazy">
-          </div>
+    if (!cardsEl) return;
+    cardsEl.innerHTML = projects
+      .map((p) => `
+      <article class="card" data-pid="${esc(p.id)}">
+        <a href="${p.url ? esc(p.url) : '#' + esc(p.slug)}" aria-label="${esc(p.title)}">
+          <div class="card-media"><img src="${esc(p.thumbnail)}" alt="" loading="lazy"></div>
           <div class="card-meta">
-            <h3 class="card-title">${s.title}</h3>
-            ${s.blurb ? `<p class="card-sub">${s.blurb}</p>` : ''}
-            ${ARROW}
+            <h3 class="card-title">${esc(p.title)}</h3>
+            ${subtitle(p) ? `<p class="card-sub">${esc(subtitle(p))}</p>` : ''}${ARROW}
           </div>
         </a>
       </article>`)
       .join('');
-
+    
+    const serviceListEl = $('#service-list');
+    if (serviceListEl) {
+      serviceListEl.innerHTML = SERVICES.map((t, i) => `<li><span class="n">${String(i + 1).padStart(2, '0')}</span><span>${esc(t)}</span></li>`).join('');
+    }
     watchWork();
+    renderProjectsPage();
   }
 
-  function setActiveCard(card) {
-    const s = sketches.find((x) => x.id === card.dataset.id);
-    if (!s) return;
-    cardsEl.querySelectorAll('.card').forEach((c) => c.classList.toggle('is-active', c === card));
-    $('#work-active').textContent = s.title;
-    $('#work-desc').textContent = s.blurb || '';
-    $('#work-tag').textContent = [s.year, s.category].filter(Boolean).join(' – ');
-  }
-
-  let scrollTick = false;
-  function updateActiveCardOnScroll() {
-    scrollTick = false;
-    if (currentView !== 'sketches') return;
-    const mid = window.innerHeight * 0.5;
-    let best = null, bestDist = Infinity;
-    cardsEl.querySelectorAll('.card').forEach((c) => {
-      const r = c.getBoundingClientRect();
-      const dist = Math.abs(r.top + r.height / 2 - mid);
-      if (dist < bestDist) { bestDist = dist; best = c; }
+  function renderProjectsPage() {
+    const pjGridEl = $('#pj-grid');
+    if (!pjGridEl) return;
+    const cols = [[], []];
+    projects.forEach((p, i) => {
+      const c = i % 2, r = Math.floor(i / 2);
+      const kind = (r + c) % 2 === 0 ? 'is-p' : 'is-l';
+      const titleCase = (t) => String(t || '').replace(/\b([a-z])/g, (m) => m.toUpperCase());
+      const name = p.listTitle || p.title;
+      const right = p.clientName && p.clientName.toLowerCase() !== name.toLowerCase() ? p.clientName : titleCase(p.category);
+      cols[c].push(`<a class="pj-tile ${kind}" href="${p.url ? esc(p.url) : '#' + esc(p.slug)}" style="--o:${i}" data-i="${i}" data-urls="${esc(JSON.stringify(nextImages(p)))}" aria-label="${esc(p.title)}">
+        <div class="pj-media"><img class="is-active" src="${esc(p.thumbnail)}" alt="" loading="lazy"></div>
+        <div class="pj-cap"><span>${esc(name)}</span><span class="grey">${esc(right || '')}</span></div>
+      </a>`);
     });
-    if (best && !best.classList.contains('is-active')) setActiveCard(best);
+    pjGridEl.innerHTML = cols.map((col) => `<div class="pj-col">${col.join('')}</div>`).join('');
+    if (currentView === 'projects') startProjectsCycle();
   }
 
+  /* ---------- Projects Cycle Animation ---------- */
+
+  const pjVisible = new Set();
+  let pjObserver = null, pjTimer = null, pjLast = -1;
+  function stopProjectsCycle() {
+    clearTimeout(pjTimer);
+    pjTimer = null;
+    if (pjObserver) pjObserver.disconnect();
+    pjObserver = null;
+    pjVisible.clear();
+  }
+  function startProjectsCycle() {
+    stopProjectsCycle();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+    pjObserver = new IntersectionObserver((entries) => {
+      entries.forEach((e) => (e.isIntersecting ? pjVisible.add(e.target) : pjVisible.delete(e.target)));
+      if (pjTimer === null) schedulePjTick();
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.pj-tile').forEach((t) => pjObserver.observe(t));
+  }
+  function schedulePjTick() {
+    clearTimeout(pjTimer);
+    pjTimer = null;
+    if (!pjVisible.size || currentView !== 'projects') return;
+    pjTimer = setTimeout(pjTick, Math.max(250, 3000 / pjVisible.size));
+  }
+  function pjTick() {
+    pjTimer = null;
+    if (currentView !== 'projects') return;
+    if (!document.hidden) {
+      const shown = [...pjVisible].sort((a, b) => a.dataset.i - b.dataset.i);
+      const next = shown.find((t) => +t.dataset.i > pjLast) || shown[0];
+      if (next) { pjLast = +next.dataset.i; advanceTile(next); }
+    }
+    schedulePjTick();
+  }
+  function advanceTile(tile) {
+    const urls = JSON.parse(tile.dataset.urls || '[]');
+    if (urls.length < 2) return;
+    const media = tile.querySelector('.pj-media');
+    const i = ((+tile.dataset.idx || 0) + 1) % urls.length;
+    const probe = new Image();
+    probe.onload = () => {
+      const img = document.createElement('img');
+      img.alt = '';
+      img.src = urls[i];
+      media.appendChild(img);
+      tile.dataset.idx = i;
+      requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add('is-active')));
+      setTimeout(() => media.querySelectorAll('img').forEach((o) => { if (o !== img) o.remove(); }), 1100);
+    };
+    probe.onerror = () => { urls.splice(i, 1); tile.dataset.urls = JSON.stringify(urls); };
+    probe.src = urls[i];
+  }
+
+  /* ---------- Sidebar / Active Card Monitoring ---------- */
+
+  const firstBody = (p) => (((p.caseStudyContent || []).find((b) => b.type === 'text' && (b.body || []).length) || {}).body || []).filter((t) => !/^\s*(role:|key results)/i.test(t)).join('\n\n');
+  
+  function setWork(card) {
+    const p = projects.find((x) => x.id === card.dataset.pid);
+    if (!p) return;
+    if (cardsEl) {
+      cardsEl.querySelectorAll('.card').forEach((c) => c.classList.toggle('is-active', c === card));
+    }
+    const activeEl = $('#work-active');
+    if (activeEl) activeEl.textContent = p.title;
+    const descEl = $('#work-desc');
+    if (descEl) descEl.textContent = firstBody(p) || p.blurb || '';
+    const tagEl = $('#work-tag');
+    if (tagEl) tagEl.textContent = [p.year, p.category].filter(Boolean).join(' – ');
+  }
+
+  let workTick = false;
+  function updateWork() {
+    workTick = false;
+    if (currentView !== 'home' && currentView !== 'sketches') return;
+    const mid = window.innerHeight * 0.5;
+    let best = null, bd = Infinity;
+    if (cardsEl) {
+      cardsEl.querySelectorAll('.card').forEach((c) => {
+        const r = c.getBoundingClientRect();
+        const d = Math.abs(r.top + r.height / 2 - mid);
+        if (d < bd) { bd = d; best = c; }
+      });
+    }
+    if (best && !best.classList.contains('is-active')) setWork(best);
+  }
   function watchWork() {
+    if (!cardsEl) return;
     const first = cardsEl.querySelector('.card');
-    if (first) setActiveCard(first);
-    window.addEventListener('scroll', () => {
-      if (!scrollTick) {
-        scrollTick = true;
-        requestAnimationFrame(updateActiveCardOnScroll);
-      }
-    }, { passive: true });
+    first && setWork(first);
+    window.addEventListener('scroll', () => { if (!workTick) { workTick = true; requestAnimationFrame(updateWork); } }, { passive: true });
   }
 
-  /* Routing */
-  function showView(name) {
-    Object.entries(views).forEach(([key, el]) => { el.hidden = key !== name; });
+  function nextImages(q) {
+    const list = [q.thumbnail];
+    (q.caseStudyContent || []).forEach((b) => { if (b.type === 'image' && b.src && !list.includes(b.src) && !/placeholder/.test(b.src)) list.push(b.src); });
+    return list.filter(Boolean);
+  }
+
+  /* ---------- Routing & View Management ---------- */
+
+  function show(name) {
+    if (currentView === 'home') homeScroll = window.scrollY;
+    if (currentView === 'projects') projectsScroll = window.scrollY;
+    Object.entries(views).forEach(([key, el]) => { if (el) el.hidden = key !== name; });
+    if (name !== 'case' && stackEl) { stackEl.innerHTML = ''; }
+    if (name === 'projects') startProjectsCycle(); else stopProjectsCycle();
+    const navKey = name === 'case' ? 'projects' : name;
     navLinks.forEach((a) => {
-      if (a.dataset.nav === name) a.setAttribute('aria-current', 'page');
-      else a.removeAttribute('aria-current');
+      if (a.dataset.nav === navKey) {
+        if (!a.hasAttribute('aria-current')) { a.setAttribute('aria-current', 'page'); }
+      } else {
+        a.removeAttribute('aria-current');
+      }
     });
     currentView = name;
-    $('#hb-label').textContent = name === 'about' ? 'About' : 'Sketches';
-    $('#hb').classList.remove('open');
+    const hbLabel = $('#hb-label');
+    if (hbLabel) hbLabel.textContent = { home: 'Sketches', case: 'Projects', projects: 'Projects', about: 'About' }[name] || 'Sketches';
+    const hb = $('#hb');
+    if (hb) hb.classList.remove('open');
+    requestAnimationFrame(updateWork);
+  }
+
+  function scrollToId(id) {
+    const el = document.getElementById(id);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY, behavior: 'smooth' });
   }
 
   function route() {
-    const hash = location.hash.slice(1);
-    if (hash === 'about') {
-      showView('about');
+    const hash = decodeURIComponent(location.hash.slice(1));
+    if (hash === 'projects') {
+      show('projects');
+      document.title = `Projects • ${SITE}`;
+      window.scrollTo(0, 0);
+    } else if (hash === 'about') {
+      show('about');
+      document.title = `About • ${SITE}`;
+      window.scrollTo(0, 0);
+    } else if (hash === 'contact') {
+      if (!currentView || currentView === 'case') show('home');
+      document.title = `${SITE} • ${TAGLINE}`;
+      scrollToId('contact');
     } else {
-      showView('sketches');
+      show('home');
+      document.title = `${SITE} • ${TAGLINE}`;
+      window.scrollTo(0, 0);
     }
   }
 
-  /* UI Event Listeners */
-  $('.hb-pill').addEventListener('mouseleave', () => {
-    $('#hb').classList.remove('open');
-    $('#hb-toggle').setAttribute('aria-expanded', 'false');
-  });
+  /* ---------- Event Listeners ---------- */
 
-  $('#hb-toggle').addEventListener('click', () => {
-    const hb = $('#hb');
-    $('#hb-toggle').setAttribute('aria-expanded', String(hb.classList.toggle('open')));
-  });
+  const hbPill = $('.hb-pill');
+  if (hbPill) {
+    hbPill.addEventListener('mouseleave', () => {
+      const hb = $('#hb');
+      if (hb) hb.classList.remove('open');
+      const toggle = $('#hb-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  const hbToggle = $('#hb-toggle');
+  if (hbToggle) {
+    hbToggle.addEventListener('click', () => {
+      const hb = $('#hb');
+      if (hb) {
+        const isOpen = hb.classList.toggle('open');
+        hbToggle.setAttribute('aria-expanded', String(isOpen));
+      }
+    });
+  }
 
   window.addEventListener('hashchange', route);
   load();
