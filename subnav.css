@@ -10,14 +10,14 @@
 .np-view { overflow: hidden; margin: 0 64px; }
 .np-track { display: flex; gap: 20px; transition: transform .45s var(--ease); will-change: transform; }
 .np-track .nav-proj { flex: none; width: var(--w); }
-.np-btn { position: absolute; top: 0; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: #fff; cursor: pointer; display: grid; place-items: center; transition: background .2s, border-color .2s; }
-.np-btn:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.35); }
-.np-btn svg { width: 18px; height: 18px; }
+.np-btn { position: absolute; top: 0; margin: 0; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 0; background: none; color: var(--grey); cursor: pointer; display: grid; place-items: center; transition: color .2s; }
+.np-btn:hover { color: #fff; }
+.np-btn svg { width: 22px; height: 22px; }
 .np-btn[hidden] { display: none; }
 .nav-proj { flex: none; width: 260px; }
 .np-btn { position: absolute; top: 0; width: 44px; height: 44px; margin-top: calc(260px * 9 / 32 - 22px); border-radius: 50%; border: 0; background: rgba(0,0,0,.65); color: #fff; cursor: pointer; display: grid; place-items: center; backdrop-filter: blur(6px); transition: background .2s; }
 .np-btn:hover { background: rgba(255,255,255,.22); }
-.np-btn svg { width: 18px; height: 18px; }
+.np-btn svg { width: 22px; height: 22px; }
 .np-btn[hidden] { display: none; }
 .nav-proj { display: flex; flex-direction: column; gap: 9px; color: var(--grey); font: 350 15px/1.25 var(--sans); }
 .nav-proj img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--r-md); background: var(--off-black); }
