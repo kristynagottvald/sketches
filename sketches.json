@@ -1,29 +1,19 @@
 [
   {
-    "id": "generative-waves",
-    "title": "Generative Waves",
-    "category": "p5.js • Perlin Noise",
+    "id": "direct-mail-engine",
+    "title": "Dynamic Direct Mail Mockup Engine",
+    "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "generative-waves/thumbnail.png",
-    "url": "generative-waves/",
-    "blurb": "An exploration of sine waves and dynamic 3D noise fields."
-  },
-  {
-    "id": "particle-clock",
-    "title": "Particle Clock",
-    "category": "Canvas API • Physics",
-    "year": 2026,
-    "thumbnail": "particle-clock/thumbnail.png",
-    "url": "particle-clock/",
-    "blurb": "A time-based visualizer using interactive spring particle networks."
-  },
-  {
-    "id": "dither-matrix",
-    "title": "Dither Matrix",
-    "category": "WebGL • Shaders",
-    "year": 2025,
-    "thumbnail": "dither-matrix/thumbnail.png",
-    "url": "dither-matrix/",
-    "blurb": "Real-time webcam dithering and custom post-processing shaders."
+    "thumbnail": "direct-mail-engine/thumbnail.png",
+    "url": "direct-mail-engine/",
+    "blurb": "A real-time customizable direct mail mock-up generator across industries.",
+    "clientName": "Lob",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "direct-mail-engine/thumbnail.png",
+        "alt": "Dynamic Direct Mail Mockup Engine"
+      }
+    ]
   }
 ]
