@@ -42,7 +42,7 @@ function setup() {
       display: flex;
       flex-direction: column; 
       align-items: center; 
-      justify-content: flex-start;
+      justify-content: center;
       min-height: calc(100vh - 60px);
       padding: 30px 20px;
     }
