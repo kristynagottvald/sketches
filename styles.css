@@ -359,8 +359,3 @@ a.next:hover .hint-arrow { transform: translate(2px, -2px); }
 .work .pj-tile.is-p .pj-media, .work .pj-tile.is-l .pj-media { aspect-ratio: 16 / 9; }
 .work .pj-grid, .work .pj-col { gap: 16px; }
 .work .pj-media { border-radius: 12px; }
-
-/* Home grid: every sketch is a 16:9 tile in two columns, name revealed underneath on hover */
-.work .pj-tile.is-p .pj-media, .work .pj-tile.is-l .pj-media { aspect-ratio: 16 / 9; }
-.work .pj-grid, .work .pj-col { gap: 16px; }
-.work .pj-media { border-radius: 12px; }
