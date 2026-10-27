@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Kick Off Type Lab</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
@@ -49,7 +50,7 @@ button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
 html,body{height:100%}
 body{display:flex;flex-direction:column}
 #app{flex:1;min-height:0;height:auto}
-.site-nav{--line:rgba(255,255,255,.1);--grey:#989898;--ease:cubic-bezier(0.15,0,0.15,1);--sans:"Helvetica Neue",Helvetica,Arial,sans-serif;--r-md:8px;--off-black:#1c1c1c;--nav-h:60px;flex:none;font:350 15px/1.25 var(--sans);-webkit-font-smoothing:antialiased}
+.site-nav{--line:rgba(255,255,255,.1);--grey:#989898;--ease:cubic-bezier(0.15,0,0.15,1);--sans:"Helvetica Neue",Helvetica,Arial,sans-serif;--r-md:8px;--off-black:#1c1c1c;--nav-h:60px;box-sizing:border-box;flex:none;font:350 15px/1.25 var(--sans);-webkit-font-smoothing:antialiased}
 .site-nav a{color:inherit;text-decoration:none}
 .site-nav .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .site-nav .hb-bar{position:relative;display:flex;align-items:center;height:44px;padding:0 12px 0 14px;gap:20px;white-space:nowrap}
@@ -216,6 +217,8 @@ function setup(){
   pixelDensity(1);
   createCanvas(st.clientWidth, st.clientHeight).parent(st);
   noLoop();
+  // keep the canvas matched to the stage once the nav and panel have laid out
+  new ResizeObserver(() => { if (st.clientWidth !== width || st.clientHeight !== height) windowResized(); }).observe(st);
   FONTS.forEach((f,i)=>{
     const o = document.createElement('option'); o.value=i; o.textContent=f[0]; $('font').appendChild(o);
     families[i] = `"kf${i}", ${FALLBACK}`;
