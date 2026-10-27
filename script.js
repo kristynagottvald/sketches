@@ -5,7 +5,7 @@
   const TAGLINE = 'Creative Coding Hub';
 
   const $ = (sel, root = document) => root.querySelector(sel);
-  const views = { home: $('#view-home'), case: $('#view-case'), projects: $('#view-projects'), about: $('#view-about') };
+  const views = { home: $('#view-sketches'), case: $('#view-case'), projects: $('#view-projects'), about: $('#view-about') };
   const cardsEl = $('#cards');
   const stackEl = $('#case-stack');
   const navLinks = document.querySelectorAll('[data-nav]');
@@ -206,7 +206,7 @@
     Object.entries(views).forEach(([key, el]) => { if (el) el.hidden = key !== name; });
     if (name !== 'case' && stackEl) { stackEl.innerHTML = ''; }
     if (name === 'projects') startProjectsCycle(); else stopProjectsCycle();
-    const navKey = name === 'case' ? 'projects' : name;
+    const navKey = name === 'home' ? 'sketches' : name === 'case' ? 'projects' : name;
     navLinks.forEach((a) => {
       if (a.dataset.nav === navKey) {
         if (!a.hasAttribute('aria-current')) { a.setAttribute('aria-current', 'page'); }

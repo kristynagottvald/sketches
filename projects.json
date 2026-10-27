@@ -15,5 +15,53 @@
         "alt": "Dynamic Direct Mail Mockup Engine"
       }
     ]
+  },
+  {
+    "id": "ribbon-text",
+    "title": "Wavy Ribbon Text",
+    "category": "Generative Art",
+    "year": 2026,
+    "thumbnail": "ribbon-text/thumbnail.png",
+    "url": "ribbon-text/",
+    "blurb": "Text that flows along noise-driven ribbons, with live controls and SVG export.",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "ribbon-text/thumbnail.png",
+        "alt": "Wavy Ribbon Text"
+      }
+    ]
+  },
+  {
+    "id": "wisps",
+    "title": "Wisp Network",
+    "category": "Generative Art",
+    "year": 2026,
+    "thumbnail": "wisps/thumbnail.png",
+    "url": "wisps/",
+    "blurb": "Click to grow a web of thin wisps between two points over a blurred sky.",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "wisps/thumbnail.png",
+        "alt": "Wisp Network"
+      }
+    ]
+  },
+  {
+    "id": "marketing-mine",
+    "title": "Marketing Mine",
+    "category": "Interactive Game",
+    "year": 2026,
+    "thumbnail": "marketing-mine/thumbnail.png",
+    "url": "marketing-mine/",
+    "blurb": "A minesweeper where every mine reveals a direct mail marketing tip.",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "marketing-mine/thumbnail.png",
+        "alt": "Marketing Mine"
+      }
+    ]
   }
 ]
