@@ -119,5 +119,22 @@
         "alt": "Integratron"
       }
     ]
+  },
+  {
+    "id": "restaurant-tiles",
+    "title": "Restaurant UI Tiles",
+    "category": "Interactive Tool",
+    "year": 2026,
+    "thumbnail": "restaurant-tiles/thumbnail.png",
+    "url": "restaurant-tiles/",
+    "blurb": "A tile layout of restaurant UI details: tip pools, guest checks, type specimens and palette cards you can click.",
+    "preview": "clips/restaurant-tiles.webp",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "restaurant-tiles/thumbnail.png",
+        "alt": "Restaurant UI Tiles"
+      }
+    ]
   }
 ]
