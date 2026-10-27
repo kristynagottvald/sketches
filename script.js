@@ -75,12 +75,31 @@
       const name = p.listTitle || p.title;
       const right = p.clientName && p.clientName.toLowerCase() !== name.toLowerCase() ? p.clientName : titleCase(p.category);
       cols[c].push(`<a class="pj-tile ${kind}" href="${p.url ? esc(p.url) : '#' + esc(p.slug)}" style="--o:${i}" data-i="${i}" data-urls="${esc(JSON.stringify(nextImages(p)))}" aria-label="${esc(p.title)}">
-        <div class="pj-media"><img class="is-active" src="${esc(p.thumbnail)}" alt="" loading="lazy"></div>
+        <div class="pj-media"><img class="is-active" src="${esc(p.thumbnail)}" data-still="${esc(p.thumbnail)}" data-preview="${esc(p.preview || '')}" alt="" loading="lazy"></div>
         <div class="pj-cap"><span>${esc(name)}</span><span class="grey">${esc(right || '')}</span></div>
       </a>`);
     });
     pjGridEl.innerHTML = cols.map((col) => `<div class="pj-col">${col.join('')}</div>`).join('');
+    bindClipHover(pjGridEl);
     if (currentView === 'projects') startProjectsCycle();
+  }
+
+
+  /* ---------- Hover plays the sketch's stop-motion clip ---------- */
+  function bindClipHover(grid) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // warm the cache so the clip starts the instant you hover
+    grid.querySelectorAll('img[data-preview]').forEach((im) => { if (im.dataset.preview) new Image().src = im.dataset.preview; });
+    const swap = (e, play) => {
+      const tile = e.target.closest('.pj-tile');
+      if (!tile || (e.relatedTarget && tile.contains(e.relatedTarget))) return;
+      const im = tile.querySelector('img[data-preview]');
+      if (!im || !im.dataset.preview) return;
+      // a fresh query string restarts the clip from its first frame
+      im.src = play ? `${im.dataset.preview}?t=${Date.now()}` : im.dataset.still;
+    };
+    grid.addEventListener('mouseover', (e) => swap(e, true));
+    grid.addEventListener('mouseout', (e) => swap(e, false));
   }
 
   /* ---------- Projects Cycle Animation ---------- */

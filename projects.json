@@ -14,7 +14,8 @@
         "src": "direct-mail-engine/thumbnail.png",
         "alt": "Industry Swapper Plug-in"
       }
-    ]
+    ],
+    "preview": "clips/direct-mail-engine.webp"
   },
   {
     "id": "ribbon-text",
@@ -30,7 +31,8 @@
         "src": "ribbon-text/thumbnail.png",
         "alt": "Wavy Ribbon Text"
       }
-    ]
+    ],
+    "preview": "clips/ribbon-text.webp"
   },
   {
     "id": "wisps",
@@ -46,7 +48,8 @@
         "src": "wisps/thumbnail.png",
         "alt": "Wisp Network"
       }
-    ]
+    ],
+    "preview": "clips/wisps.webp"
   },
   {
     "id": "marketing-mine",
@@ -62,7 +65,8 @@
         "src": "marketing-mine/thumbnail.png",
         "alt": "Marketing Minesweeper"
       }
-    ]
+    ],
+    "preview": "clips/marketing-mine.webp"
   },
   {
     "id": "kickoff-type-lab",
@@ -79,7 +83,8 @@
         "src": "kickoff-type-lab/thumbnail.png",
         "alt": "Kick Off Type Lab"
       }
-    ]
+    ],
+    "preview": "clips/kickoff-type-lab.webp"
   },
   {
     "id": "palette-compositions",
@@ -95,6 +100,7 @@
         "src": "palette-compositions/thumbnail.png",
         "alt": "Palette Compositions"
       }
-    ]
+    ],
+    "preview": "clips/palette-compositions.webp"
   }
 ]
