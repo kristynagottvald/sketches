@@ -80,5 +80,21 @@
         "alt": "Kick Off Type Lab"
       }
     ]
+  },
+  {
+    "id": "palette-compositions",
+    "title": "Palette Compositions",
+    "category": "Generative Art",
+    "year": 2026,
+    "thumbnail": "palette-compositions/thumbnail.png",
+    "url": "palette-compositions/",
+    "blurb": "Click to cycle palettes through randomly composed line, grid and stripe layouts.",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "palette-compositions/thumbnail.png",
+        "alt": "Palette Compositions"
+      }
+    ]
   }
 ]
