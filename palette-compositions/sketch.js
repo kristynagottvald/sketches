@@ -52,8 +52,11 @@ let currentPaletteIndex = 0;
 function setup() {
   createCanvas(windowWidth, windowHeight - NAV_H);
   noLoop(); 
-  // New random composition every 2 seconds (click still switches palette)
-  setInterval(redraw, 2000);
+  // New random composition and next palette every 2 seconds (click also advances the palette)
+  setInterval(() => {
+    currentPaletteIndex = (currentPaletteIndex + 1) % palettes.length;
+    redraw();
+  }, 2000);
 }
 
 function draw() {
