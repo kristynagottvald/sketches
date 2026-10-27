@@ -15,7 +15,7 @@
         "alt": "Industry Swapper Plug-in"
       }
     ],
-    "preview": "clips/direct-mail-engine.webp"
+    "preview": "clips/direct-mail-engine.webp?v=2"
   },
   {
     "id": "ribbon-text",
@@ -32,7 +32,7 @@
         "alt": "Postmark Awards"
       }
     ],
-    "preview": "clips/ribbon-text.webp"
+    "preview": "clips/ribbon-text.webp?v=2"
   },
   {
     "id": "wisps",
@@ -49,7 +49,7 @@
         "alt": "Wisp Network"
       }
     ],
-    "preview": "clips/wisps.webp"
+    "preview": "clips/wisps.webp?v=2"
   },
   {
     "id": "marketing-mine",
@@ -66,7 +66,7 @@
         "alt": "Marketing Minesweeper"
       }
     ],
-    "preview": "clips/marketing-mine.webp"
+    "preview": "clips/marketing-mine.webp?v=2"
   },
   {
     "id": "kickoff-type-lab",
@@ -84,7 +84,7 @@
         "alt": "Kick Off Type Lab"
       }
     ],
-    "preview": "clips/kickoff-type-lab.webp"
+    "preview": "clips/kickoff-type-lab.webp?v=2"
   },
   {
     "id": "palette-compositions",
@@ -101,7 +101,7 @@
         "alt": "Palette Compositions"
       }
     ],
-    "preview": "clips/palette-compositions.webp"
+    "preview": "clips/palette-compositions.webp?v=2"
   },
   {
     "id": "integratron",
@@ -111,7 +111,7 @@
     "thumbnail": "integratron/thumbnail.png",
     "url": "integratron/",
     "blurb": "A 3D desert dome cycling from day to night, with sound bath bowls on click and scroll.",
-    "preview": "clips/integratron.webp",
+    "preview": "clips/integratron.webp?v=2",
     "caseStudyContent": [
       {
         "type": "image",
@@ -128,7 +128,7 @@
     "thumbnail": "restaurant-tiles/thumbnail.png",
     "url": "restaurant-tiles/",
     "blurb": "A tile layout of restaurant UI details: tip pools, guest checks, type specimens and palette cards you can click.",
-    "preview": "clips/restaurant-tiles.webp",
+    "preview": "clips/restaurant-tiles.webp?v=2",
     "caseStudyContent": [
       {
         "type": "image",
@@ -145,7 +145,7 @@
     "thumbnail": "binary-grid/thumbnail.png",
     "url": "binary-grid/",
     "blurb": "Move the mouse and a diagonal wave flips a grid of 0s and 1s into colour.",
-    "preview": "clips/binary-grid.webp",
+    "preview": "clips/binary-grid.webp?v=2",
     "caseStudyContent": [
       {
         "type": "image",
@@ -162,7 +162,7 @@
     "thumbnail": "sound-bars/thumbnail.png",
     "url": "sound-bars/",
     "blurb": "Brush across drifting bars to play notes; each bar fades into a rising echo.",
-    "preview": "clips/sound-bars.webp",
+    "preview": "clips/sound-bars.webp?v=2",
     "caseStudyContent": [
       {
         "type": "image",

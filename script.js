@@ -86,13 +86,12 @@
 
 
   /* ---------- Stop-motion clips: a checkerboard of tiles plays, then the other half takes over ---------- */
-  const CLIP_MS = 5000;
+  const CLIP_MS = 6000;   // one full loop of every clip per turn
   let clipTimer = null;
   function bindClipHover(grid) {
     clearInterval(clipTimer);
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const imgs = [...grid.querySelectorAll('.pj-tile')].sort((a, b) => a.dataset.i - b.dataset.i).map((tile) => tile.querySelector('img[data-preview]'));
-    imgs.forEach((im) => { if (im && im.dataset.preview) new Image().src = im.dataset.preview; });   // warm the cache
     let phase = 0;
     const set = (im, play) => {
       if (!im || !im.dataset.preview) return;
@@ -112,6 +111,8 @@
         imgs[i].dataset.on = on ? '1' : '0';
       });
       phase = 1 - phase;
+      // fetch the other half's clips now so they are cached when they take over
+      imgs.forEach((im, i) => { if (im && im.dataset.preview && (((i % 2) + Math.floor(i / 2)) % 2) === phase) new Image().src = im.dataset.preview; });
     };
     tick();
     clipTimer = setInterval(tick, CLIP_MS);
