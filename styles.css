@@ -212,7 +212,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 /* ---------- About ---------- */
 .about { padding: 150px var(--pad) 120px calc(var(--pad) + var(--indent)); min-height: 90vh; }
 .about-inner { display: grid; gap: 56px; }
-.about h1 { font-size: clamp(44px, 9vw, 140px); line-height: .96; letter-spacing: -0.04em; max-width: 12ch; }
+.about h1 { font-size: clamp(28px, 4.5vw, 64px); line-height: 1.05; letter-spacing: -0.03em; max-width: 20ch; }
 .about-sub { font-size: clamp(28px, 4vw, 56px); max-width: 16ch; padding-top: 24px; border-top: 1px solid var(--line); }
 .about-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 40px; }
 .about-cols p { grid-column: 2; font-size: 19px; line-height: 27px; color: var(--grey); max-width: 52ch; }
