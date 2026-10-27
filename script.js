@@ -257,6 +257,36 @@
     });
   }
 
+
+  /* ---------- Heading letter bounce ---------- */
+  // Every 5-8 seconds the home heading's letters hop up one after another.
+  (function bounceHeading() {
+    const h = $('#view-sketches h1');
+    if (!h || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    h.setAttribute('aria-label', h.textContent);
+    const letters = [];
+    [...h.childNodes].forEach((n) => {
+      if (n.nodeType !== 3) return;
+      const frag = document.createDocumentFragment();
+      [...n.textContent].forEach((ch) => {
+        if (ch === ' ') { frag.appendChild(document.createTextNode(' ')); return; }
+        const sp = document.createElement('span');
+        sp.className = 'bl'; sp.setAttribute('aria-hidden', 'true'); sp.textContent = ch;
+        letters.push(sp); frag.appendChild(sp);
+      });
+      n.replaceWith(frag);
+    });
+    const play = () => {
+      letters.forEach((sp, i) => {
+        sp.style.animationDelay = `${i * 70}ms`;
+        sp.classList.remove('hop'); void sp.offsetWidth; sp.classList.add('hop');
+      });
+      setTimeout(next, letters.length * 70 + 700);
+    };
+    const next = () => setTimeout(play, 5000 + Math.random() * 3000);
+    next();
+  })();
+
   window.addEventListener('hashchange', route);
   load();
 })();

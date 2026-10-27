@@ -359,3 +359,8 @@ a.next:hover .hint-arrow { transform: translate(2px, -2px); }
 .work .pj-tile.is-p .pj-media, .work .pj-tile.is-l .pj-media { aspect-ratio: 16 / 9; }
 .work .pj-grid, .work .pj-col { gap: 16px; }
 .work .pj-media { border-radius: 12px; }
+
+/* Home heading letter bounce */
+.bl { display: inline-block; }
+.bl.hop { animation: bl-hop .6s var(--ease) both; }
+@keyframes bl-hop { 0% { transform: translateY(0); } 35% { transform: translateY(-.16em); } 100% { transform: translateY(0); } }
