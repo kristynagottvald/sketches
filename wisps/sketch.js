@@ -42,7 +42,7 @@ function draw() {
 
   // Draw the asymmetrical network progressively
   noFill();
-  strokeWeight(0.8); 
+  strokeWeight(1.6); 
   
   for (let i = 0; i < wisps.length; i++) {
     let w = wisps[i];
