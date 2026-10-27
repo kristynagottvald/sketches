@@ -131,7 +131,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .card a:hover .card-arrow { color: var(--ink); }
 
 @media (min-width: 900px) {
-  .work { grid-template-columns: 6fr 10fr; gap: 0 8px; }
+  .work { grid-template-columns: 1fr 3fr; gap: 0 8px; }
   .work-side { padding: 0 0 0 var(--indent); }
   /* The column is a full screen tall and pins at the top. The list starts lower by exactly the amount that
      makes the first card centred at the moment it pins, so the description and thumbnail sit at the bottom
@@ -354,6 +354,11 @@ a.next:hover .hint-arrow { transform: translate(2px, -2px); }
   .pj-col { display: contents; }
   .pj-tile { order: var(--o); margin-bottom: 18px; }
 }
+
+/* Home grid: every sketch is a 16:9 tile in two columns, name revealed underneath on hover */
+.work .pj-tile.is-p .pj-media, .work .pj-tile.is-l .pj-media { aspect-ratio: 16 / 9; }
+.work .pj-grid, .work .pj-col { gap: 16px; }
+.work .pj-media { border-radius: 12px; }
 
 /* Home grid: every sketch is a 16:9 tile in two columns, name revealed underneath on hover */
 .work .pj-tile.is-p .pj-media, .work .pj-tile.is-l .pj-media { aspect-ratio: 16 / 9; }
