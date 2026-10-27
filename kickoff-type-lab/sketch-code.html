@@ -1,0 +1,399 @@
+<title>Kick Off Sketch Code</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+:root{--bg:#1b1f1d;--panel:#262b28;--fg:#f0ede4;--mute:#a4aaa5;--accent:#f08a63;--line:#3a413d;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 system-ui,sans-serif;padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:900px;margin:0 auto}
+h1{font-size:20px;margin:0 0 6px} p,li{color:var(--mute);max-width:65ch} ol{padding-left:20px} b,code{color:var(--fg)}
+.bar{display:flex;gap:10px;align-items:center;margin:14px 0 8px;flex-wrap:wrap}
+button{font:inherit;background:var(--accent);color:#1b1f1d;border:0;border-radius:6px;padding:8px 14px;cursor:pointer;font-weight:600}
+pre{margin:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;overflow:auto;max-height:70vh;font:12px/1.45 ui-monospace,Menlo,monospace;color:var(--fg);tab-size:2}
+#s{color:var(--mute)}
+</style>
+<main>
+<h1>Kick Off Type Lab: OpenProcessing sketch</h1>
+<p>One self-contained p5.js file. It builds its own panel, so you don't need any HTML or CSS files.</p>
+<ol>
+<li>Create a new p5.js sketch and replace sketch.js with the code below.</li>
+<li>Upload these font files to the sketch, keeping the names: <b>Bronco.ttf, CarnevaleeFreakshow.ttf, Cowboys2.otf, FonzieMedium.otf, GomaWestern.ttf, GomaWestern2.ttf, Hatten.ttf, HumaneBlack.otf, KongGroovy.ttf, MasaGroovy.ttf, Monigue.otf, Muifamoso.ttf, RetroGroovy.ttf, SuperGroovy.ttf, YapariUltra.ttf</b>.</li>
+<li>Run it. Without the font files it still works with Chango, and "Load font file…" adds any font by hand.</li>
+</ol>
+<div class="bar"><button id="c">Copy code</button><span id="s"></span><span id="n" style="color:var(--mute)">369 lines</span></div>
+<pre id="code">/* Kick Off Type Lab for OpenProcessing. One file: it builds its own UI, so no HTML or CSS files are needed.
+   Setup: 1) paste this as sketch.js  2) upload the fonts listed in FONT_FILES  3) hit run. */
+(function injectUI(){
+  const link = document.createElement(&#x27;link&#x27;); link.rel=&#x27;stylesheet&#x27;;
+  link.href=&#x27;https://fonts.googleapis.com/css2?family=Chango&amp;family=Inter:wght@400;500;600&amp;display=swap&#x27;;
+  document.head.appendChild(link);
+  const lib = document.createElement(&#x27;script&#x27;);                 // opentype.js, used by the SVG exporter
+  lib.src=&#x27;https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js&#x27;; document.head.appendChild(lib);
+  const st = document.createElement(&#x27;style&#x27;); st.textContent = &quot;\n/* Layout: live text stage on the left, a Figma-style type panel on the right (dark by design; stacks on phones). */\n:root{\n  --bg:#1e1e1e; --panel:#2c2c2c; --field:#383838; --line:#444; --fg:#f2f2f2; --mute:#a6a6a6;\n  --accent:#0d99ff; --font-ui:&#x27;Inter&#x27;,system-ui,sans-serif; color-scheme:dark;\n}\nhtml,body{height:100%}\nbody{margin:0;background:var(--bg);color:var(--fg);font:12px/1.4 var(--font-ui);padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}\n#app{position:fixed;inset:0;display:flex;z-index:10;background:var(--bg)}\n#stage{flex:1;min-width:0;position:relative;overflow:hidden}\n#stage canvas{display:block}\n#hint{position:absolute;left:16px;bottom:12px;color:#14352aaa;font-size:12px;pointer-events:none}\n#panel{width:300px;flex:none;background:var(--panel);overflow-y:auto;padding:14px 14px 24px}\nh1{font:400 16px &#x27;Chango&#x27;,sans-serif;margin:0 0 12px}\n.lbl{display:block;color:var(--mute);margin:12px 0 6px}\n.box,select,input[type=text],textarea{box-sizing:border-box;background:var(--field);color:var(--fg);border:1px solid transparent;border-radius:6px;font:inherit;font-size:13px}\nselect,input[type=text]{width:100%;height:32px;padding:0 10px}\nselect{appearance:none;-webkit-appearance:none;padding-right:28px;background-image:url(\&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; width=&#x27;10&#x27; height=&#x27;6&#x27; fill=&#x27;none&#x27; stroke=&#x27;%23f2f2f2&#x27; stroke-width=&#x27;1.5&#x27;%3E%3Cpath d=&#x27;M1 1l4 4 4-4&#x27;/%3E%3C/svg%3E\&quot;);background-repeat:no-repeat;background-position:right 10px center}\n.two{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}\n.field{display:flex;align-items:center;gap:6px;height:32px;padding:0 8px;background:var(--field);border-radius:6px;border:1px solid transparent}\n.field:focus-within,select:focus,textarea:focus{border-color:var(--accent);outline:0}\n.field input{flex:1;min-width:0;background:none;border:0;color:var(--fg);font:inherit;font-size:13px;padding:0;outline:0}\n.ico{width:18px;height:18px;flex:none;color:var(--mute);cursor:ew-resize;touch-action:none;display:grid;place-items:center}\n.ico svg{width:18px;height:18px}\ntextarea{width:100%;min-height:66px;padding:8px 10px;font-size:15px;resize:vertical;line-height:1.3}\n.rule{border:0;border-top:1px solid var(--line);margin:16px 0 0}\n.colors{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}\n.colors label{color:var(--mute);font-size:11px}\ninput[type=color]{width:100%;height:30px;border:0;border-radius:6px;background:var(--field);padding:2px;margin-top:4px}\ninput[type=range]{width:100%;accent-color:var(--accent);margin:0}\n.srow{display:grid;grid-template-columns:70px 1fr 34px;gap:8px;align-items:center;margin-top:8px;color:var(--mute)}\n.srow output{text-align:right;font-variant-numeric:tabular-nums;color:var(--fg)}\nbutton{font:inherit;background:var(--field);color:var(--fg);border:0;border-radius:6px;padding:7px 10px;cursor:pointer}\nbutton:hover{background:#474747}\nbutton.primary{background:var(--accent);color:#fff}\n.btns{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}\n#fstatus{color:var(--mute);font-size:11px;margin-top:6px;min-height:14px}\n#tip{color:var(--mute);font-size:11px;margin-top:8px;line-height:1.5}\nbutton:focus-visible{outline:2px solid var(--accent);outline-offset:1px}\n@media (max-width:760px){#app{flex-direction:column}#stage{flex:none;height:46vh}#panel{width:auto;flex:1}}\n&quot;;
+  document.head.appendChild(st);
+  const wrap = document.createElement(&#x27;div&#x27;); wrap.innerHTML = &quot;&lt;div id=\&quot;app\&quot;&gt;\n  &lt;div id=\&quot;stage\&quot;&gt;&lt;div id=\&quot;hint\&quot;&gt;Type on the right. Click between letters to place the cursor.&lt;/div&gt;&lt;/div&gt;\n  &lt;aside id=\&quot;panel\&quot;&gt;\n    &lt;h1&gt;Kick Off Type Lab&lt;/h1&gt;\n\n    &lt;textarea id=\&quot;txt\&quot; spellcheck=\&quot;false\&quot; aria-label=\&quot;Text\&quot;&gt;COMPANY\nKICK OFF&lt;/textarea&gt;\n\n    &lt;span class=\&quot;lbl\&quot;&gt;Font&lt;/span&gt;\n    &lt;select id=\&quot;font\&quot; aria-label=\&quot;Font family\&quot;&gt;&lt;/select&gt;\n    &lt;div class=\&quot;two\&quot;&gt;\n      &lt;select id=\&quot;weight\&quot; aria-label=\&quot;Weight\&quot;&gt;\n        &lt;option value=\&quot;n\&quot;&gt;Regular&lt;/option&gt;&lt;option value=\&quot;b\&quot;&gt;Bold&lt;/option&gt;&lt;option value=\&quot;i\&quot;&gt;Italic&lt;/option&gt;&lt;option value=\&quot;bi\&quot;&gt;Bold Italic&lt;/option&gt;\n      &lt;/select&gt;\n      &lt;label class=\&quot;field\&quot; style=\&quot;margin:0\&quot;&gt;&lt;input id=\&quot;size\&quot; type=\&quot;text\&quot; value=\&quot;170\&quot; list=\&quot;sizes\&quot; aria-label=\&quot;Font size\&quot; inputmode=\&quot;decimal\&quot;&gt;&lt;/label&gt;\n      &lt;datalist id=\&quot;sizes\&quot;&gt;&lt;option&gt;60&lt;/option&gt;&lt;option&gt;90&lt;/option&gt;&lt;option&gt;120&lt;/option&gt;&lt;option&gt;170&lt;/option&gt;&lt;option&gt;220&lt;/option&gt;&lt;option&gt;300&lt;/option&gt;&lt;/datalist&gt;\n    &lt;/div&gt;\n    &lt;div id=\&quot;fstatus\&quot;&gt;&lt;/div&gt;\n\n    &lt;div class=\&quot;two\&quot; style=\&quot;margin-top:4px\&quot;&gt;\n      &lt;div&gt;&lt;span class=\&quot;lbl\&quot; style=\&quot;margin-top:8px\&quot;&gt;Line height&lt;/span&gt;\n        &lt;label class=\&quot;field\&quot;&gt;&lt;span class=\&quot;ico\&quot; id=\&quot;icoLH\&quot; title=\&quot;Drag to scrub\&quot;&gt;&lt;svg viewBox=\&quot;0 0 18 18\&quot; fill=\&quot;none\&quot; stroke=\&quot;currentColor\&quot; stroke-width=\&quot;1.3\&quot;&gt;&lt;path d=\&quot;M3 2.5h12M3 15.5h12M6.5 12.5L9 5.5l2.5 7M7.3 10.5h3.4\&quot;/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;input id=\&quot;lead\&quot; type=\&quot;text\&quot; value=\&quot;86%\&quot; aria-label=\&quot;Line height\&quot;&gt;&lt;/label&gt;&lt;/div&gt;\n      &lt;div&gt;&lt;span class=\&quot;lbl\&quot; style=\&quot;margin-top:8px\&quot;&gt;Letter spacing&lt;/span&gt;\n        &lt;label class=\&quot;field\&quot;&gt;&lt;span class=\&quot;ico\&quot; id=\&quot;icoLS\&quot; title=\&quot;Drag to scrub\&quot;&gt;&lt;svg viewBox=\&quot;0 0 18 18\&quot; fill=\&quot;none\&quot; stroke=\&quot;currentColor\&quot; stroke-width=\&quot;1.3\&quot;&gt;&lt;path d=\&quot;M2.5 3v12M15.5 3v12M6.5 13L9 5.5l2.5 7.5M7.3 10.8h3.4\&quot;/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;input id=\&quot;ls\&quot; type=\&quot;text\&quot; value=\&quot;0%\&quot; aria-label=\&quot;Letter spacing\&quot;&gt;&lt;/label&gt;&lt;/div&gt;\n    &lt;/div&gt;\n    &lt;span class=\&quot;lbl\&quot; style=\&quot;margin-top:8px\&quot;&gt;Default spacing (all letters)&lt;/span&gt;\n    &lt;label class=\&quot;field\&quot;&gt;&lt;span class=\&quot;ico\&quot; id=\&quot;icoTR\&quot; title=\&quot;Drag to scrub\&quot;&gt;&lt;svg viewBox=\&quot;0 0 18 18\&quot; fill=\&quot;none\&quot; stroke=\&quot;currentColor\&quot; stroke-width=\&quot;1.3\&quot;&gt;&lt;path d=\&quot;M2.5 3v12M15.5 3v12M6.5 13L9 5.5l2.5 7.5M7.3 10.8h3.4\&quot;/&gt;&lt;/svg&gt;&lt;/span&gt;&lt;input id=\&quot;track\&quot; type=\&quot;text\&quot; value=\&quot;0%\&quot; aria-label=\&quot;Default letter spacing\&quot;&gt;&lt;/label&gt;\n    &lt;div id=\&quot;tip\&quot;&gt;Default spacing moves every letter and keeps any individual spacing you set. Letter spacing follows your text cursor: a cursor sets the gap after the letter before it, a selection sets every selected letter. Double-click the text to select all. Alt + \u2190 \u2192 nudges 1% (Shift for 5%).&lt;/div&gt;\n\n    &lt;hr class=\&quot;rule\&quot;&gt;\n    &lt;span class=\&quot;lbl\&quot;&gt;Style&lt;/span&gt;\n    &lt;div class=\&quot;srow\&quot;&gt;&lt;span&gt;Gooey&lt;/span&gt;&lt;input id=\&quot;goo\&quot; type=\&quot;range\&quot; min=\&quot;0\&quot; max=\&quot;100\&quot; value=\&quot;35\&quot;&gt;&lt;output&gt;&lt;/output&gt;&lt;/div&gt;\n    &lt;div class=\&quot;srow\&quot;&gt;&lt;span&gt;Warp&lt;/span&gt;&lt;input id=\&quot;warp\&quot; type=\&quot;range\&quot; min=\&quot;0\&quot; max=\&quot;100\&quot; value=\&quot;12\&quot;&gt;&lt;output&gt;&lt;/output&gt;&lt;/div&gt;\n    &lt;div class=\&quot;srow\&quot;&gt;&lt;span&gt;Wavelength&lt;/span&gt;&lt;input id=\&quot;wl\&quot; type=\&quot;range\&quot; min=\&quot;20\&quot; max=\&quot;200\&quot; value=\&quot;60\&quot;&gt;&lt;output&gt;&lt;/output&gt;&lt;/div&gt;\n    &lt;div class=\&quot;srow\&quot;&gt;&lt;span&gt;Stretch X&lt;/span&gt;&lt;input id=\&quot;xs\&quot; type=\&quot;range\&quot; min=\&quot;50\&quot; max=\&quot;250\&quot; value=\&quot;100\&quot;&gt;&lt;output&gt;&lt;/output&gt;&lt;/div&gt;\n    &lt;div class=\&quot;srow\&quot;&gt;&lt;span&gt;Stretch Y&lt;/span&gt;&lt;input id=\&quot;ys\&quot; type=\&quot;range\&quot; min=\&quot;50\&quot; max=\&quot;300\&quot; value=\&quot;100\&quot;&gt;&lt;output&gt;&lt;/output&gt;&lt;/div&gt;\n    &lt;label class=\&quot;srow\&quot; style=\&quot;grid-template-columns:auto 1fr\&quot;&gt;&lt;input id=\&quot;anim\&quot; type=\&quot;checkbox\&quot;&gt;&lt;span&gt;Animate warp&lt;/span&gt;&lt;/label&gt;\n    &lt;div class=\&quot;srow\&quot;&gt;&lt;span&gt;Shadow X&lt;/span&gt;&lt;input id=\&quot;sx\&quot; type=\&quot;range\&quot; min=\&quot;-30\&quot; max=\&quot;30\&quot; value=\&quot;7\&quot;&gt;&lt;output&gt;&lt;/output&gt;&lt;/div&gt;\n    &lt;div class=\&quot;srow\&quot;&gt;&lt;span&gt;Shadow Y&lt;/span&gt;&lt;input id=\&quot;sy\&quot; type=\&quot;range\&quot; min=\&quot;-30\&quot; max=\&quot;30\&quot; value=\&quot;7\&quot;&gt;&lt;output&gt;&lt;/output&gt;&lt;/div&gt;\n    &lt;div class=\&quot;colors\&quot; style=\&quot;margin-top:12px\&quot;&gt;\n      &lt;label&gt;Text&lt;input id=\&quot;cfg\&quot; type=\&quot;color\&quot; value=\&quot;#17372b\&quot;&gt;&lt;/label&gt;\n      &lt;label&gt;Shadow&lt;input id=\&quot;csh\&quot; type=\&quot;color\&quot; value=\&quot;#f4977f\&quot;&gt;&lt;/label&gt;\n      &lt;label&gt;Background&lt;input id=\&quot;cbg\&quot; type=\&quot;color\&quot; value=\&quot;#f2e6d0\&quot;&gt;&lt;/label&gt;\n    &lt;/div&gt;\n    &lt;hr class=\&quot;rule\&quot;&gt;\n    &lt;span class=\&quot;lbl\&quot;&gt;Export&lt;/span&gt;\n    &lt;label class=\&quot;srow\&quot; style=\&quot;grid-template-columns:auto 1fr;margin:0 0 8px\&quot;&gt;&lt;input id=\&quot;svgbg\&quot; type=\&quot;checkbox\&quot; checked&gt;&lt;span&gt;Include background&lt;/span&gt;&lt;/label&gt;\n    &lt;div class=\&quot;btns\&quot; style=\&quot;margin-top:0\&quot;&gt;&lt;button id=\&quot;svgcopy\&quot; class=\&quot;primary\&quot;&gt;Copy SVG&lt;/button&gt;&lt;button id=\&quot;svgdl\&quot; hidden&gt;Download .svg&lt;/button&gt;&lt;button id=\&quot;svgshow\&quot;&gt;Show code&lt;/button&gt;&lt;/div&gt;\n    &lt;div id=\&quot;svgnote\&quot; class=\&quot;lbl\&quot; style=\&quot;margin-top:8px\&quot;&gt;&lt;/div&gt;\n    &lt;textarea id=\&quot;svgout\&quot; readonly hidden spellcheck=\&quot;false\&quot; style=\&quot;margin-top:6px;min-height:140px;font:11px/1.3 ui-monospace,Menlo,monospace\&quot; aria-label=\&quot;SVG code\&quot;&gt;&lt;/textarea&gt;\n    &lt;div class=\&quot;btns\&quot;&gt;&lt;button id=\&quot;upload\&quot;&gt;Load font file\u2026&lt;/button&gt;&lt;button id=\&quot;resetk\&quot;&gt;Reset spacing&lt;/button&gt;&lt;button id=\&quot;copy\&quot; class=\&quot;primary\&quot;&gt;Copy settings&lt;/button&gt;&lt;input id=\&quot;file\&quot; type=\&quot;file\&quot; accept=\&quot;.otf,.ttf,.woff,.woff2\&quot; hidden&gt;&lt;/div&gt;\n  &lt;/aside&gt;\n&lt;/div&gt;&quot;;
+  document.body.appendChild(wrap.firstElementChild);
+})();
+
+/* ===== sketch.js : paste this block into OpenProcessing (UI is plain DOM above) ===== */
+
+// Fonts picked from the Font Book. Each is tried by installed name; falls back to Chango.
+// Upload these files to your OpenProcessing sketch (Files panel) with exactly these names
+const FONT_FILES = {
+ &quot;Bronco&quot;: &quot;Bronco.ttf&quot;,
+ &quot;CarnevaleeFreakshow&quot;: &quot;CarnevaleeFreakshow.ttf&quot;,
+ &quot;Cowboys2&quot;: &quot;Cowboys2.otf&quot;,
+ &quot;FonzieMedium&quot;: &quot;FonzieMedium.otf&quot;,
+ &quot;GomaWestern&quot;: &quot;GomaWestern.ttf&quot;,
+ &quot;GomaWestern2&quot;: &quot;GomaWestern2.ttf&quot;,
+ &quot;Hatten&quot;: &quot;Hatten.ttf&quot;,
+ &quot;HumaneBlack&quot;: &quot;HumaneBlack.otf&quot;,
+ &quot;KongGroovy&quot;: &quot;KongGroovy.ttf&quot;,
+ &quot;MasaGroovy&quot;: &quot;MasaGroovy.ttf&quot;,
+ &quot;Monigue&quot;: &quot;Monigue.otf&quot;,
+ &quot;Muifamoso&quot;: &quot;Muifamoso.ttf&quot;,
+ &quot;RetroGroovy&quot;: &quot;RetroGroovy.ttf&quot;,
+ &quot;SuperGroovy&quot;: &quot;SuperGroovy.ttf&quot;,
+ &quot;YapariUltra&quot;: &quot;YapariUltra.ttf&quot;
+};
+const FONTS = [
+  [&#x27;Cowboys 2.0&#x27;,            &#x27;Cowboys2&#x27;],
+  [&#x27;Goma Western&#x27;,           &#x27;GomaWestern&#x27;],
+  [&#x27;Carnevalee Freakshow&#x27;,   &#x27;CarnevaleeFreakshow&#x27;],
+  [&#x27;Fonzie Medium&#x27;,          &#x27;FonzieMedium&#x27;],
+  [&#x27;Hatten&#x27;,                 &#x27;Hatten&#x27;],
+  [&#x27;Bronco&#x27;,                 &#x27;Bronco&#x27;],
+  [&#x27;Humane Black&#x27;,           &#x27;HumaneBlack&#x27;],
+  [&#x27;Yapari Ultra (new)&#x27;,     &#x27;YapariUltra&#x27;],
+  [&#x27;Monigue (new)&#x27;,          &#x27;Monigue&#x27;],
+  [&#x27;Muifamoso (new)&#x27;,        &#x27;Muifamoso&#x27;],
+  [&#x27;Retro Groovy (dafont)&#x27;,  &#x27;RetroGroovy&#x27;],
+  [&#x27;Masa Groovy (dafont)&#x27;,   &#x27;MasaGroovy&#x27;],
+  [&#x27;Kong Groovy (dafont)&#x27;,   &#x27;KongGroovy&#x27;],
+  [&#x27;Super Groovy (dafont)&#x27;,  &#x27;SuperGroovy&#x27;],
+  [&#x27;Goma Western 2 (dafont)&#x27;,&#x27;GomaWestern2&#x27;],
+  [&#x27;Chango (web font)&#x27;,      null],
+];
+const FALLBACK = &#x27;Chango, &quot;Arial Black&quot;, Impact, sans-serif&#x27;;
+const ctx = () =&gt; drawingContext;
+// Set the canvas font directly so size always applies, loaded font or not.
+const fontStr = px =&gt; `${{n:&#x27;&#x27;,b:&#x27;bold &#x27;,i:&#x27;italic &#x27;,bi:&#x27;italic bold &#x27;}[S.weight]}${px}px ${families[S.font]}`;
+function setFont(px){ ctx().font = fontStr(px); }
+
+// Offscreen layers: glyphs -&gt; goo (blur + threshold) -&gt; composite -&gt; warp -&gt; cache
+const mk = () =&gt; document.createElement(&#x27;canvas&#x27;);
+const L1 = mk(), L2 = mk(), COMP = mk(), CACHE = mk(), MID = mk();
+let sigA = &#x27;&#x27;, sigB = &#x27;&#x27;, phase = 0;
+function sized(c){ if (c.width!==width||c.height!==height){ c.width=width; c.height=height; } return c.getContext(&#x27;2d&#x27;); }
+// Gooey = round the shapes. A hidden blur is thresholded back to a hard edge, so only the outline
+// changes (corners round, tight gaps fill) and nothing stays soft. Pixels are repainted in the solid color.
+function goo(src, k, col){
+  const B = sized(L2); B.clearRect(0,0,width,height);
+  B.filter = `blur(${S.goo/100*0.045*S.size*k}px)`; B.drawImage(src,0,0); B.filter = &#x27;none&#x27;;
+  const im = B.getImageData(0,0,width,height), d = im.data;
+  const r = parseInt(col.slice(1,3),16), g = parseInt(col.slice(3,5),16), b = parseInt(col.slice(5,7),16);
+  for (let i=0;i&lt;d.length;i+=4){
+    const a = d[i+3];
+    d[i+3] = a&lt;120 ? 0 : a&gt;136 ? 255 : (a-120)*16;       // near-binary edge, about 1px of anti-aliasing
+    d[i]=r; d[i+1]=g; d[i+2]=b;
+  }
+  B.putImageData(im,0,0); return L2;
+}
+function renderComp(k){
+  const g = sized(COMP); g.clearRect(0,0,width,height);
+  [[S.sh,S.sx*k,S.sy*k],[S.fg,0,0]].forEach(([col,ox,oy])=&gt;{
+    const L = sized(L1); L.clearRect(0,0,width,height);
+    L.font = fontStr(S.size*k); L.textAlign=&#x27;left&#x27;; L.textBaseline=&#x27;alphabetic&#x27;; L.fillStyle = col;
+    cells.forEach(c=&gt;{ if (c.ch===&#x27;\n&#x27;) return; L.save(); L.translate(c.px+ox, c.py+oy); L.scale(S.xs,S.ys); L.fillText(c.ch,0,0); L.restore(); });
+    g.drawImage(S.goo&gt;0 ? goo(L1,k,col) : L1, 0, 0);
+  });
+}
+function renderWarp(k){
+  const out = sized(CACHE); out.clearRect(0,0,width,height);
+  if (!S.warp){ out.drawImage(COMP,0,0); return; }
+  const A = S.warp/100*0.14*S.size*k, lam = Math.max(40, S.size*k*S.wl/40), T = 6.2832;
+  const mid = sized(MID); mid.clearRect(0,0,width,height);
+  for (let x=0;x&lt;width;x+=2) mid.drawImage(COMP,x,0,2,height, x,A*Math.sin(x/lam*T+phase),2,height);
+  for (let y=0;y&lt;height;y+=2) out.drawImage(MID,0,y,width,2, A*.6*Math.sin(y/(lam*.8)*T+phase*1.3),y,width,2);
+}
+function paintText(k){
+  const a = JSON.stringify([S,txt().value,width,height,FONTS.map(f=&gt;f.ok),families.length]);
+  if (a!==sigA){ sigA=a; sigB=&#x27;&#x27;; renderComp(k); }
+  const b = a+phase; if (b!==sigB){ sigB=b; renderWarp(k); }
+  ctx().drawImage(CACHE,0,0);
+}
+// kern[i] = spacing after character i of the full text, in 1/1000 em (10 = 1%)
+const S = { font:0, size:170, lead:.86, weight:&#x27;n&#x27;, track:0, goo:35, warp:12, wl:60, xs:1, ys:1, anim:false, sx:7, sy:7, fg:&#x27;#17372b&#x27;, sh:&#x27;#f4977f&#x27;, bg:&#x27;#f2e6d0&#x27;, kern:[] };
+const families = [];
+let cells = [], lay = {k:1, lh:0, y0:0}, prevText = &#x27;&#x27;, blink = true;
+const dom = id =&gt; document.getElementById(id);
+const txt = () =&gt; dom(&#x27;txt&#x27;);
+
+function setup(){
+  const st = dom(&#x27;stage&#x27;);
+  pixelDensity(1);
+  createCanvas(st.clientWidth, st.clientHeight).parent(st);
+  noLoop();
+  FONTS.forEach((f,i)=&gt;{
+    const o = document.createElement(&#x27;option&#x27;); o.value=i; o.textContent=f[0]; dom(&#x27;font&#x27;).appendChild(o);
+    families[i] = `&quot;kf${i}&quot;, ${FALLBACK}`;
+    if (f[1] &amp;&amp; FONT_FILES[f[1]]) loadFile(i, FONT_FILES[f[1]]);
+  });
+  document.fonts.load(&#x27;40px Chango&#x27;).then(()=&gt;redraw());
+  prevText = txt().value; S.kern = new Array(prevText.length).fill(0);
+  bindUI(); bindExport(); setStatus(); syncLS(); redraw();
+  setInterval(()=&gt;{ if (document.activeElement===txt()){ blink=!blink; redraw(); } }, 530);
+}
+function loadFile(i, url){            // fetch the uploaded file: used for the canvas font and for SVG outlines
+  fetch(url).then(r=&gt;{ if(!r.ok) throw 0; return r.arrayBuffer(); }).then(async buf=&gt;{
+    const ff = new FontFace(&#x27;kf&#x27;+i, buf.slice(0)); await ff.load(); document.fonts.add(ff);
+    FONTS[i].buf = buf; FONTS[i].ok = true; setStatus(); redraw();
+  }).catch(()=&gt;{ FONTS[i].ok = false; setStatus(); });
+}
+function setStatus(){
+  const f = FONTS[S.font]; if (!f) return;
+  dom(&#x27;fstatus&#x27;).textContent = f[1]==null ? &#x27;Web font, always available.&#x27;
+    : f.ok===true ? &#x27;Font loaded.&#x27;
+    : f.ok===false ? &#x27;Font file not found. Upload it to the sketch, or use Load font file.&#x27;
+    : &#x27;Loading font…&#x27;;
+}
+function windowResized(){ const st=dom(&#x27;stage&#x27;); resizeCanvas(st.clientWidth, st.clientHeight); redraw(); }
+function styleConst(){ return {n:NORMAL,b:BOLD,i:ITALIC,bi:BOLDITALIC}[S.weight]; }
+
+// Lay out every character of the full text (newlines included so indices line up with the textarea).
+function layout(){
+  const t = txt().value;
+  setFont(S.size);
+  cells = []; const lw = []; let l = 0, x = 0;
+  for (let i=0;i&lt;t.length;i++){
+    const ch = t[i];
+    if (ch===&#x27;\n&#x27;){ cells.push({ch,l,i,x,adv:0,nat:0}); lw[l]=x; l++; x=0; continue; }
+    const nat = ctx().measureText(ch).width * S.xs, adv = nat + (S.track + (S.kern[i]||0))*S.size/1000;
+    cells.push({ch,l,i,x,adv,nat}); x += adv;
+  }
+  lw[l] = x;
+  cells.forEach(c=&gt;c.lw = lw[c.l]);
+  return {lines:l+1, widths:lw};
+}
+function draw(){
+  background(S.bg);
+  const {lines, widths} = layout();
+  const lh = S.size*S.lead, blockH = lh*(lines-1) + S.size*.7;
+  const k = Math.min(1, width*.9/Math.max(1,...widths), height*.9/(blockH+S.size*.3));
+  const y0 = height/2 - blockH/2 + S.size*.7*k;
+  lay = {k, lh:lh*k, y0, lw:widths};
+  cells.forEach(c=&gt;{ c.px = width/2 + (-c.lw/2 + c.x)*k; c.py = y0 + c.l*lh*k; });
+
+  if (S.anim) phase += 0.07;
+  paintText(k);
+
+  // selection and spacing feedback driven by the textarea cursor
+  const a = txt().selectionStart, b = txt().selectionEnd;
+  if (a!==b){
+    fill(13,153,255,70); noStroke();
+    for (let i=a;i&lt;b;i++){ const c=cells[i]; if (c &amp;&amp; c.ch!==&#x27;\n&#x27;) rect(c.px, c.py-S.size*.78*k*S.ys, c.adv*k, S.size*.98*k*S.ys); }
+  } else if (a&gt;0 &amp;&amp; cells[a-1] &amp;&amp; cells[a-1].ch!==&#x27;\n&#x27;){
+    const p = cells[a-1], g = (S.track + (S.kern[a-1]||0))*S.size/1000*k;       // the editable gap after the previous letter
+    if (g){ fill(13,153,255,90); rect(p.px + p.nat*k - (g&lt;0?-g:0)*0, p.py-S.size*.78*k, g, S.size*.98*k); }
+  }
+  if (a===b &amp;&amp; (blink || document.activeElement!==txt())){
+    const pt = caretPoint(a); stroke(13,153,255); strokeWeight(2); line(pt.x, pt.y-S.size*.8*k, pt.x, pt.y+S.size*.2*k);
+  }
+}
+function caretPoint(p){
+  const c = cells[p];
+  if (c &amp;&amp; (p===0 || cells[p-1].ch===&#x27;\n&#x27; || c.ch!==&#x27;\n&#x27;)) return {x:c.px, y:c.py};
+  const q = cells[p-1];
+  if (!q) return {x:width/2, y:lay.y0};
+  if (q.ch===&#x27;\n&#x27;) return {x:width/2, y:q.py+lay.lh};
+  return {x:q.px+q.adv*lay.k, y:q.py};
+}
+function mousePressed(){
+  if (mouseX&lt;0||mouseY&lt;0||mouseX&gt;width||mouseY&gt;height||!cells.length) return;
+  const l = Math.max(0, Math.min(lay.lw.length-1, Math.round((mouseY-lay.y0)/lay.lh + .15)));
+  let best = null, bd = 1e9;
+  const t = txt().value;
+  let line = 0;
+  for (let p=0;p&lt;=t.length;p++){
+    if (p&gt;0 &amp;&amp; t[p-1]===&#x27;\n&#x27;) line++;
+    if (line!==l) continue;
+    const d = Math.abs(caretPoint(p).x - mouseX);
+    if (d&lt;bd){ bd=d; best=p; }
+  }
+  if (best!==null){ txt().focus(); txt().setSelectionRange(best,best); blink=true; syncLS(); redraw(); }
+}
+
+// ---- SVG export: real outlined glyph paths (opentype.js), gooey as an SVG filter, warp baked into the path points ----
+const otCache = {};
+function getOT(i){
+  if (i in otCache) return otCache[i];
+  const f = FONTS[i]; let buf = f.buf;
+  try { return otCache[i] = buf &amp;&amp; window.opentype ? opentype.parse(buf) : null; } catch(e){ return otCache[i] = null; }
+}
+function buildSVG(){
+  redraw();                                           // refresh cells[] positions from the current state
+  const W = width, H = height, k = lay.k, px = S.size*k, T = 6.2832, ph = phase;
+  const A = S.warp/100*0.14*px, lam = Math.max(40, px*S.wl/40);
+  const ot = getOT(S.font), f = n =&gt; +n.toFixed(2), lerp = (a,b,t) =&gt; a+(b-a)*t;
+  const slant = S.weight.includes(&#x27;i&#x27;) ? .2 : 0, bold = S.weight.includes(&#x27;b&#x27;);
+  const warp = (x,y) =&gt; {                             // same two-pass ripple as the canvas version
+    if (!S.warp) return [x,y];
+    const y2 = y + A*Math.sin(x/lam*T + ph);
+    return [x + A*.6*Math.sin(y2/(lam*.8)*T + ph*1.3), y2];
+  };
+  function glyphPath(c, ox, oy){
+    const cmds = ot.getPath(c.ch, 0, 0, px).commands;
+    const pt = (x,y) =&gt; { const [a,b] = warp(c.px+ox + S.xs*x - slant*S.ys*y, c.py+oy + S.ys*y); return f(a)+&#x27; &#x27;+f(b); };
+    let d = &#x27;&#x27;, cur = [0,0];
+    for (const m of cmds){
+      if (m.type===&#x27;M&#x27;){ d += &#x27;M&#x27;+pt(m.x,m.y); cur = [m.x,m.y]; }
+      else if (m.type===&#x27;L&#x27;){
+        const n = S.warp ? Math.max(1, Math.ceil(Math.hypot(m.x-cur[0], m.y-cur[1])/10)) : 1;
+        for (let s=1;s&lt;=n;s++) d += &#x27;L&#x27;+pt(lerp(cur[0],m.x,s/n), lerp(cur[1],m.y,s/n));
+        cur = [m.x,m.y];
+      } else if (m.type===&#x27;Q&#x27;){
+        if (S.warp) for (let s=1;s&lt;=10;s++){ const t=s/10, u=1-t;
+          d += &#x27;L&#x27;+pt(u*u*cur[0]+2*u*t*m.x1+t*t*m.x, u*u*cur[1]+2*u*t*m.y1+t*t*m.y); }
+        else d += &#x27;Q&#x27;+pt(m.x1,m.y1)+&#x27; &#x27;+pt(m.x,m.y);
+        cur = [m.x,m.y];
+      } else if (m.type===&#x27;C&#x27;){
+        if (S.warp) for (let s=1;s&lt;=12;s++){ const t=s/12, u=1-t;
+          d += &#x27;L&#x27;+pt(u*u*u*cur[0]+3*u*u*t*m.x1+3*u*t*t*m.x2+t*t*t*m.x, u*u*u*cur[1]+3*u*u*t*m.y1+3*u*t*t*m.y2+t*t*t*m.y); }
+        else d += &#x27;C&#x27;+pt(m.x1,m.y1)+&#x27; &#x27;+pt(m.x2,m.y2)+&#x27; &#x27;+pt(m.x,m.y);
+        cur = [m.x,m.y];
+      } else if (m.type===&#x27;Z&#x27;) d += &#x27;Z&#x27;;
+    }
+    return d;
+  }
+  function layer(col, ox, oy){
+    const stroke = bold ? ` stroke=&quot;${col}&quot; stroke-width=&quot;${f(px*.03)}&quot; stroke-linejoin=&quot;round&quot;` : &#x27;&#x27;;
+    const g = S.goo&gt;0 ? &#x27; filter=&quot;url(#goo)&quot;&#x27; : &#x27;&#x27;;
+    let body = &#x27;&#x27;;
+    cells.forEach(c =&gt; {
+      if (c.ch===&#x27;\n&#x27; || c.ch===&#x27; &#x27;) return;
+      body += ot ? `&lt;path d=&quot;${glyphPath(c,ox,oy)}&quot;/&gt;`          // outlined glyph
+                 : `&lt;text x=&quot;${f(c.px+ox)}&quot; y=&quot;${f(c.py+oy)}&quot; transform=&quot;translate(${f(c.px+ox)} ${f(c.py+oy)}) scale(${S.xs} ${S.ys}) translate(${-f(c.px+ox)} ${-f(c.py+oy)})&quot;&gt;${c.ch.replace(&#x27;&amp;&#x27;,&#x27;&amp;amp;&#x27;).replace(&#x27;&lt;&#x27;,&#x27;&amp;lt;&#x27;)}&lt;/text&gt;`;
+    });
+    const fam = ot ? &#x27;&#x27; : ` font-family=&quot;Chango, &#x27;Arial Black&#x27;, sans-serif&quot; font-size=&quot;${f(px)}&quot;`;
+    return `&lt;g fill=&quot;${col}&quot;${stroke}${fam}${g}&gt;${body}&lt;/g&gt;`;
+  }
+  const defs = S.goo&gt;0
+    ? `&lt;defs&gt;&lt;filter id=&quot;goo&quot; filterUnits=&quot;userSpaceOnUse&quot; x=&quot;0&quot; y=&quot;0&quot; width=&quot;${W}&quot; height=&quot;${H}&quot; color-interpolation-filters=&quot;sRGB&quot;&gt;&lt;feGaussianBlur stdDeviation=&quot;${f(S.goo/100*0.045*px)}&quot;/&gt;&lt;feComponentTransfer&gt;&lt;feFuncA type=&quot;linear&quot; slope=&quot;16&quot; intercept=&quot;-7.5&quot;/&gt;&lt;/feComponentTransfer&gt;&lt;/filter&gt;&lt;/defs&gt;` : &#x27;&#x27;;
+  const bg = dom(&#x27;svgbg&#x27;).checked ? `&lt;rect width=&quot;${W}&quot; height=&quot;${H}&quot; fill=&quot;${S.bg}&quot;/&gt;` : &#x27;&#x27;;
+  return `&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 ${W} ${H}&quot; width=&quot;${W}&quot; height=&quot;${H}&quot;&gt;${defs}${bg}${layer(S.sh,S.sx*k,S.sy*k)}${layer(S.fg,0,0)}&lt;/svg&gt;`;
+}
+function bindExport(){
+  const note = t =&gt; { dom(&#x27;svgnote&#x27;).textContent = t; };
+  dom(&#x27;svgdl&#x27;).hidden = !!window.claude;                 // saving is blocked inside the Claude artifact viewer; shown on OpenProcessing
+  dom(&#x27;svgcopy&#x27;).onclick = () =&gt; {
+    const svg = buildSVG(); dom(&#x27;svgout&#x27;).value = svg;
+    (navigator.clipboard ? navigator.clipboard.writeText(svg) : Promise.reject())
+      .then(()=&gt;note(getOT(S.font) ? &#x27;SVG copied. Paste it into Figma or save as .svg.&#x27; : &#x27;Copied, but this font has no outline data, so letters are live text.&#x27;))
+      .catch(()=&gt;{ dom(&#x27;svgout&#x27;).hidden=false; dom(&#x27;svgout&#x27;).select(); note(&#x27;Clipboard blocked. The code is selected below, copy it with Cmd+C.&#x27;); });
+  };
+  dom(&#x27;svgdl&#x27;).onclick = () =&gt; {
+    const svg = buildSVG(); dom(&#x27;svgout&#x27;).value = svg;
+    const a = document.createElement(&#x27;a&#x27;);
+    a.href = URL.createObjectURL(new Blob([svg], {type:&#x27;image/svg+xml&#x27;})); a.download = &#x27;kickoff-text.svg&#x27;; a.click();
+    note(&#x27;If nothing downloaded, your viewer blocks saves. Use Copy SVG instead.&#x27;);
+  };
+  dom(&#x27;svgshow&#x27;).onclick = () =&gt; {
+    const o = dom(&#x27;svgout&#x27;); o.hidden = !o.hidden;
+    if (!o.hidden){ o.value = buildSVG(); } dom(&#x27;svgshow&#x27;).textContent = o.hidden ? &#x27;Show code&#x27; : &#x27;Hide code&#x27;;
+  };
+}
+function doubleClicked(){
+  if (mouseX&lt;0||mouseY&lt;0||mouseX&gt;width||mouseY&gt;height) return;
+  txt().focus(); txt().select(); blink=true; syncLS(); redraw();
+}
+
+// ---- Letter spacing: tied to the text cursor ----
+function gaps(){          // indices of characters whose &quot;space after&quot; the cursor edits
+  const t = txt().value, a = txt().selectionStart, b = txt().selectionEnd, g = [];
+  if (a===b){ if (a&gt;0 &amp;&amp; t[a-1]!==&#x27;\n&#x27;) g.push(a-1); }
+  else for (let i=a;i&lt;b;i++) if (t[i]!==&#x27;\n&#x27;) g.push(i);
+  return g;
+}
+const fmt = v =&gt; (Math.round(v)/10).toString().replace(/\.0$/,&#x27;&#x27;) + &#x27;%&#x27;;
+function syncLS(){
+  const g = gaps(), el = dom(&#x27;ls&#x27;);
+  el.disabled = !g.length;
+  if (!g.length){ el.value = &#x27;—&#x27;; return; }
+  const vs = new Set(g.map(i=&gt;S.kern[i]||0));
+  el.value = vs.size&gt;1 ? &#x27;Mixed&#x27; : fmt([...vs][0]);
+}
+function setLS(units, relative){
+  const g = gaps(); if (!g.length) return;
+  g.forEach(i=&gt; S.kern[i] = Math.max(-500, Math.min(800, relative ? (S.kern[i]||0)+units : units)));
+  syncLS(); redraw();
+}
+const num = s =&gt; { const m = String(s).match(/-?\d*\.?\d+/); return m ? parseFloat(m[0]) : null; };
+
+// keep kerning attached to the right letters when text is edited
+function reconcile(){
+  const o = prevText, n = txt().value;
+  let a = 0; while (a&lt;o.length &amp;&amp; a&lt;n.length &amp;&amp; o[a]===n[a]) a++;
+  let b = 0; while (b&lt;o.length-a &amp;&amp; b&lt;n.length-a &amp;&amp; o[o.length-1-b]===n[n.length-1-b]) b++;
+  S.kern = S.kern.slice(0,a).concat(new Array(n.length-a-b).fill(0), S.kern.slice(o.length-b, o.length));
+  prevText = n;
+}
+
+function bindUI(){
+  const T = txt();
+  T.oninput = ()=&gt;{ reconcile(); syncLS(); redraw(); };
+  [&#x27;keyup&#x27;,&#x27;click&#x27;,&#x27;select&#x27;,&#x27;focus&#x27;,&#x27;blur&#x27;].forEach(ev=&gt; T.addEventListener(ev, ()=&gt;{ blink=true; syncLS(); redraw(); }));
+  document.addEventListener(&#x27;selectionchange&#x27;, ()=&gt;{ if (document.activeElement===T){ syncLS(); redraw(); } });
+  T.addEventListener(&#x27;keydown&#x27;, e=&gt;{
+    if (e.altKey &amp;&amp; (e.key===&#x27;ArrowRight&#x27;||e.key===&#x27;ArrowLeft&#x27;)){ e.preventDefault(); setLS((e.key===&#x27;ArrowRight&#x27;?1:-1)*(e.shiftKey?50:10), true); }
+  });
+  dom(&#x27;font&#x27;).onchange = e=&gt;{ S.font=+e.target.value; setStatus(); redraw(); };
+  dom(&#x27;weight&#x27;).onchange = e=&gt;{ S.weight=e.target.value; redraw(); };
+  dom(&#x27;size&#x27;).onchange = dom(&#x27;size&#x27;).oninput = e=&gt;{ const v=num(e.target.value); if (v&gt;=8){ S.size=Math.min(900,v); redraw(); } };
+  dom(&#x27;lead&#x27;).onchange = e=&gt;{ const s=e.target.value.toLowerCase(); const v = s.includes(&#x27;auto&#x27;) ? 100 : num(s); if (v&gt;=30) S.lead=v/100; e.target.value=Math.round(S.lead*100)+&#x27;%&#x27;; redraw(); };
+  dom(&#x27;ls&#x27;).onchange = e=&gt;{ const v=num(e.target.value); if (v!==null) setLS(v*10,false); else syncLS(); };
+  dom(&#x27;ls&#x27;).onkeydown = e=&gt;{ if (e.key===&#x27;ArrowUp&#x27;||e.key===&#x27;ArrowDown&#x27;){ e.preventDefault(); setLS((e.key===&#x27;ArrowUp&#x27;?1:-1)*(e.shiftKey?50:10), true); } };
+  const setTR = u=&gt;{ S.track = Math.max(-500, Math.min(800, u)); dom(&#x27;track&#x27;).value = fmt(S.track); redraw(); };
+  dom(&#x27;track&#x27;).onchange = e=&gt;{ const v=num(e.target.value); setTR(v===null ? S.track : v*10); };
+  dom(&#x27;track&#x27;).onkeydown = e=&gt;{ if (e.key===&#x27;ArrowUp&#x27;||e.key===&#x27;ArrowDown&#x27;){ e.preventDefault(); setTR(S.track+(e.key===&#x27;ArrowUp&#x27;?1:-1)*(e.shiftKey?50:10)); } };
+  const icT = dom(&#x27;icoTR&#x27;); let lt = 0;
+  icT.onpointerdown = e=&gt;{ lt=e.clientX; icT.setPointerCapture(e.pointerId); };
+  icT.onpointermove = e=&gt;{ if (e.buttons){ const d=Math.round((e.clientX-lt)/3); if (d){ setTR(S.track+d*5); lt=e.clientX; } } };
+  let last = 0; const ico = dom(&#x27;icoLS&#x27;);
+  ico.onpointerdown = e=&gt;{ last=e.clientX; ico.setPointerCapture(e.pointerId); };
+  ico.onpointermove = e=&gt;{ if (e.buttons){ const d=Math.round((e.clientX-last)/3); if (d){ setLS(d*5,true); last=e.clientX; } } };
+  const ic2 = dom(&#x27;icoLH&#x27;); let l2 = 0;
+  ic2.onpointerdown = e=&gt;{ l2=e.clientX; ic2.setPointerCapture(e.pointerId); };
+  ic2.onpointermove = e=&gt;{ if (e.buttons){ const d=Math.round((e.clientX-l2)/3); if (d){ S.lead=Math.max(.3,S.lead+d/100); dom(&#x27;lead&#x27;).value=Math.round(S.lead*100)+&#x27;%&#x27;; l2=e.clientX; redraw(); } } };
+  [[&#x27;goo&#x27;,&#x27;goo&#x27;,&#x27;&#x27;,1],[&#x27;warp&#x27;,&#x27;warp&#x27;,&#x27;&#x27;,1],[&#x27;wl&#x27;,&#x27;wl&#x27;,&#x27;&#x27;,1],[&#x27;xs&#x27;,&#x27;xs&#x27;,&#x27;%&#x27;,100],[&#x27;ys&#x27;,&#x27;ys&#x27;,&#x27;%&#x27;,100],[&#x27;sx&#x27;,&#x27;sx&#x27;,&#x27;&#x27;,1],[&#x27;sy&#x27;,&#x27;sy&#x27;,&#x27;&#x27;,1]].forEach(([id,k,u,div])=&gt;{
+    const el=dom(id), out=el.parentElement.querySelector(&#x27;output&#x27;);
+    const go=()=&gt;{ S[k]=+el.value/div; out.textContent=el.value+u; };
+    el.oninput=()=&gt;{ go(); redraw(); }; go();
+  });
+  dom(&#x27;anim&#x27;).onchange = e=&gt;{ S.anim=e.target.checked; if (S.anim){ frameRate(30); loop(); } else noLoop(); redraw(); };
+  [[&#x27;cfg&#x27;,&#x27;fg&#x27;],[&#x27;csh&#x27;,&#x27;sh&#x27;],[&#x27;cbg&#x27;,&#x27;bg&#x27;]].forEach(([id,k])=&gt;{ dom(id).oninput=e=&gt;{ S[k]=e.target.value; redraw(); }; S[k]=dom(id).value; });
+  dom(&#x27;resetk&#x27;).onclick = ()=&gt;{ S.kern = S.kern.map(()=&gt;0); syncLS(); redraw(); };
+  dom(&#x27;upload&#x27;).onclick = ()=&gt;dom(&#x27;file&#x27;).click();
+  dom(&#x27;file&#x27;).onchange = async e=&gt;{
+    const f = e.target.files[0]; if (!f) return;
+    const i = FONTS.length, name = f.name.replace(/\.[^.]+$/,&#x27;&#x27;);
+    const buf = await f.arrayBuffer(), ff = new FontFace(&#x27;kf&#x27;+i, buf.slice(0));
+    try { await ff.load(); document.fonts.add(ff); } catch(err){ dom(&#x27;fstatus&#x27;).textContent=&#x27;That file could not be read as a font.&#x27;; return; }
+    FONTS.push([name+&#x27; (uploaded)&#x27;, null]); FONTS[i].ok = true; FONTS[i].buf = buf; families[i] = `&quot;kf${i}&quot;, ${FALLBACK}`;
+    const o=document.createElement(&#x27;option&#x27;); o.value=i; o.textContent=FONTS[i][0]; dom(&#x27;font&#x27;).appendChild(o);
+    dom(&#x27;font&#x27;).value=i; S.font=i; setStatus(); redraw();
+  };
+  dom(&#x27;copy&#x27;).onclick = ()=&gt;{
+    const out = JSON.stringify({font:FONTS[S.font][0],weight:S.weight,size:S.size,lineHeight:S.lead,defaultSpacingPercent:S.track/10,gooey:S.goo,warp:S.warp,wavelength:S.wl,stretch:[S.xs,S.ys],
+      shadow:[S.sx,S.sy],colors:[S.fg,S.sh,S.bg],text:txt().value,letterSpacingPercent:S.kern.map(v=&gt;v/10)}, null, 1);
+    const done=()=&gt;{ dom(&#x27;copy&#x27;).textContent=&#x27;Copied&#x27;; setTimeout(()=&gt;dom(&#x27;copy&#x27;).textContent=&#x27;Copy settings&#x27;,1400); };
+    (navigator.clipboard?navigator.clipboard.writeText(out):Promise.reject()).then(done).catch(()=&gt;{ console.log(out); dom(&#x27;copy&#x27;).textContent=&#x27;See console&#x27;; });
+  };
+  document.fonts.ready.then(()=&gt;redraw());
+}
+</pre>
+</main>
+<script>
+document.getElementById('c').onclick=function(){
+  var t=document.getElementById('code').textContent,s=document.getElementById('s');
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){s.textContent='Copied'}).catch(function(){
+    var r=document.createRange();r.selectNodeContents(document.getElementById('code'));var g=getSelection();g.removeAllRanges();g.addRange(r);s.textContent='Selected. Press Cmd+C.'});
+};
+</script>

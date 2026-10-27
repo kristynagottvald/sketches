@@ -63,5 +63,22 @@
         "alt": "Marketing Mine"
       }
     ]
+  },
+  {
+    "id": "kickoff-type-lab",
+    "title": "Kick Off Type Lab",
+    "category": "Interactive Tool",
+    "year": 2026,
+    "thumbnail": "kickoff-type-lab/thumbnail.png",
+    "url": "kickoff-type-lab/",
+    "blurb": "A type tool for groovy, gooey, western lettering, with live spacing, warp and SVG export.",
+    "clientName": "Lob",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "kickoff-type-lab/thumbnail.png",
+        "alt": "Kick Off Type Lab"
+      }
+    ]
   }
 ]
