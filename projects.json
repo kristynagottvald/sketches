@@ -139,7 +139,7 @@
   },
   {
     "id": "binary-grid",
-    "title": "Binary Flip Grid",
+    "title": "No-Code Binary Motif",
     "category": "Generative Art",
     "year": 2026,
     "thumbnail": "binary-grid/thumbnail.png",
@@ -150,7 +150,7 @@
       {
         "type": "image",
         "src": "binary-grid/thumbnail.png",
-        "alt": "Binary Flip Grid"
+        "alt": "No-Code Binary Motif"
       }
     ]
   },
