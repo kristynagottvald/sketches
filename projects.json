@@ -19,7 +19,7 @@
   },
   {
     "id": "ribbon-text",
-    "title": "Postmark Awards Generative Text",
+    "title": "Postmark Awards",
     "category": "Generative Art",
     "year": 2026,
     "thumbnail": "ribbon-text/thumbnail.png",
@@ -29,7 +29,7 @@
       {
         "type": "image",
         "src": "ribbon-text/thumbnail.png",
-        "alt": "Postmark Awards Generative Text"
+        "alt": "Postmark Awards"
       }
     ],
     "preview": "clips/ribbon-text.webp"
