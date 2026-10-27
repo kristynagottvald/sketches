@@ -5,7 +5,7 @@
 .site-nav .hb-bar { height: var(--nav-h); }
 .nav-toggle { background: none; border: 0; padding: 0; cursor: pointer; }
 .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: #000; border-top: 1px solid var(--line); box-shadow: 0 20px 40px rgba(0,0,0,.35); padding: 24px 0 28px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .17s linear, transform .3s var(--ease), visibility .17s; }
-.site-nav:hover .nav-menu, .site-nav.open .nav-menu, .site-nav:focus-within .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: #000; border-top: 1px solid var(--line); box-shadow: 0 20px 40px rgba(0,0,0,.35); padding: 24px 0 28px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .17s linear, transform .3s var(--ease), visibility .17s; }
+.site-nav:hover .nav-menu, .site-nav.open .nav-menu, .site-nav:focus-within .nav-menu { opacity: 1; visibility: visible; transform: none; }
 .nav-projects { position: relative; overflow: hidden; margin-bottom: 22px; }
 .np-track { display: flex; gap: 20px; transition: transform .45s var(--ease); will-change: transform; }
 .np-track .nav-proj { flex: none; width: 260px; }
