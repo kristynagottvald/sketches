@@ -55,11 +55,6 @@
     cardsEl.querySelectorAll('.card').forEach((c) => c.classList.toggle('is-active', c === card));
     $('#work-active').textContent = s.title;
     $('#work-desc').textContent = s.blurb || '';
-    
-    const thumb = $('#work-thumb');
-    thumb.src = s.thumbnail;
-    thumb.style.display = 'block';
-
     $('#work-tag').textContent = [s.year, s.category].filter(Boolean).join(' – ');
   }
 
