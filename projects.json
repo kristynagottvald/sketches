@@ -222,7 +222,7 @@
   },
   {
     "id": "motion-character",
-    "title": "Motion Character",
+    "title": "Brand Colors",
     "category": "Generative Art",
     "year": 2026,
     "thumbnail": "motion-character/thumbnail.jpg?v=1",
@@ -233,7 +233,7 @@
       {
         "type": "image",
         "src": "motion-character/thumbnail.jpg",
-        "alt": "Motion Character"
+        "alt": "Brand Colors"
       }
     ]
   }
