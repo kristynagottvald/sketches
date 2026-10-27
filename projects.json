@@ -122,7 +122,7 @@
   },
   {
     "id": "restaurant-tiles",
-    "title": "Restaurant UI Tiles",
+    "title": "Bento Brand Showcase",
     "category": "Interactive Tool",
     "year": 2026,
     "thumbnail": "restaurant-tiles/thumbnail.png",
@@ -133,7 +133,41 @@
       {
         "type": "image",
         "src": "restaurant-tiles/thumbnail.png",
-        "alt": "Restaurant UI Tiles"
+        "alt": "Bento Brand Showcase"
+      }
+    ]
+  },
+  {
+    "id": "binary-grid",
+    "title": "Binary Flip Grid",
+    "category": "Generative Art",
+    "year": 2026,
+    "thumbnail": "binary-grid/thumbnail.png",
+    "url": "binary-grid/",
+    "blurb": "Move the mouse and a diagonal wave flips a grid of 0s and 1s into colour.",
+    "preview": "clips/binary-grid.webp",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "binary-grid/thumbnail.png",
+        "alt": "Binary Flip Grid"
+      }
+    ]
+  },
+  {
+    "id": "sound-bars",
+    "title": "Sound Bars",
+    "category": "Interactive Tool",
+    "year": 2026,
+    "thumbnail": "sound-bars/thumbnail.png",
+    "url": "sound-bars/",
+    "blurb": "Brush across drifting bars to play notes; each bar fades into a rising echo.",
+    "preview": "clips/sound-bars.webp",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "sound-bars/thumbnail.png",
+        "alt": "Sound Bars"
       }
     ]
   }
