@@ -40,7 +40,7 @@ function setup() {
 }
 
 function updateGridDimensions() {
-  cellSize = baseCellSize;
+  cellSize = min(baseCellSize, max(44, floor(width / 7)));   // about 7 columns across on a phone
   cols = max(1, floor(width / cellSize));
   rows = max(1, floor(height / cellSize));
   

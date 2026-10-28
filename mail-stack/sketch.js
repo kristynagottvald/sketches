@@ -4,6 +4,7 @@ let stack;
 let curveSpreadSlider, floatSlider, densitySlider, randomizeBtn;
 let pointToggles = [];
 let uiContainer;
+let panelBtn, panelOpen = false;
 
 // Waypoint configuration structure with wide randomizable offsets
 let baseWaypoints;
@@ -80,6 +81,27 @@ function setup() {
   randomizeBtn.style('font-weight', 'bold');
   randomizeBtn.style('cursor', 'pointer');
   randomizeBtn.mousePressed(randomizeCurveShape);
+
+  // On phones the controls sit in a sheet at the bottom, opened from a button
+  panelBtn = createButton('Controls').parent(document.body);
+  panelBtn.style('position', 'fixed').style('right', '12px').style('bottom', '12px').style('z-index', '11')
+    .style('padding', '10px 16px').style('border-radius', '999px').style('border', 'none')
+    .style('background', '#9DD437').style('color', '#1a1a1a').style('font-weight', 'bold').style('box-shadow', '0 4px 16px rgba(0,0,0,0.3)');
+  panelBtn.mousePressed(() => { panelOpen = !panelOpen; panelBtn.html(panelOpen ? 'Close' : 'Controls'); layoutPanel(); });
+  layoutPanel();
+}
+
+function layoutPanel() {
+  if (windowWidth >= 700) {
+    uiContainer.style('position', 'absolute').style('display', 'block').style('left', '20px').style('right', 'auto').style('bottom', 'auto')
+      .style('max-width', '240px').style('max-height', 'none').style('overflow', 'visible');
+    uiContainer.position(20, NAV_H + 20);
+    panelBtn.hide();
+    return;
+  }
+  panelBtn.show();
+  uiContainer.style('position', 'fixed').style('left', '12px').style('right', '12px').style('top', 'auto').style('bottom', '62px')
+    .style('max-width', 'none').style('max-height', '55vh').style('overflow', 'auto').style('display', panelOpen ? 'block' : 'none');
 }
 
 function randomizeCurveShape() {
@@ -103,6 +125,7 @@ function draw() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight - NAV_H);
+  layoutPanel();
 }
 
 // --- MailStack Class ---

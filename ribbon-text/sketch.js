@@ -20,6 +20,7 @@ let thicknessSlider;
 let spacingSlider;
 let textInputArea;
 let weightSelect;
+let panelBtn, panelOpen = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight - NAV_H);
@@ -33,8 +34,23 @@ function setup() {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight - NAV_H);
-  uiPanel.position(windowWidth - 290, NAV_H + 20);
+  layoutPanel();
   drawArtwork();
+}
+
+// On phones the controls sit in a sheet at the bottom, opened from a button
+function layoutPanel() {
+  const phone = windowWidth < 700;
+  if (!phone) {
+    uiPanel.style('position', 'absolute').style('display', 'block').style('left', 'auto').style('bottom', 'auto')
+      .style('width', '250px').style('max-height', 'none').style('overflow', 'visible');
+    uiPanel.position(windowWidth - 290, NAV_H + 20);
+    panelBtn.hide();
+    return;
+  }
+  panelBtn.show();
+  uiPanel.style('position', 'fixed').style('left', '12px').style('right', '12px').style('top', 'auto').style('bottom', '12px')
+    .style('width', 'auto').style('max-height', '58vh').style('overflow', 'auto').style('display', panelOpen ? 'block' : 'none');
 }
 
 function buildUIPanel() {
@@ -127,6 +143,12 @@ function buildUIPanel() {
   expBtn.style('font-weight', 'bold');
   expBtn.mousePressed(exportSVG);
   
+  panelBtn = createButton('Controls').parent(document.body);
+  panelBtn.style('position', 'fixed').style('right', '12px').style('bottom', '12px').style('z-index', '11')
+    .style('padding', '10px 16px').style('border-radius', '999px').style('border', 'none')
+    .style('background', '#fff').style('color', '#1a1a1a').style('font-weight', 'bold').style('box-shadow', '0 4px 16px rgba(0,0,0,0.2)');
+  panelBtn.mousePressed(() => { panelOpen = !panelOpen; panelBtn.html(panelOpen ? 'Close' : 'Controls'); layoutPanel(); });
+  layoutPanel();
   drawArtwork();
 }
 

@@ -30,7 +30,7 @@ function mousePressed() { userStartAudio(); }
 
 function createNewBar(index) {
   let barHeight = 20; 
-  let barWidth = random(40, 280);
+  let barWidth = random(40, 280) * min(1, width / 700);   // shorter bars on a phone
   let pos = findEmptySpace(barWidth, barHeight);
 
   let restingColor;

@@ -150,7 +150,22 @@ function countNeighbors(x, y) {
   return count;
 }
 
+// Touch screens have no right click: a quick tap reveals a cell, a long press flags it
+const TOUCH = matchMedia('(pointer: coarse)').matches;
+let pressStart = 0;
 function mousePressed() {
+  if (TOUCH && !(gameOver || gameWon)) { pressStart = millis(); return false; }
+  act(mouseButton === RIGHT ? RIGHT : LEFT);
+}
+function mouseReleased() {
+  if (!TOUCH || pressStart === 0) return;
+  const long = millis() - pressStart >= 450;
+  pressStart = 0;
+  act(long ? RIGHT : LEFT);
+  return false;
+}
+
+function act(button) {
   if (gameOver || gameWon) {
     initGame(); 
     return;
@@ -164,12 +179,12 @@ function mousePressed() {
   if (x >= 0 && x < cols && y >= 0 && y < rows) {
     let cell = gridElements[x][y];
 
-    if (mouseButton === RIGHT) {
+    if (button === RIGHT) {
       if (!cell.revealed) {
         cell.flagged = !cell.flagged;
       }
     } 
-    else if (mouseButton === LEFT) {
+    else if (button === LEFT) {
       if (!cell.flagged && !cell.revealed) {
         if (cell.isMine) {
           cell.isClickedMine = true;
@@ -519,6 +534,11 @@ function draw() {
   stroke(255, 60);
   strokeWeight(1);
   line(contentX, highScoreY + 75, sidebarX + sidebarWidth - sideMargin, highScoreY + 75);
+
+  if (TOUCH && !gameOver) {
+    noStroke(); fill(255, 140); textSize(10); textStyle(NORMAL); textAlign(LEFT, TOP);
+    drawSpacedText("HOLD TO FLAG", contentX, highScoreY + 88, 1);
+  }
 
   if (gameOver && !gameWon) {
     noStroke();

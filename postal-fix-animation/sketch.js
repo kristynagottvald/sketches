@@ -429,6 +429,7 @@ function fitCanvas() {
   const s = Math.min(window.innerWidth / W, (window.innerHeight - NAV_H) / H);
   el.style.width = Math.floor(W * s) + 'px';
   el.style.height = Math.floor(H * s) + 'px';
+  el.style.marginTop = Math.max(0, Math.floor((window.innerHeight - NAV_H - H * s) / 2)) + 'px';
 }
 
 function setup() {

@@ -63,7 +63,10 @@ function draw() {
   background(15);
 
   push();
-  translate(width / 2 - 400, height / 2 - 200);
+  // scale the 800 x 400 composition down to fit narrow screens
+  translate(width / 2, height / 2);
+  scale(min(1, (width - 24) / 800));
+  translate(-400, -200);
   
   drawingContext.save();
   drawingContext.beginPath();

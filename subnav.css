@@ -32,3 +32,7 @@
 }
 .nav-links a:hover, .nav-proj:hover > span:last-child { background-size: 100% 1px; }
 @media (prefers-reduced-motion: reduce) { .nav-links a, .nav-proj > span:last-child { transition: color .2s; } }
+
+/* Touch: canvases handle their own gestures, so the page should not scroll or zoom under a finger */
+canvas.p5Canvas { touch-action: none; }
+html, body { overscroll-behavior: none; }
