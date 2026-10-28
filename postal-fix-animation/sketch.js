@@ -1,0 +1,502 @@
+const W = 1920, H = 1080, MARGIN = 160;
+const BG = '#4A3AF0', FG = '#FFFFFF';
+
+const WORD_START = 0.2, WORD_GAP = 0.3, WORD_IN = 0.7;
+const T1 = 7.0;
+const TD = 1.2;
+const STAG = 0.08;
+const DUR = 14.6, END_HOLD = 1.0;
+
+const DISP = 'Shrikhand, "Cooper Black", Georgia, serif';
+const SANS = 'Inter, "Helvetica Neue", Arial, sans-serif';
+const DISP_LEAD = 0.92, DISP_TRACK = -0.03, DISP_SPACE = 0.14;
+const SANS_RATIO = 0.486, SANS_LEAD = 1.2, SANS_TRACK = -0.01, SANS_SPACE = 0.26;
+const MAX_W = W - 2 * MARGIN, MAX_H = H - 2 * 140, MAX_SIZE = 179;
+
+const STAMP_MARGIN = 90;
+const REF_TOP = -35, REF_RIGHT = 1440, REF_BOTTOM = 1230;
+const STAMP_K = (H - 2 * STAMP_MARGIN) / (REF_BOTTOM - REF_TOP);
+const STAMP_X0 = W - STAMP_MARGIN - (REF_RIGHT - 27) * STAMP_K;
+const STAMP_Y0 = STAMP_MARGIN - (REF_TOP - 13) * STAMP_K;
+const refPoint = (x, y) => [STAMP_X0 + (x - 27) * STAMP_K, STAMP_Y0 + (y - 13) * STAMP_K];
+const mkStamp = (rx, ry, rw, rh, o) => {
+  const [x, y] = refPoint(rx, ry);
+  return { x, y, w: rw * STAMP_K, h: rh * STAMP_K, b: o.b * STAMP_K, gap: o.gap * STAMP_K, r: o.r * STAMP_K, ...o.look };
+};
+const TEXT_FADE_START = 3.2, TEXT_FADE = 0.8;
+const STACK2_S = (H - 2 * STAMP_MARGIN) / (367 + 1180);
+const STACK2_X = STAMP_MARGIN, STACK2_Y = STAMP_MARGIN;
+const stampPx = (x, y, w, h, o) => ({ x, y, w, h, b: o.b, gap: o.gap, r: o.r, ...o.look });
+const PUSH_GAP = 24;
+const STAMP_START = 2.8, STAMP_GAP = 0.45, STAMP_IN = 0.8;
+const STAMPS = [
+  stampPx(STACK2_X + 185 * STACK2_S, STACK2_Y + 447 * STACK2_S, 897 * STACK2_S, 1100 * STACK2_S, { b: 67 * STACK2_S, gap: 90 * STACK2_S, r: 30 * STACK2_S,
+    look: { border: '#DD5CF4', inner: '#EBF77B', tc: '#4033E8', label: 'FINE PRINT', align: 'left', icon: iconFinePrint } }),
+  stampPx(STACK2_X, STACK2_Y, 523 * STACK2_S, 690 * STACK2_S, { b: 52 * STACK2_S, gap: 57 * STACK2_S, r: 20 * STACK2_S,
+    look: { border: '#FFFFFF', inner: '#DD5CF4', tc: '#FFFFFF', label: 'RATE HIKES', align: 'left', icon: iconBars } }),
+  mkStamp(-45, -35, 590, 575, { b: 42, gap: 48, r: 16,
+    look: { border: '#DD5CF4', inner: '#5F40E8', tc: '#FFFFFF', label: 'DELAYS', align: 'left', icon: iconUsps } }),
+  mkStamp(645, -35, 795, 1035, { b: 80, gap: 91, r: 30,
+    look: { border: '#EBF77B', inner: '#7F5CFF', tc: '#EBF77B', label: 'SURCHARGES', align: 'right', top: true, icon: iconCoins } }),
+  mkStamp(90, 690, 750, 540, { b: 60, gap: 72, r: 25,
+    look: { border: '#7F6FFF', inner: '#4033E8', tc: '#EBF77B', label: 'RED TAPE', vert: true, icon: iconTape } }),
+];
+const STAMP_LABEL = 46 * STAMP_K * 1.0;
+
+const CARD_START = T1 + TD + 0.1, CARD_GAP = 1.4, CARD_IN = 0.8;
+const STACK_DX = 36, STACK_DY = -34;
+const CARD_W = 520, CARD_H = 560, CARD_R = 12;
+const TEXT_PAD = 64, TEXT_BOTTOM = 76;
+const CARD_COUNT = 4;
+const CARD_X = W - 110 - CARD_W - (CARD_COUNT - 1) * STACK_DX;
+const CARD_Y = (H - CARD_H) / 2 - STACK_DY * (CARD_COUNT - 1) / 2;
+const CARDS = [
+  { bg: '#8B4ACB', tc: '#FFFFFF', label: 'FIX #1 · INFOGRAPHIC', title: ['How USPS', 'works'], icon: iconInfographic },
+  { bg: '#DD5CF4', label: 'FIX #2 · VIDEO', title: ['How to stack', 'promotions'], icon: iconVideo },
+  { bg: '#6449E2', tc: '#FFFFFF', label: 'FIX #3 · CHECKLIST', title: ['The postal', 'optimization', 'checklist'], icon: iconChecklist },
+  { bg: '#EBF77B', label: '', title: ['Unlock', 'the rest'], icon: iconLock },
+];
+
+const SCENES = [
+  { lines: [['Stop burning', 'd'], ['money on', 'd'], ['direct mail', 'd']] },
+  { lines: [['with Lob\'s 10-Day', 's'], ['Postal Fix', 'd']] },
+];
+const SIZE_GROUPS = [[0, 1]];
+
+let ready = false, t0 = 0;
+
+const segProg = (t, a, b) => Math.min(1, Math.max(0, (t - a) / (b - a)));
+const easeInOutCubic = x => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+const easeOutCubic = x => 1 - Math.pow(1 - x, 3);
+const easeOutBack = x => { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); };
+
+const slidePos = (t, d) =>
+  easeInOutCubic(segProg(t, T1 + d, T1 + d + TD));
+
+function drawStamp(st, ox, oy, sc, alpha, lt) {
+  const ctx = drawingContext;
+  push();
+  translate(st.x + st.w / 2 + ox, st.y + st.h / 2 + oy);
+  scale(sc);
+  translate(-st.w / 2, -st.h / 2);
+  ctx.globalAlpha = alpha;
+
+  fill(st.border);
+  const notches = len => {
+    const m = 0.85 * st.gap;
+    const n = Math.max(2, Math.round((len - 2 * m) / st.gap) + 1);
+    const notchStep = (len - 2 * m) / (n - 1);
+    return Array.from({ length: n }, (_, i) => m + i * notchStep);
+  };
+  const r = st.r, w = st.w, h = st.h;
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  notches(w).forEach(cx => { ctx.lineTo(cx - r, 0); ctx.arc(cx, 0, r, Math.PI, 0, true); });
+  ctx.lineTo(w, 0);
+  notches(h).forEach(cy => { ctx.lineTo(w, cy - r); ctx.arc(w, cy, r, -Math.PI / 2, Math.PI / 2, true); });
+  ctx.lineTo(w, h);
+  notches(w).reverse().forEach(cx => { ctx.lineTo(cx + r, h); ctx.arc(cx, h, r, 0, Math.PI, true); });
+  ctx.lineTo(0, h);
+  notches(h).reverse().forEach(cy => { ctx.lineTo(0, cy + r); ctx.arc(0, cy, r, Math.PI / 2, -Math.PI / 2, true); });
+  ctx.closePath();
+  ctx.fill();
+
+  const b = st.b, iw = st.w - 2 * b, ih = st.h - 2 * b;
+  fill(st.inner);
+  rect(b, b, iw, ih);
+
+  if (st.icon) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(b, b, iw, ih);
+    ctx.clip();
+    push();
+    translate(b, b);
+    st.icon(iw, ih, lt);
+    pop();
+    ctx.restore();
+    noStroke();
+  }
+
+  let labelSize = STAMP_LABEL;
+  ctx.letterSpacing = '4px';
+  const roomW = (st.vert ? ih : iw) - STAMP_LABEL * 1.2;
+  ctx.font = `400 ${labelSize}px ${SANS}`;
+  while (labelSize > 14 && ctx.measureText(st.label).width > roomW) { labelSize -= 1; ctx.font = `400 ${labelSize}px ${SANS}`; }
+  ctx.textAlign = st.align === 'right' ? 'right' : 'left';
+  fill(st.tc);
+  push();
+  const pad = STAMP_LABEL * 0.6;
+  if (st.vert) { translate(b + iw - pad, b + ih - pad); rotate(-HALF_PI); }
+  else if (st.align === 'right') { translate(b + iw - pad, st.top ? b + pad + STAMP_LABEL * 0.72 : b + ih - pad); }
+  else { translate(b + pad, b + ih - pad); }
+  ctx.fillText(st.label, 0, 0);
+  pop();
+  ctx.textAlign = 'left';
+  ctx.letterSpacing = '0px';
+  ctx.globalAlpha = 1;
+  pop();
+}
+
+
+
+const USPS_LOGO_URI = 'data:image/png;base64,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';
+const uspsImg = new Image();
+uspsImg.src = USPS_LOGO_URI;
+
+function iconUsps(iw, ih, lt) {
+  if (!uspsImg.complete || !uspsImg.naturalWidth) return;
+  const ar = uspsImg.naturalWidth / uspsImg.naturalHeight;
+  const w = Math.min(iw * 0.72, ih * 0.62 * ar), h = w / ar;
+  const p = easeOutBack(segProg(lt, 0, 0.6));
+  push();
+  translate(iw / 2, ih * 0.44);
+  rotate(Math.sin(lt * 2.2) * 0.05 * segProg(lt, 0.6, 1.2));
+  scale(p);
+  drawingContext.drawImage(uspsImg, -w / 2, -h / 2, w, h);
+  pop();
+}
+
+function iconCoins(iw, ih, lt) {
+  const w = iw * 0.46, h = w * 0.3, th = h * 0.6, base = ih * 0.8, cx = iw / 2, N = 10;
+  noStroke();
+  for (let i = 0; i < N; i++) {
+    const p = easeOutCubic(segProg(lt, 0.1 + 0.12 * i, 0.1 + 0.12 * i + 0.4));
+    if (p <= 0) continue;
+    const y = base - i * th - (1 - p) * ih * 0.5;
+    fill('#DD5CF4'); ellipse(cx, y + th, w, h); rect(cx - w / 2, y, w, th);
+    noFill(); stroke('#7F5CFF'); strokeWeight(4); arc(cx, y + th, w, h, 0, PI); noStroke();
+    fill('#EBF77B'); ellipse(cx, y, w, h);
+    noFill(); stroke('#DD5CF4'); strokeWeight(h * 0.1); ellipse(cx, y, w * 0.6, h * 0.6); noStroke();
+  }
+}
+
+function iconTape(iw, ih, lt) {
+  const sc = Math.min(ih * 0.9 / 420, (iw - 80) / 448);
+  const grow0 = easeOutBack(segProg(lt, 0, 0.5));
+  const grow = 0.3 + 0.7 * easeOutCubic(segProg(lt, 0.3, 1.2));
+  const ctx = drawingContext;
+  push();
+  translate(iw * 0.05 + 224 * sc, ih / 2);
+  scale(sc * Math.max(grow0, 0));
+  translate(-224, -226);
+  noStroke();
+
+  const tx = x => 270 - (270 - x) * grow;
+  const poly = pts => { beginShape(); pts.forEach(([x, y]) => vertex(tx(x), y)); endShape(CLOSE); };
+  fill('#F5A8FA');
+  poly([[0, 322], [200, 322], [270, 372], [270, 392], [100, 392], [98, 377], [72, 372], [75, 363], [48, 355], [52, 348], [25, 341], [28, 332]]);
+
+  const bx = 238, by = 208, fx = 293, fy = 245, R = 153;
+  stroke('#E87AF5'); strokeWeight(R * 2); strokeCap(ROUND); line(bx, by, fx, fy); noStroke();
+  fill('#F5A8FA'); circle(bx, by, R * 2);
+  fill('#DD5CF4'); circle(fx, fy, R * 2);
+
+  fill('#EBF77B'); circle(fx, fy, 196);
+  fill('#4033E8'); circle(fx, fy, 168);
+  pop();
+}
+
+const INK = '#4033E8';
+const fadeIn = (lt, d, dur = 0.25) => easeOutCubic(segProg(lt, d, d + dur));
+
+function iconBars(iw, ih, lt) {
+  const bw = iw * 0.2, gap = iw * 0.09, n = 3, base = ih * 0.72, maxH = ih * 0.52;
+  const x0 = (iw - (n * bw + (n - 1) * gap)) / 2;
+  noStroke(); fill('#EBF77B');
+  for (let i = 0; i < n; i++) {
+    const p = easeOutCubic(segProg(lt, 0.1 + 0.2 * i, 0.1 + 0.2 * i + 0.5));
+    const wobble = 1 + 0.16 * Math.sin(lt * 3.2 + i * 1.7) * segProg(lt, 0.9, 1.4);
+    const h = Math.max(0, maxH * (0.4 + 0.3 * i) * p * wobble);
+    rect(x0 + i * (bw + gap), base - h, bw, h);
+  }
+}
+
+function iconFinePrint(iw, ih, lt) {
+  const dw = iw * 0.5, dh = Math.min(ih * 0.58, dw * 1.3), dx = (iw - dw) / 2, dy = (ih - dh) / 2 + 6;
+  const grow = easeOutBack(segProg(lt, 0, 0.4));
+  const lineAt = i => ({
+    x: dx + 16, y: dy + 18 + i * (dh - 36) / 10,
+    w: (dw - 32) * (i === 9 ? 0.5 : 0.75 + 0.25 * ((i * 37) % 3) / 2) * easeOutCubic(segProg(lt, 0.2 + 0.05 * i, 0.2 + 0.05 * i + 0.3)),
+  });
+  const drawLines = () => { for (let i = 0; i < 10; i++) { const l = lineAt(i); rect(l.x, l.y, l.w, 3.5, 1.75); } };
+  push();
+  translate(iw / 2, dy + dh / 2);
+  scale(Math.max(grow, 0));
+  translate(-iw / 2, -(dy + dh / 2));
+  noStroke(); fill('#FFFFFF'); rect(dx, dy, dw, dh, 10);
+  fill('#4033E8'); drawLines();
+
+  const R = 48, mx = dx + dw * 0.5 + Math.sin(lt * 2.2) * dw * 0.14, my = dy + dh * 0.55 + Math.cos(lt * 1.7) * dh * 0.1;
+  const ctx = drawingContext;
+  ctx.save();
+  ctx.beginPath(); ctx.arc(mx, my, R, 0, Math.PI * 2); ctx.clip();
+  noStroke(); fill('#FFFFFF'); circle(mx, my, R * 2);
+  push();
+  translate(mx, my); scale(2.1); translate(-mx, -my);
+  fill('#4033E8'); drawLines();
+  pop();
+  ctx.restore();
+  noFill(); stroke('#4033E8'); strokeWeight(8); strokeCap(ROUND);
+  circle(mx, my, R * 2); line(mx + R * 0.72, my + R * 0.72, mx + R * 1.4, my + R * 1.4);
+  pop();
+  noStroke();
+}
+
+function iconInfographic(lt) {
+  const showAt = d => { drawingContext.globalAlpha = fadeIn(lt, d); };
+  noStroke(); fill('#CE64ED'); rect(0, 0, 230, 155);
+  fill('#EBF77B');
+  showAt(0.1); rect(18, 16, 70, 8, 4); rect(18, 32, 40, 8, 4);
+  showAt(0.25); rect(18, 58, 100, 42, 4);
+  showAt(0.4); rect(50, 114, 68, 18, 3);
+  showAt(0.5); rect(134, 14, 3, 128);
+  showAt(0.6); rect(150, 70, 56, 7, 3); rect(150, 84, 36, 7, 3);
+  noFill(); stroke('#EBF77B'); strokeWeight(3);
+  showAt(0.4); rect(18, 112, 22, 22);
+  showAt(0.7); rect(150, 108, 64, 28, 6);
+  showAt(0.8); rect(172, 14, 40, 40);
+  drawingContext.globalAlpha = 1; noStroke();
+}
+
+function iconVideo(lt) {
+  noStroke(); fill(BG); rect(0, 0, 230, 155);
+  const pulse = 1 + 0.07 * Math.sin(lt * 5);
+  push(); translate(115, 62); scale(pulse);
+  fill('#EBF77B'); triangle(-18, -26, -18, 26, 28, 0);
+  pop();
+  fill('#FF9CF6'); rect(20, 122, 190, 8, 4);
+  const w = 190 * 0.8 * easeOutCubic(Math.min(1, lt / 1.2));
+  fill('#DD5CF4'); rect(20, 122, Math.max(w, 0.1), 8, 4);
+  fill('#FFFFFF'); circle(20 + w, 126, 14);
+}
+
+function iconChecklist(lt) {
+  for (let i = 0; i < 3; i++) {
+    const y = 26 + i * 42, p = easeOutBack(segProg(lt, 0.15 + 0.25 * i, 0.15 + 0.25 * i + 0.3));
+    noStroke(); fill('#FFFFFF'); rect(46, y - 7, 170 * fadeIn(lt, 0.2 + 0.25 * i, 0.35), 14, 7);
+    push(); translate(18, y); scale(Math.max(p, 0));
+    fill('#FFFFFF'); circle(0, 0, 28);
+    noFill(); stroke('#6449E2'); strokeWeight(3.5); strokeCap(ROUND); strokeJoin(ROUND);
+    beginShape(); vertex(-6, 0); vertex(-1.5, 5); vertex(7, -5); endShape();
+    pop();
+    noStroke();
+  }
+}
+
+function iconLock(lt) {
+  const grow = easeOutBack(segProg(lt, 0, 0.4));
+  const unlocked = easeInOutCubic(segProg(lt, 0.7, 1.2));
+  const fw = 86, fh = 86, sideW = 22, r = 9;
+  push();
+  translate(98, 92);
+  scale(Math.max(grow, 0));
+  push();
+  translate(fw / 2 - 8, 0);
+  translate(0, -12 * unlocked);
+  rotate(-0.55 * unlocked);
+  noFill(); stroke('#7A5DF5'); strokeWeight(14); strokeCap(SQUARE);
+  line(-52, 0, -52, -26); line(0, -26, 0, 0);
+  arc(-26, -26, 52, 52, PI, TWO_PI);
+  pop();
+  noStroke();
+  fill('#2E24B8'); rect(fw / 2 - 12, 0, sideW + 12, fh, r);
+  fill(INK); rect(-fw / 2, 0, fw, fh, r);
+  fill('#FFFFFF'); circle(0, 32, 18); rect(-5, 36, 10, 26, 3);
+  if (unlocked > 0.4) {
+    stroke('#7A5DF5'); strokeWeight(5); strokeCap(ROUND);
+    drawingContext.globalAlpha = Math.min(1, (unlocked - 0.4) * 2);
+    line(-36, -52, -48, -62); line(-22, -68, -26, -82); line(-48, -36, -62, -38);
+    drawingContext.globalAlpha = 1;
+  }
+  pop();
+  noStroke();
+}
+
+function drawCard(c, x, y, lt) {
+  const ctx = drawingContext;
+  push();
+  translate(x, y);
+  noStroke(); fill(c.bg);
+  rect(0, 0, CARD_W, CARD_H, CARD_R);
+
+  push(); translate(CARD_W - 40 - 230, 40); c.icon(lt); pop();
+  noStroke();
+
+  fill(c.tc || INK);
+  ctx.textBaseline = 'alphabetic';
+  ctx.font = `500 22px ${SANS}`;
+  ctx.letterSpacing = '3px';
+  if (c.label) ctx.fillText(c.label, TEXT_PAD, CARD_H - TEXT_BOTTOM - 60 * c.title.length - 24);
+  const size = 54, lineStep = 60;
+  ctx.font = `500 ${size}px ${SANS}`;
+  ctx.letterSpacing = (SANS_TRACK * size) + 'px';
+  c.title.forEach((line, i) => ctx.fillText(line, TEXT_PAD, CARD_H - TEXT_BOTTOM - lineStep * (c.title.length - 1 - i)));
+  ctx.letterSpacing = '0px';
+  pop();
+}
+
+function drawCards(t) {
+  const lockOpenAt = CARD_START + (CARDS.length - 1) * CARD_GAP + 0.75;
+  CARDS.forEach((c, j) => {
+    const u = t - (CARD_START + j * CARD_GAP);
+    const p = easeOutCubic(segProg(u, 0, CARD_IN));
+    if (p <= 0) return;
+    const cx = CARD_X + j * STACK_DX + CARD_W / 2, cy = CARD_Y + j * STACK_DY + CARD_H / 2;
+    const sc = 1.12 - 0.12 * p;
+    drawingContext.globalAlpha = p;
+    push();
+    const x = Math.max(0, t - lockOpenAt - 0.05 * (CARDS.length - 1 - j));
+    const hopY = -30 * Math.exp(-4 * x) * Math.abs(Math.sin(x * 11));
+    translate(cx, cy + (1 - p) * 40 + hopY);
+    scale(sc);
+    drawCard(c, -CARD_W / 2, -CARD_H / 2, u);
+    pop();
+    drawingContext.globalAlpha = 1;
+  });
+}
+
+function fontStr(st, size) { return st === 'd' ? `400 ${size}px ${DISP}` : `500 ${size}px ${SANS}`; }
+
+function loadFonts() {
+  return new Promise(res => {
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=Shrikhand&family=Inter:wght@400;500&display=swap';
+    l.onload = res; l.onerror = res;
+    document.head.appendChild(l);
+    setTimeout(res, 4000);
+  }).then(() => Promise.all([
+    document.fonts.load('100px Shrikhand'), document.fonts.load('500 100px Inter'), document.fonts.load('400 100px Inter'),
+  ]).catch(() => {}));
+}
+
+function lineWidth(ctx, text, st, size) {
+  const track = (st === 'd' ? DISP_TRACK : SANS_TRACK) * size;
+  const space = (st === 'd' ? DISP_SPACE : SANS_SPACE) * size;
+  ctx.font = fontStr(st, size);
+  ctx.letterSpacing = '0px';
+  const words = text.split(' ');
+  return words.reduce((a, w) => a + ctx.measureText(w).width + track * w.length, 0) + space * (words.length - 1);
+}
+
+function drawLine(ctx, text, st, size, x, y, wordFx) {
+  const track = (st === 'd' ? DISP_TRACK : SANS_TRACK) * size;
+  const space = (st === 'd' ? DISP_SPACE : SANS_SPACE) * size;
+  ctx.font = fontStr(st, size);
+  ctx.letterSpacing = track + 'px';
+  text.split(' ').forEach((w, i) => {
+    const fx = wordFx ? wordFx(i) : null;
+    if (!fx || fx.alpha > 0.001) {
+      ctx.globalAlpha = fx ? fx.alpha : 1;
+      ctx.fillText(w, x, y + (fx ? fx.dy : 0));
+    }
+    x += ctx.measureText(w).width + space;
+  });
+  ctx.globalAlpha = 1;
+}
+
+function layoutScenes() {
+  const ctx = drawingContext;
+  const sizeOf = (st, S) => (st === 'd' ? S : S * SANS_RATIO);
+  const lead = st => (st === 'd' ? DISP_LEAD : SANS_LEAD);
+  const blockH = (sc, S) => sc.lines.reduce((a, [t, st]) => a + sizeOf(st, S) * lead(st), 0);
+  const fitsScene = (sc, S) => blockH(sc, S) <= MAX_H &&
+    sc.lines.every(([t, st]) => lineWidth(ctx, t, st, sizeOf(st, S)) <= MAX_W);
+  SIZE_GROUPS.forEach(group => {
+    let S = MAX_SIZE;
+    while (S > 20 && !group.every(i => fitsScene(SCENES[i], S))) S -= 2;
+    group.forEach(i => {
+      const sc = SCENES[i];
+      let y = (H - blockH(sc, S)) / 2;
+      let wordIndex = 0;
+      sc.items = sc.lines.map(([t, st]) => {
+        const size = sizeOf(st, S), lh = size * lead(st);
+        const x = sc.center ? (W - lineWidth(ctx, t, st, size)) / 2 : MARGIN;
+        const item = { t, st, size, x, y: y + lh / 2 + size * 0.3, w0: wordIndex };
+        wordIndex += t.split(' ').length;
+        y += lh;
+        return item;
+      });
+    });
+  });
+  ctx.letterSpacing = '0px';
+}
+
+// the piece is 1920 x 1080; scale it to fit the space under the nav
+function fitCanvas() {
+  const el = drawingContext.canvas;
+  const s = Math.min(window.innerWidth / W, (window.innerHeight - NAV_H) / H);
+  el.style.width = Math.floor(W * s) + 'px';
+  el.style.height = Math.floor(H * s) + 'px';
+}
+
+function setup() {
+  createCanvas(W, H);
+  pixelDensity(1);
+  frameRate(60);
+  noStroke();
+  fitCanvas();
+  background(BG);
+  loadFonts().then(() => { layoutScenes(); ready = true; t0 = millis(); });
+}
+function windowResized() { fitCanvas(); }
+function mousePressed() { t0 = millis(); }
+function keyPressed() { if (key === 'r' || key === 'R') t0 = millis(); }
+
+function draw() {
+  if (!ready) return;
+  const fixed = new URLSearchParams(location.search).get('t');
+  if (fixed !== null) { renderSpot(+fixed); noLoop(); return; }
+  let el = (millis() - t0) / 1000;
+  if (el > DUR + END_HOLD) { t0 = millis(); el = 0; }
+  renderSpot(Math.min(el, DUR));
+}
+
+function renderSpot(t) {
+  resetMatrix();
+  rectMode(CORNER);
+  noStroke();
+  fill(BG);
+  rect(0, 0, W, H);
+
+  const ctx = drawingContext;
+  ctx.textBaseline = 'alphabetic';
+
+  const drawSceneText = k => {
+    fill(FG);
+    SCENES[k].items.forEach((it, i) => {
+      const d = STAG * i;
+      const off = (k - slidePos(t, d)) * W;
+      if (off > W || off < -W) return;
+
+      const fadeOut = k === 0 ? 1 - easeInOutCubic(segProg(t, TEXT_FADE_START, TEXT_FADE_START + TEXT_FADE)) : 1;
+      if (fadeOut <= 0) return;
+      const build = k === 0 ? (wi => {
+        const s0 = WORD_START + WORD_GAP * (it.w0 + wi);
+        const p = easeOutCubic(segProg(t, s0, s0 + WORD_IN));
+        return { alpha: p * fadeOut, dy: (1 - p) * 70 };
+      }) : null;
+      drawLine(ctx, it.t, it.st, it.size, it.x + off, it.y, build);
+    });
+  };
+
+  drawSceneText(0);
+  const textLead = MARGIN + (1 - slidePos(t, 0)) * W;
+  const groupRight = Math.max(...STAMPS.map(st => st.x + st.w));
+  const contactAt = groupRight + PUSH_GAP;
+  const groupPushed = Math.min(0, textLead - contactAt);
+  const groupCarry = MARGIN * Math.min(1, Math.max(0, (contactAt - textLead) / (contactAt - MARGIN)));
+  const groupOff = groupPushed - groupCarry;
+  STAMPS.forEach((st, i) => {
+    const right = st.x + st.w;
+    const off = groupOff;
+    if (right + off < -60) return;
+    const p = easeOutCubic(segProg(t, STAMP_START + STAMP_GAP * i, STAMP_START + STAMP_GAP * i + STAMP_IN));
+    if (p <= 0) return;
+    drawStamp(st, off, 0, 1.25 - 0.25 * p, p, t - (STAMP_START + STAMP_GAP * i));
+  });
+  drawSceneText(1);
+  drawCards(t);
+  ctx.letterSpacing = '0px';
+}

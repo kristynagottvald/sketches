@@ -236,5 +236,22 @@
         "alt": "Brand Colors"
       }
     ]
+  },
+  {
+    "id": "postal-fix-animation",
+    "title": "Postal Fix Animation",
+    "category": "Motion",
+    "year": 2026,
+    "thumbnail": "postal-fix-animation/thumbnail.jpg?v=1",
+    "url": "postal-fix-animation/",
+    "blurb": "A full motion piece built entirely in code: stamps, cards and type animate in sequence like a video.",
+    "preview": "clips/postal-fix-animation.webp?v=1",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "postal-fix-animation/thumbnail.jpg",
+        "alt": "Postal Fix Animation"
+      }
+    ]
   }
 ]
