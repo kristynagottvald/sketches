@@ -47,6 +47,14 @@ function setup() {
       padding: 30px 20px;
     }
 
+    .page-title {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #105B52;
+      margin: 0;
+    }
+
     .app-container {
       width: 100%;
       max-width: 1050px;
@@ -316,6 +324,9 @@ function setup() {
 
   // Root Container with ID
   let app = createDiv().class('app-container').id('artboard').parent('stage');
+
+  // Title
+  createElement('h1', 'Metacognitive Prompt Helper').class('page-title').parent(app);
 
   // Top Bar
   let apiHeader = createDiv().class('api-header').parent(app);

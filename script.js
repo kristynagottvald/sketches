@@ -92,28 +92,28 @@
     clearInterval(clipTimer);
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const imgs = [...grid.querySelectorAll('.pj-tile')].sort((a, b) => a.dataset.i - b.dataset.i).map((tile) => tile.querySelector('img[data-preview]'));
-    let phase = 0;
-    const set = (im, play) => {
+    let phase = 0, active = 0, hoverI = -1;
+    const checker = (i) => ((i % 2) + Math.floor(i / 2)) % 2;   // tile i sits in column i % 2, row floor(i / 2)
+    const want = (i) => checker(i) === active || i === hoverI;   // the hovered tile keeps looping
+    const set = (i, play) => {
+      const im = imgs[i];
       if (!im || !im.dataset.preview) return;
       // a fresh <img> on the cached clip always starts from its first frame
       const fresh = im.cloneNode();
       fresh.src = play ? im.dataset.preview : im.dataset.still;
+      fresh.dataset.on = play ? '1' : '0';
       im.replaceWith(fresh);
-      imgs[imgs.indexOf(im)] = fresh;
+      imgs[i] = fresh;
     };
+    const sync = () => imgs.forEach((im, i) => { if (im && im.dataset.on !== (want(i) ? '1' : '0')) set(i, want(i)); });
     const tick = () => {
       if (document.hidden) return;
-      // checkerboard over the two-column layout: tile i sits in column i % 2, row floor(i / 2)
-      imgs.slice().forEach((im, i) => {
-        const on = (((i % 2) + Math.floor(i / 2)) % 2) === phase;
-        if ((im.dataset.on === '1') === on && im.dataset.on !== undefined) return;
-        set(im, on);
-        imgs[i].dataset.on = on ? '1' : '0';
-      });
-      phase = 1 - phase;
+      active = phase; sync(); phase = 1 - phase;
       // fetch the other half's clips now so they are cached when they take over
-      imgs.forEach((im, i) => { if (im && im.dataset.preview && (((i % 2) + Math.floor(i / 2)) % 2) === phase) new Image().src = im.dataset.preview; });
+      imgs.forEach((im, i) => { if (im && im.dataset.preview && checker(i) === phase) new Image().src = im.dataset.preview; });
     };
+    grid.addEventListener('mouseover', (e) => { const t = e.target.closest('.pj-tile'); if (!t) return; const i = +t.dataset.i; if (i !== hoverI) { hoverI = i; sync(); } });
+    grid.addEventListener('mouseout', (e) => { const t = e.target.closest('.pj-tile'); if (!t || (e.relatedTarget && t.contains(e.relatedTarget))) return; hoverI = -1; sync(); });
     tick();
     clipTimer = setInterval(tick, CLIP_MS);
   }
