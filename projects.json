@@ -191,7 +191,7 @@
     "title": "Mail Stack",
     "category": "Generative Art",
     "year": 2026,
-    "thumbnail": "mail-stack/thumbnail.jpg?v=1",
+    "thumbnail": "mail-stack/thumbnail.jpg?v=2",
     "url": "mail-stack/",
     "blurb": "A ribbon of postcards flows along a curve; hover one to reveal its heatmap and reshape the path with the controls.",
     "preview": "clips/mail-stack.webp?v=1",
@@ -208,7 +208,7 @@
     "title": "Brand Colors",
     "category": "Generative Art",
     "year": 2026,
-    "thumbnail": "motion-character/thumbnail.jpg?v=1",
+    "thumbnail": "motion-character/thumbnail.jpg?v=2",
     "url": "motion-character/",
     "blurb": "Four colour panels wipe in and out in a staggered, eased sequence.",
     "preview": "clips/motion-character.webp?v=1",
@@ -225,7 +225,7 @@
     "title": "Postal Fix Animation",
     "category": "Motion",
     "year": 2026,
-    "thumbnail": "postal-fix-animation/thumbnail.jpg?v=1",
+    "thumbnail": "postal-fix-animation/thumbnail.jpg?v=2",
     "url": "postal-fix-animation/",
     "blurb": "A full motion piece built entirely in code: stamps, cards and type animate in sequence like a video.",
     "preview": "clips/postal-fix-animation.webp?v=1",
@@ -242,7 +242,7 @@
     "title": "Brand Motion System",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "brand-motion/thumbnail.jpg?v=1",
+    "thumbnail": "brand-motion/thumbnail.jpg?v=2",
     "url": "brand-motion/",
     "blurb": "Pick a motion motif, set the brand palette and type, and drag the pieces around the frame.",
     "caseStudyContent": [
@@ -252,6 +252,6 @@
         "alt": "Brand Motion System"
       }
     ],
-    "preview": "clips/brand-motion.webp?v=1"
+    "preview": "clips/brand-motion.webp?v=2"
   }
 ]
