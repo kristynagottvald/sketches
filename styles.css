@@ -119,8 +119,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .work-side { padding: 0 0 24px var(--indent); }
 .work-side-in { display: flex; flex-direction: column; gap: 12px; }
 .work-side-foot, #work-active { display: none; }
-.work-sub { font-family: var(--cond); font-weight: 300; font-size: 16px; line-height: 1.4; max-width: 28em; padding-right: 24px; margin-top: 4px; text-wrap: balance; }
-@media (min-width: 640px) { .work-sub { font-size: 18px; margin-top: 12px; } }
+.work-sub { font-size: 19px; line-height: 27px; color: var(--ink); max-width: 28em; padding-right: 24px; margin-top: 12px; }
 .work-list { display: grid; gap: 24px; }
 .card a { display: flex; flex-direction: column; gap: 9px; transition: opacity .17s linear; }
 .card-media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--r-md); background: var(--off-black); }
