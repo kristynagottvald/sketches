@@ -120,7 +120,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .work-side-in { display: flex; flex-direction: column; gap: 12px; }
 .work-side-foot, #work-active { display: none; }
 .work-sub { font-size: 17px; line-height: 24px; color: var(--ink); max-width: 100%; padding-right: 24px; margin-top: 12px; }
-@media (min-width: 900px) { .work-sub { max-width: 13.8em; } }
+@media (min-width: 900px) { .work-sub { max-width: 18em; } }
 .work-list { display: grid; gap: 24px; }
 .card a { display: flex; flex-direction: column; gap: 9px; transition: opacity .17s linear; }
 .card-media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--r-md); background: var(--off-black); }
@@ -139,7 +139,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
      makes the first card centred at the moment it pins, so the description and thumbnail sit at the bottom
      edge and are visible while the first project is active. */
   .work { --card-h: calc((100vw - 24px) * 0.3516); padding-top: 0; }
-  .work .pj-grid { padding-top: 8px; }
+  .work .pj-grid { padding-top: 8px; width: 76.5%; margin-left: auto; } /* gallery 15% + 10% narrower */
   .work-side-in { position: static; padding: min(15svh, 120px) 0 16px; gap: 0; }
   #work-active { display: block; min-height: 1.2em; max-width: 12em; padding-right: 24px; text-wrap: balance; transition: opacity .2s; }
   .work-side-foot { display: flex; flex-direction: column; gap: 48px; margin-top: auto; }
