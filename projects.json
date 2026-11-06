@@ -54,6 +54,24 @@
     "preview": "clips/marketing-mine.webp?v=5"
   },
   {
+    "id": "pattern-generator",
+    "title": "Pattern Generator",
+    "category": "Interactive Engine",
+    "year": 2026,
+    "thumbnail": "pattern-generator/thumbnail.jpg?v=1",
+    "url": "pattern-generator/",
+    "blurb": "An ASCII pattern engine for brand backgrounds, with seven motifs, movable objects and live brand colours.",
+    "about": "Pattern Generator is an ASCII pattern engine that turns rows of code, tickers and contract text into animated brand backgrounds. Pick a motif, then choose whether the pattern fills the wall, sits inside an object, or mixes both. Drag on the artboard to move a gem, circle, ring, square or your own word, and use the panel to set direction, speed, density, spacing and colour. Press 1 to 7 to switch motifs, Space to pause, and Export PNG to save the result.",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "pattern-generator/thumbnail.jpg",
+        "alt": "Pattern Generator"
+      }
+    ],
+    "preview": "clips/pattern-generator.webp?v=1"
+  },
+  {
     "id": "kickoff-type-lab",
     "title": "Kick Off Type Lab",
     "category": "Interactive Tool",
