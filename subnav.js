@@ -40,7 +40,7 @@
     cur = Math.max(0, list.findIndex((p) => here.endsWith('/' + p.id + '/')));
     start = cur;
     host.innerHTML = `<div class="np-carousel"><div class="np-view"><div class="np-track">${list.map((p, i) =>
-      `<a class="nav-proj" href="../${esc(p.url || '#' + p.id)}"${i === cur ? ' aria-current="page"' : ''}><span class="np-img"><img src="../${esc(p.thumbnail)}" data-still="../${esc(p.thumbnail)}" data-preview="${p.preview ? '../' + esc(p.preview) : ''}" alt="">${i === cur ? `<span class="np-seen">${EYE}Just seen</span>` : ''}</span><span>${esc(p.title)}</span></a>`).join('')}</div></div>
+      `<a class="nav-proj" href="../${esc(p.url || '#' + p.id)}"${i === cur ? ' aria-current="page"' : ''}><span class="np-img"><img src="../${esc(p.thumbnail)}" data-still="../${esc(p.thumbnail)}" data-preview="${p.preview ? '../' + esc(p.preview) : ''}" alt="">${i === cur ? `<span class="np-seen">${EYE}Viewing</span>` : ''}</span><span>${esc(p.title)}</span></a>`).join('')}</div></div>
       <button class="np-btn" type="button" aria-label="Previous projects" hidden>${arrow(-1)}</button>
       <button class="np-btn" type="button" aria-label="Next projects" hidden>${arrow(1)}</button></div>
       <aside class="np-about" aria-live="polite"><h3>About this project</h3><p></p></aside>`;
