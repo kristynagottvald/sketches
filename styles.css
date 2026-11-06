@@ -362,6 +362,7 @@ a.next:hover .hint-arrow { transform: translate(2px, -2px); }
 .work .pj-media { border-radius: 8px; }
 
 /* Home heading letter bounce */
+.bw { display: inline-block; white-space: nowrap; }
 .bl { display: inline-block; }
 .bl.hop { animation: bl-hop .6s var(--ease) both; }
 @keyframes bl-hop { 0% { transform: translateY(0); } 35% { transform: translateY(-.16em); } 100% { transform: translateY(0); } }

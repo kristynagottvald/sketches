@@ -303,11 +303,18 @@
     [...h.childNodes].forEach((n) => {
       if (n.nodeType !== 3) return;
       const frag = document.createDocumentFragment();
-      [...n.textContent].forEach((ch) => {
-        if (ch === ' ') { frag.appendChild(document.createTextNode(' ')); return; }
-        const sp = document.createElement('span');
-        sp.className = 'bl'; sp.setAttribute('aria-hidden', 'true'); sp.textContent = ch;
-        letters.push(sp); frag.appendChild(sp);
+      n.textContent.split(/(\s+)/).forEach((word) => {
+        if (!word) return;
+        if (/^\s+$/.test(word)) { frag.appendChild(document.createTextNode(' ')); return; }
+        // Keep each word's letters together so a line never breaks mid-word.
+        const w = document.createElement('span');
+        w.className = 'bw';
+        [...word].forEach((ch) => {
+          const sp = document.createElement('span');
+          sp.className = 'bl'; sp.setAttribute('aria-hidden', 'true'); sp.textContent = ch;
+          letters.push(sp); w.appendChild(sp);
+        });
+        frag.appendChild(w);
       });
       n.replaceWith(frag);
     });
