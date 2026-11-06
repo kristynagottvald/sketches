@@ -7,7 +7,7 @@
     "thumbnail": "direct-mail-engine/thumbnail.jpg?v=5",
     "url": "direct-mail-engine/",
     "blurb": "A real-time customizable direct mail mock-up generator across industries.",
-    "about": "A direct mail mock-up generator that re-skins one postcard template for any industry in real time. Pick a variant from the Mock Library on the right to swap the copy, colours and imagery, use the zoom controls to inspect the details, and choose Reset Default to return to the starting piece.",
+    "about": "Industry Swapper Plug-in is a direct mail mock-up generator that re-skins one postcard template for any industry in real time. Pick a variant from the Mock Library on the right to swap the copy, colours and imagery, use the zoom controls to inspect the details, and choose Reset Default to return to the starting piece.",
     "caseStudyContent": [
       {
         "type": "image",
@@ -25,7 +25,7 @@
     "thumbnail": "ribbon-text/thumbnail.jpg?v=5",
     "url": "ribbon-text/",
     "blurb": "Text that flows along noise-driven ribbons, with live controls and SVG export.",
-    "about": "Type that flows along a looping, noise-driven ribbon, built for awards and event graphics. Enter your own text in the control panel, one phrase per line, then adjust weight, spacing, thickness and wiggle. Choose Randomize Pattern for a new path and Download SVG to take the result into your design tools.",
+    "about": "Postmark Awards sets type flowing along a looping, noise-driven ribbon, built for awards and event graphics. Enter your own text in the control panel, one phrase per line, then adjust weight, spacing, thickness and wiggle. Choose Randomize Pattern for a new path and Download SVG to take the result into your design tools.",
     "caseStudyContent": [
       {
         "type": "image",
@@ -43,7 +43,7 @@
     "thumbnail": "marketing-mine/thumbnail.jpg?v=5",
     "url": "marketing-mine/",
     "blurb": "A minesweeper where every mine reveals a direct mail marketing tip.",
-    "about": "Minesweeper rebuilt as a direct mail lesson, where every mine you uncover reveals a marketing tip. Click a square to reveal it. Right-click, or press and hold on a touch screen, to flag a suspected mine. Clear the board to win.",
+    "about": "Marketing Minesweeper is minesweeper rebuilt as a direct mail lesson, where every mine you uncover reveals a marketing tip. Click a square to reveal it. Right-click, or press and hold on a touch screen, to flag a suspected mine. Clear the board to win.",
     "caseStudyContent": [
       {
         "type": "image",
@@ -61,7 +61,7 @@
     "thumbnail": "kickoff-type-lab/thumbnail.jpg?v=6",
     "url": "kickoff-type-lab/",
     "blurb": "A type tool for groovy, gooey, western lettering, with live spacing, warp and SVG export.",
-    "about": "A lettering tool for groovy, gooey western type. Type straight onto the canvas and click between letters to place the cursor. Use the panel to change the font, spacing, gooeyness, warp, stretch and shadow, switch on Animate warp to set it moving, then copy or download the result as an SVG.",
+    "about": "Kick Off Type Lab is a lettering tool for groovy, gooey western type. Type straight onto the canvas and click between letters to place the cursor. Use the panel to change the font, spacing, gooeyness, warp, stretch and shadow, switch on Animate warp to set it moving, then copy or download the result as an SVG.",
     "caseStudyContent": [
       {
         "type": "image",
@@ -79,7 +79,7 @@
     "thumbnail": "palette-compositions/thumbnail.jpg?v=5",
     "url": "palette-compositions/",
     "blurb": "Click to cycle palettes through randomly composed line, grid and stripe layouts.",
-    "about": "A study in how colour changes a layout, using randomly composed lines, grids and stripes. Click anywhere on the canvas to cycle to the next palette and redraw the composition.",
+    "about": "Palette Compositions is a study in how colour changes a layout, using randomly composed lines, grids and stripes. Click anywhere on the canvas to cycle to the next palette and redraw the composition.",
     "caseStudyContent": [
       {
         "type": "image",
@@ -97,7 +97,7 @@
     "thumbnail": "integratron/thumbnail.jpg?v=5",
     "url": "integratron/",
     "blurb": "A 3D desert dome cycling from day to night, with sound bath bowls on click and scroll.",
-    "about": "A 3D desert dome that drifts from day to night, inspired by sound bath bowls. Click to ring a bowl and scroll to zoom the camera in and out, with each scroll adding a higher bowl tone. Turn your sound on.",
+    "about": "Integratron is a 3D desert dome that drifts from day to night, inspired by sound bath bowls. Click to ring a bowl and scroll to zoom the camera in and out, with each scroll adding a higher bowl tone. Turn your sound on.",
     "preview": "clips/integratron.webp?v=5",
     "caseStudyContent": [
       {
@@ -115,7 +115,7 @@
     "thumbnail": "restaurant-tiles/thumbnail.jpg?v=5",
     "url": "restaurant-tiles/",
     "blurb": "A tile layout of restaurant UI details: tip pools, guest checks, type specimens and palette cards you can click.",
-    "about": "A bento-style tile layout of restaurant interface details, including tip pools, guest checks, type specimens and palette cards. Click the tiles to interact with them: toggle a saved state, change the check split, tick off items and flip switches.",
+    "about": "Bento Brand Showcase is a bento-style tile layout of restaurant interface details, including tip pools, guest checks, type specimens and palette cards. Click the tiles to interact with them: toggle a saved state, change the check split, tick off items and flip switches.",
     "preview": "clips/restaurant-tiles.webp?v=5",
     "caseStudyContent": [
       {
@@ -133,7 +133,7 @@
     "thumbnail": "binary-grid/thumbnail.jpg?v=5",
     "url": "binary-grid/",
     "blurb": "Move the mouse and a diagonal wave flips a grid of 0s and 1s into colour.",
-    "about": "A grid of 0s and 1s that turns into colour as a diagonal wave sweeps across it. Move your mouse left and right to steer the wave, and watch the numbers flip into colour blocks behind it.",
+    "about": "No-Code Binary Motif is a grid of 0s and 1s that turns into colour as a diagonal wave sweeps across it. Move your mouse left and right to steer the wave, and watch the numbers flip into colour blocks behind it.",
     "preview": "clips/binary-grid.webp?v=5",
     "caseStudyContent": [
       {
@@ -151,7 +151,7 @@
     "thumbnail": "sound-bars/thumbnail.jpg?v=5",
     "url": "sound-bars/",
     "blurb": "Brush across drifting bars to play notes; each bar fades into a rising echo.",
-    "about": "Drifting bars you can play like an instrument. Click once to start the sound, then brush your mouse across the bars to trigger notes. Each bar fades out into a rising echo, and moving higher or lower on the screen opens or closes the filter.",
+    "about": "Temporary Notes is a field of drifting bars you can play like an instrument. Click once to start the sound, then brush your mouse across the bars to trigger notes. Each bar fades out into a rising echo, and moving higher or lower on the screen opens or closes the filter.",
     "preview": "clips/sound-bars.webp?v=5",
     "caseStudyContent": [
       {
@@ -169,7 +169,7 @@
     "thumbnail": "text-repeater/thumbnail.jpg?v=5",
     "url": "text-repeater/",
     "blurb": "One word repeats outward in ever larger lines, pulsing from the centre in a ripple.",
-    "about": "One word repeated outward in ever larger lines, pulsing from the centre in a ripple. Sit back and watch the rhythm, or resize the window to see the type rescale and the ripple reflow.",
+    "about": "Text Repeater sets one word repeating outward in ever larger lines, pulsing from the centre in a ripple. Sit back and watch the rhythm, or resize the window to see the type rescale and the ripple reflow.",
     "preview": "clips/text-repeater.webp?v=5",
     "caseStudyContent": [
       {
@@ -187,7 +187,7 @@
     "thumbnail": "prompt-machine/thumbnail.jpg?v=3",
     "url": "prompt-machine/",
     "blurb": "Rewrites a basic prompt into a metacognitive Identify, Evaluate, Update prompt with the Gemini API.",
-    "about": "A tool that rewrites a basic prompt into a metacognitive prompt that asks the model to identify, evaluate and update its thinking. Type or paste a prompt in the Input Prompt box, choose whether Thinking is on, and press Transform. Compare the original and rewritten prompts side by side, then use Copy Output.",
+    "about": "Metacognitive Prompt Helper rewrites a basic prompt into a metacognitive prompt that asks the model to identify, evaluate and update its thinking. Type or paste a prompt in the Input Prompt box, choose whether Thinking is on, and press Transform. Compare the original and rewritten prompts side by side, then use Copy Output.",
     "preview": "clips/prompt-machine.webp?v=3",
     "caseStudyContent": [
       {
@@ -205,7 +205,7 @@
     "thumbnail": "mail-stack/thumbnail.jpg?v=2",
     "url": "mail-stack/",
     "blurb": "A ribbon of postcards flows along a curve; hover one to reveal its heatmap and reshape the path with the controls.",
-    "about": "A ribbon of postcards flows along a curve and floats gently as it goes. Hover a card to reveal its heatmap. Open Controls to change the curve spread, float intensity, stack density and point density, or choose Randomize Curve Shape for a new path.",
+    "about": "Mail Stack is a ribbon of postcards that flows along a curve and floats gently as it goes. Hover a card to reveal its heatmap. Open Controls to change the curve spread, float intensity, stack density and point density, or choose Randomize Curve Shape for a new path.",
     "preview": "clips/mail-stack.webp?v=1",
     "caseStudyContent": [
       {
@@ -223,7 +223,7 @@
     "thumbnail": "motion-character/thumbnail.jpg?v=2",
     "url": "motion-character/",
     "blurb": "Four colour panels wipe in and out in a staggered, eased sequence.",
-    "about": "Four brand colour panels wipe in and out in a staggered, eased sequence. It runs on a loop, so watch how the timing and easing give flat colour a sense of character.",
+    "about": "Brand Colors is four brand colour panels wiping in and out in a staggered, eased sequence. It runs on a loop, so watch how the timing and easing give flat colour a sense of character.",
     "preview": "clips/motion-character.webp?v=1",
     "caseStudyContent": [
       {
@@ -241,7 +241,7 @@
     "thumbnail": "postal-fix-animation/thumbnail.jpg?v=2",
     "url": "postal-fix-animation/",
     "blurb": "A full motion piece built entirely in code: stamps, cards and type animate in sequence like a video.",
-    "about": "A full motion piece built entirely in code, with stamps, cards and type animating in sequence like a video. It plays on a loop. Click anywhere, or press R, to restart it from the beginning.",
+    "about": "Postal Fix Animation is a full motion piece built entirely in code, with stamps, cards and type animating in sequence like a video. It plays on a loop. Click anywhere, or press R, to restart it from the beginning.",
     "preview": "clips/postal-fix-animation.webp?v=1",
     "caseStudyContent": [
       {
@@ -259,7 +259,7 @@
     "thumbnail": "brand-motion/thumbnail.jpg?v=2",
     "url": "brand-motion/",
     "blurb": "Pick a motion motif, set the brand palette and type, and drag the pieces around the frame.",
-    "about": "A system for building brand motion from a few rules. Pick a motion motif such as Grow, Orbit, Stack or Macro, set the brand palette and type, and press Randomize for a new combination. Drag the pieces around the frame to compose your own layout.",
+    "about": "Brand Motion System is a way of building brand motion from a few rules. Pick a motion motif such as Grow, Orbit, Stack or Macro, set the brand palette and type, and press Randomize for a new combination. Drag the pieces around the frame to compose your own layout.",
     "caseStudyContent": [
       {
         "type": "image",
