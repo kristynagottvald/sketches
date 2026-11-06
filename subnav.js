@@ -47,7 +47,11 @@
     car = host.querySelector('.np-carousel');
     // the panel describes the project you are on; hovering another card previews its description
     const aboutP = host.querySelector('.np-about p');
-    const showAbout = (i) => { const p = list[i]; aboutP.textContent = (p && (p.about || p.blurb)) || ''; };
+    const showAbout = (i) => {
+      const p = list[i]; const t = (p && (p.about || p.blurb)) || '';
+      // the project name that opens the description is set in bold
+      aboutP.innerHTML = p && t.startsWith(p.title) ? `<strong>${esc(p.title)}</strong>${esc(t.slice(p.title.length))}` : esc(t);
+    };
     showAbout(cur);
     const cards = [...host.querySelectorAll('.nav-proj')];
     cards.forEach((a, i) => {
