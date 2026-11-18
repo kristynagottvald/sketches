@@ -127,19 +127,19 @@
   },
   {
     "id": "restaurant-tiles",
-    "title": "Bento Brand Showcase",
+    "title": "Reprise Tiles",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "restaurant-tiles/thumbnail.jpg?v=5",
+    "thumbnail": "restaurant-tiles/thumbnail.jpg?v=6",
     "url": "restaurant-tiles/",
-    "blurb": "A tile layout of restaurant UI details: tip pools, guest checks, type specimens and palette cards you can click.",
-    "about": "Bento Brand Showcase is a bento-style tile layout of restaurant interface details, including tip pools, guest checks, type specimens and palette cards. Click the tiles to interact with them: toggle a saved state, change the check split, tick off items and flip switches.",
-    "preview": "clips/restaurant-tiles.webp?v=5",
+    "blurb": "A tile layout of Reprise product details: permissions, prompts, type specimens and palette cards you can click.",
+    "about": "Reprise Tiles is a bento-style tile layout of Reprise product details, including edit permissions, prompt typing, type specimens and a stacking palette. Click the tiles to interact with them: change who can edit the demo, flip through the type specimen, shuffle the palette cards, flip the toggle and share the demo.",
+    "preview": "clips/restaurant-tiles.webp?v=6",
     "caseStudyContent": [
       {
         "type": "image",
         "src": "restaurant-tiles/thumbnail.jpg",
-        "alt": "Bento Brand Showcase"
+        "alt": "Reprise Tiles"
       }
     ]
   },
