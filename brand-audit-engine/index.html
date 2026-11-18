@@ -196,11 +196,6 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
             <div class="bl"><i class="g" id="barG"></i><span id="lblG"></span></div>
             <div class="bl"><i class="o" id="barO"></i><span id="lblO"></span></div>
           </div></div>
-        <hr class="div"><div id="accBox"><h4>Accuracy</h4>
-          <div class="acc">
-            <svg viewBox="0 0 104 104"><circle cx="52" cy="52" r="42" fill="none" stroke="#3b3b6b" stroke-width="12"/><circle id="ring" cx="52" cy="52" r="42" fill="none" stroke="#FF6F5B" stroke-width="12" stroke-dasharray="263.9" stroke-dashoffset="263.9"/></svg>
-            <div><big id="accN">0%</big><p>A person makes the final call.</p></div>
-          </div></div>
         <div class="decide" id="decide"><button class="btn ghost" id="bApprove">Approve</button><button class="btn" id="bChanges"><span id="bcT">Request changes</span><svg class="env" id="env" viewBox="0 0 27 19"><defs><mask id="envcut" maskUnits="userSpaceOnUse" x="0" y="0" width="27" height="19"><rect width="27" height="19" fill="#fff"/><circle cx="21" cy="14.5" r="6.2" fill="#000"/></mask></defs><g mask="url(#envcut)" fill="none" stroke="#0D0D2B" stroke-width="1.6" stroke-linejoin="round"><rect x="1" y="1" width="21" height="14" rx="2"/><path d="M1.8 2.4L11.5 9.6l9.7-7.2"/></g><path d="M18.1 14.6l2.1 2.1 3.9-4.3" fill="none" stroke="#0D0D2B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       </aside>
     </section>
@@ -490,7 +485,7 @@ const SCAN_LABELS = [[0, 'palette'], [.18, 'typography'], [.32, 'logo zone'], [.
 const cache = {};
 const setTxt = (id, el, v) => { if(cache[id] !== v){ cache[id] = v; el.textContent = v; } };
 const envEl = $('#env');
-const el = {estatus: $('#estatus'), eleft: $('#eleft'), eright: $('#eright'), cn: $('#cn'), cf: $('#cf'), lblG: $('#lblG'), lblO: $('#lblO'), accN: $('#accN'), barG: $('#barG'), barO: $('#barO'), ring: $('#ring'), decide: $('#decide'), bC: $('#bChanges'), bA: $('#bApprove'), accBox: $('#accBox')};
+const el = {estatus: $('#estatus'), eleft: $('#eleft'), eright: $('#eright'), cn: $('#cn'), cf: $('#cf'), lblG: $('#lblG'), lblO: $('#lblO'), barG: $('#barG'), barO: $('#barO'), decide: $('#decide'), bC: $('#bChanges'), bA: $('#bApprove')};
 
 function render(t){
   t = ((t % LOOP) + LOOP) % LOOP;
@@ -549,12 +544,9 @@ function render(t){
       f.nb.style.opacity = c;
     });
     /* results */
-    const g = easeOut(prog(t, 11800, 12600)), o = easeOut(prog(t, 12600, 13200)), a = easeOut(prog(t, 13200, 14400));
+    const g = easeOut(prog(t, 11800, 12600)), o = easeOut(prog(t, 12600, 13200));
     el.barG.style.transform = `scaleX(${g})`; el.barO.style.transform = `scaleX(${o})`;
     setTxt('lg', el.lblG, g > .55 ? '5 min' : ''); setTxt('lo', el.lblO, o > .55 ? '20 sec' : '');
-    el.ring.style.strokeDashoffset = (263.9 * (1 - .91 * a)).toFixed(1);
-    setTxt('an', el.accN, Math.round(91 * a) + '%');
-    el.accBox.style.opacity = prog(t, 13100, 13500);
     const dv = easeOut(prog(t, 16500, 17000)); el.decide.style.opacity = dv; el.decide.style.transform = `translateY(${(1 - dv) * 10}px)`;
     el.bC.classList.toggle('press', t > 17950 && t < 18100);
     setTxt('bc', $('#bcT'), decided ? 'Changes requested' : 'Request changes');
