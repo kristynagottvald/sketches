@@ -12,3 +12,4 @@
 .site-nav .hb-label { font: 400 10px/1.2 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--grey); margin-right: -17px; }
 .site-nav .hb-toggle { margin-left: 0; width: 15px; height: 24px; position: relative; display: flex; align-items: center; color: var(--grey); }
 .site-nav .nav-ptr { display: block; transform: translateY(-3px) rotate(-45deg); transform-origin: 11.3px 10.4px; color: var(--grey); }
+.site-nav { z-index: 200; }
