@@ -196,7 +196,7 @@ function rectObj(x, y, w, h, restingCol, hoverCol, isOrange) {
     osc.freq(pitch);
     let env = new p5.Envelope();
     env.setADSR(0.1, 0.2, 0.3, 1.8);
-    env.setRange((type === 'triangle') ? 0.25 : 0.4, 0);
+    env.setRange((type === 'triangle') ? 0.06 : 0.1, 0);
     osc.amp(env);
     osc.disconnect();
     osc.connect(lpFilter);
