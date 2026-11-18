@@ -144,6 +144,60 @@
     ]
   },
   {
+    "id": "brand-audit-engine",
+    "title": "Brand Audit Engine",
+    "category": "Interactive Tool",
+    "year": 2026,
+    "thumbnail": "brand-audit-engine/thumbnail.jpg?v=1",
+    "url": "brand-audit-engine/",
+    "blurb": "A brand review library where an audit scans each asset and flags it as approved, needs review or changes.",
+    "about": "Brand Audit Engine is a mock asset library that audits campaign posts against brand rules. Watch assets move through scanning to approved, needs review or changes, and use the filters and search to explore the library.",
+    "preview": "clips/brand-audit-engine.webp?v=1",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "brand-audit-engine/thumbnail.jpg",
+        "alt": "Brand Audit Engine"
+      }
+    ]
+  },
+  {
+    "id": "thread-brand-guidelines",
+    "title": "Brand Guidelines Mini Site",
+    "category": "Interactive Tool",
+    "year": 2026,
+    "thumbnail": "thread-brand-guidelines/thumbnail.jpg?v=1",
+    "url": "thread-brand-guidelines/",
+    "blurb": "A brand guidelines mini site for Thread with framework, voice, logo, type, colour, photography, badges and motion.",
+    "about": "Brand Guidelines Mini Site is a one-page guidelines site for the Thread brand. Browse the tiles for framework, voice and tone, logo, typography, colour, photography, badges and motion, and try the controls to see each rule applied.",
+    "preview": "clips/thread-brand-guidelines.webp?v=1",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "thread-brand-guidelines/thumbnail.jpg",
+        "alt": "Brand Guidelines Mini Site"
+      }
+    ]
+  },
+  {
+    "id": "hero-banner-engine",
+    "title": "Banner Template Studio",
+    "category": "Interactive Tool",
+    "year": 2026,
+    "thumbnail": "hero-banner-engine/thumbnail.jpg?v=1",
+    "url": "hero-banner-engine/",
+    "blurb": "Pick a format, edit the copy and style, and preview a banner template live.",
+    "about": "Banner Template Studio is a banner builder. Choose an aspect ratio, edit the eyebrow, heading and subheading, toggle style options, and watch the banner update live in the preview.",
+    "preview": "clips/hero-banner-engine.webp?v=1",
+    "caseStudyContent": [
+      {
+        "type": "image",
+        "src": "hero-banner-engine/thumbnail.jpg",
+        "alt": "Banner Template Studio"
+      }
+    ]
+  },
+  {
     "id": "binary-grid",
     "title": "No-Code Binary Motif",
     "category": "Generative Art",
