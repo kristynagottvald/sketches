@@ -4,6 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Brand Guidelines Mini Site</title>
+<link rel="stylesheet" href="../subnav.css?v=9">
+<link rel="stylesheet" href="../tool-nav.css">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script src="../favicon.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Pinyon+Script&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -22,14 +26,6 @@ body{background:var(--cream);color:var(--ink);font:500 16px/1.4 var(--sans);-web
 button,input,textarea,select{font:inherit;color:inherit}
 a{color:inherit}
 :focus-visible{outline:2px solid currentColor;outline-offset:3px}
-
-/* ---------- Back nav (shared across all sandbox projects) ---------- */
-nav.back{box-sizing:border-box;flex:none;display:flex;align-items:center;gap:8px;height:49px;padding:0 20px;background:#000;border-bottom:1px solid #1c1c1c;font:400 13px/1.35 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;color:#fff}
-nav.back a{color:#8d8d8d;text-decoration:none}
-nav.back a:hover,nav.back a:focus-visible{color:#fff;text-decoration:underline;text-underline-offset:3px}
-nav.back span{color:#6e6e6e}
-nav.back b{font-weight:500;color:#fff;overflow:hidden;text-overflow:ellipsis}
-@media (max-width:640px){nav.back{padding:0 16px}}
 
 /* ---------- Section themes: the three Thread colourways ---------- */
 .t-yellow{--bg:var(--yellow);--fg:var(--ink)}
@@ -353,7 +349,23 @@ footer.end .row a{text-decoration:none}
     </filter>
   </defs>
 </svg>
-<nav class="back" aria-label="Breadcrumb"><a href="../">All Tools</a><span>/</span><b>Brand Guidelines Mini Site</b></nav>
+<header class="site-nav" id="siteNav">
+        <div class="hb-bar">
+            <a class="logo" href="../" aria-label="Kristyna Gottvald, home">KRISTYNA</a>
+            <span class="hb-label">Brand Guidelines Mini Site</span>
+            <button class="hb-toggle nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu">
+                <span class="sr">Toggle menu</span>
+                <svg class="nav-ptr" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 6.4l8.4 3.3-3.6 1.4-1.4 3.6z" fill="currentColor"/></svg>
+            </button>
+        </div>
+        <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
+            <div class="nav-projects" id="navProjects"></div>
+            <div class="nav-links">
+                <a href="../">All Tools</a>
+                <a href="../#about">About</a>
+            </div>
+        </nav>
+    </header>
 
 <header class="site" id="site">
   <a class="logo" href="#home" aria-label="Thread 2026 Brand Guidelines, back to the tiles"><svg class="wm" role="img" aria-hidden="true"></svg></a>
@@ -1499,5 +1511,6 @@ setInterval(() => { if (US.vis && !US.picked && frozen == null && !reduce) { con
 /* ---------- go: wait for the brand fonts so the canvases don't draw in a fallback ---------- */
 Promise.all([document.fonts.load("172px 'Instrument Serif'"), document.fonts.load("italic 60px 'Instrument Serif'"), document.fonts.load('600 40px Inter'), document.fonts.load('700 40px Inter'), document.fonts.load("100px 'Pinyon Script'")]).catch(() => {}).then(() => document.fonts.ready).then(() => { surfaces.forEach((s) => s.fit()); flourCache.clear(); }).finally(() => { requestAnimationFrame(loop); });
 </script>
+<script src="../subnav.js?v=10"></script>
 </body>
 </html>
