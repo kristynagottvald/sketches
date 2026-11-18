@@ -185,7 +185,7 @@ nav.back b{font-weight:500;color:#fff;overflow:hidden;text-overflow:ellipsis}
 .dial input[type=range]{width:100%;accent-color:var(--fg);margin-top:18px}
 .say{min-height:clamp(170px,22vw,300px);display:flex;flex-direction:column;justify-content:center;gap:14px}
 .say .before{font:500 clamp(15px,1.6vw,22px)/1.35 var(--sans);max-width:32em;transition:opacity .15s}
-.say .after{font:400 clamp(40px,7vw,116px)/.92 var(--serif);letter-spacing:-.0174em;width:calc(100%/1.16);transform:scaleX(1.16);transform-origin:0 0;clip-path:inset(0 100% 0 0)}
+.say .after{font:400 clamp(40px,7vw,116px)/.92 var(--serif);letter-spacing:-.0174em;width:calc(100%/1.16);transform:scaleX(1.16);transform-origin:0 0;clip-path:inset(-25% 100% -25% 0)}
 .say .after.i{font-style:italic}
 
 /* ---------- Logo ---------- */
@@ -1265,7 +1265,7 @@ const VX = [
 let vi = 0, toneRaf = 0, toneStarted = false;
 function paintTone() {
   const p = +$('#tone').value / 100, a = $('#vAfter'), b = $('#vBefore');
-  a.style.clipPath = 'inset(0 ' + (100 - p * 100) + '% 0 0)'; b.style.opacity = 1 - 0.65 * p; b.style.textDecoration = p > 0.5 ? 'line-through' : 'none';
+  a.style.clipPath = 'inset(-25% ' + (100 - p * 100) + '% -25% 0)'; b.style.opacity = 1 - 0.65 * p; b.style.textDecoration = p > 0.5 ? 'line-through' : 'none';
 }
 function setVx(i) {
   vi = i; $$('#vxs .chip').forEach((c, k) => { c.classList.toggle('on', k === i); c.setAttribute('aria-pressed', k === i); });
