@@ -105,11 +105,18 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
 .ticks i{height:18px;background:var(--line);border-radius:2px}
 .ticks i.p{background:#453F7E} .ticks i.x{background:var(--coral)}
 .crow{display:flex;justify-content:space-between;font:400 12px var(--mono);color:#C9C6F2}
-.bars{display:grid;gap:8px}
-.bl{display:flex;align-items:center;gap:14px;height:38px}
-.bl i{display:block;height:100%;transform-origin:left}
-.bl .g{background:#3b3b6b;width:78%} .bl .o{background:var(--coral);width:5.2%}
-.bl span{font-size:24px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bars{display:grid;gap:12px}
+.bl{display:grid;gap:6px}
+.cls{display:flex;align-items:center;gap:8px;font:600 11px/1 var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cls .ico{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#3b3b6b;color:#fff}
+.cls.ai .ico{background:var(--coral);color:var(--ink)}
+.cls.ai{color:#fff}
+.cls .ico svg{width:14px;height:14px;display:block}
+.cls em{font-style:normal}
+.br{display:flex;align-items:center;gap:14px;height:38px}
+.br i{display:block;height:100%;transform-origin:left}
+.br .g{background:#3b3b6b;width:78%} .br .o{background:var(--coral);width:5.2%}
+.br span{font-size:24px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
 .acc{display:flex;align-items:center;gap:18px}
 .acc svg{width:104px;height:104px;flex:none;transform:rotate(-90deg)}
 .acc big{display:block;font-size:46px;font-weight:700;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
@@ -134,9 +141,22 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
   #aud{flex-direction:column}
   .res{width:auto;border-left:0;border-top:2px solid var(--line);padding:14px 16px;gap:12px;flex:none}
   .res .chk{display:none}
-  .bl{height:28px}.bl span{font-size:18px}.acc svg{width:70px;height:70px}.acc big{font-size:34px}
+  .br{height:28px}.br span{font-size:18px}.acc svg{width:70px;height:70px}.acc big{font-size:34px}
   .decide{margin-top:0}
   .ehead{padding:12px 14px 0;font-size:11px}.ebar{height:44px;padding:0 14px;font-size:13px}
+}@media (max-width:640px){
+  .site-nav{height:auto;padding-bottom:8px}
+  .site-nav .hb-bar{flex-wrap:wrap;height:auto;row-gap:8px;padding-bottom:0}
+  .site-nav .hb-bar>.logo,.site-nav .hb-bar>.hb-label,.site-nav .hb-bar>.hb-toggle{height:44px;display:inline-flex;align-items:center}
+  .site-nav .tools{order:5;flex:1 0 100%;margin:0;justify-content:space-between;gap:8px;padding-bottom:2px}
+  .site-nav .sw{flex:1;justify-content:space-between}
+  .site-nav .sw button{flex:1;padding:7px 4px}
+  .site-nav .tools #pp{padding:8px 14px}
+  .libtop{padding:0 14px;height:46px}
+  .crumb{font-size:12px}
+  .cls{font-size:10.5px}
+  .res h3{font-size:12px}
+  .ehead{font-size:10.5px}
 }
 </style>
 </head>
@@ -193,8 +213,8 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
           <div class="crow"><span id="cn">0 / 14</span><span id="cf">0 flagged</span></div></div>
         <div><h4>Check time per asset</h4>
           <div class="bars">
-            <div class="bl"><i class="g" id="barG"></i><span id="lblG"></span></div>
-            <div class="bl"><i class="o" id="barO"></i><span id="lblO"></span></div>
+            <div class="bl"><span class="cls" title="Checked by hand"><b class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V5.5a1.5 1.5 0 013 0V11m0-1V4.5a1.5 1.5 0 013 0V11m0-4.5a1.5 1.5 0 013 0V13m0-3.5a1.5 1.5 0 013 0V15a7 7 0 01-7 7h-1.5a7 7 0 01-5.6-2.8L4 15.6a1.6 1.6 0 012.4-2L8 15"/></svg></b><em>By hand</em></span><div class="br"><i class="g" id="barG"></i><span id="lblG"></span></div></div>
+            <div class="bl"><span class="cls ai" title="AI assisted"><b class="ico"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 5.6L19.5 9.5l-5.6 1.9L12 17l-1.9-5.6L4.5 9.5l5.6-1.9z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg></b><em>AI assisted</em></span><div class="br"><i class="o" id="barO"></i><span id="lblO"></span></div></div>
           </div></div>
         <div class="decide" id="decide"><button class="btn ghost" id="bApprove">Approve</button><button class="btn" id="bChanges"><span id="bcT">Request changes</span><svg class="env" id="env" viewBox="0 0 27 19"><defs><mask id="envcut" maskUnits="userSpaceOnUse" x="0" y="0" width="27" height="19"><rect width="27" height="19" fill="#fff"/><circle cx="21" cy="14.5" r="6.2" fill="#000"/></mask></defs><g mask="url(#envcut)" fill="none" stroke="#0D0D2B" stroke-width="1.6" stroke-linejoin="round"><rect x="1" y="1" width="21" height="14" rx="2"/><path d="M1.8 2.4L11.5 9.6l9.7-7.2"/></g><path d="M18.1 14.6l2.1 2.1 3.9-4.3" fill="none" stroke="#0D0D2B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
       </aside>
