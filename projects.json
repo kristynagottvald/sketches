@@ -144,19 +144,19 @@
     ]
   },
   {
-    "id": "restaurant-tiles",
+    "id": "reprise-tiles",
     "title": "Reprise Tiles",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "restaurant-tiles/thumbnail.jpg?v=6",
-    "url": "restaurant-tiles/",
+    "thumbnail": "reprise-tiles/thumbnail.jpg?v=7",
+    "url": "reprise-tiles/",
     "blurb": "A tile layout of Reprise product details: permissions, prompts, type specimens and palette cards you can click.",
     "about": "Reprise Tiles is a bento-style tile layout of Reprise product details, including edit permissions, prompt typing, type specimens and a stacking palette. Click the tiles to interact with them: change who can edit the demo, flip through the type specimen, shuffle the palette cards, flip the toggle and share the demo.",
-    "preview": "clips/restaurant-tiles.webp?v=6",
+    "preview": "clips/reprise-tiles.webp?v=7",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "restaurant-tiles/thumbnail.jpg",
+        "src": "reprise-tiles/thumbnail.jpg",
         "alt": "Reprise Tiles"
       }
     ]
