@@ -407,11 +407,12 @@ function buildUI() {
 
   const act = el('div', 'actions');
   const png = el('button', 'primary', 'Export PNG'); png.onclick = () => saveCanvas('spellbook-pattern', 'png');
+  const mp4 = el('button', 'primary', 'Export MP4'); mp4.onclick = () => exportVideo(mp4);
   const rnd = el('button', null, 'Randomise colours'); rnd.onclick = randomise;
   const pause = el('button', null, 'Pause'); pause.onclick = () => { S.paused = !S.paused; syncUI(); };
   pause.id = 'pauseBtn';
   const rst = el('button', null, 'Reset'); rst.onclick = () => { Object.assign(S, DEFAULTS); textInput.value = S.text; syncUI(); };
-  act.append(png, rnd, pause, rst);
+  act.append(png, mp4, rnd, pause, rst);
   $('panel').append(act);
 
   window.addEventListener('keydown', e => {
@@ -421,6 +422,41 @@ function buildUI() {
     if (e.key === ' ') { e.preventDefault(); S.paused = !S.paused; syncUI(); }
   });
   syncUI();
+}
+
+// Records the live canvas for a few seconds and downloads it as MP4
+// (falls back to WebM in browsers that can't encode MP4).
+let recording = false;
+function exportVideo(btn, seconds = 6) {
+  if (recording) return;
+  const canvas = cnv.elt;
+  if (!window.MediaRecorder || !canvas.captureStream) {
+    alert('Video export is not supported in this browser.');
+    return;
+  }
+  const type = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm']
+    .find(t => MediaRecorder.isTypeSupported(t));
+  if (!type) { alert('Video export is not supported in this browser.'); return; }
+  const ext = type.startsWith('video/mp4') ? 'mp4' : 'webm';
+  const chunks = [];
+  const rec = new MediaRecorder(canvas.captureStream(30), { mimeType: type, videoBitsPerSecond: 12e6 });
+  rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+  rec.onstop = () => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(chunks, { type }));
+    a.download = 'spellbook-pattern.' + ext;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    S.paused = wasPaused; recording = false;
+    btn.textContent = 'Export MP4'; btn.disabled = false; syncUI();
+  };
+  const wasPaused = S.paused;
+  S.paused = false; recording = true; btn.disabled = true; syncUI();
+  let left = seconds;
+  btn.textContent = 'Recording… ' + left + 's';
+  const tick = setInterval(() => { if (--left > 0) btn.textContent = 'Recording… ' + left + 's'; }, 1000);
+  rec.start();
+  setTimeout(() => { clearInterval(tick); rec.stop(); }, seconds * 1000);
 }
 
 function syncUI() {
