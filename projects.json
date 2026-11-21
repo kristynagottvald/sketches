@@ -61,7 +61,7 @@
     "thumbnail": "thread-brand-guidelines/thumbnail.jpg?v=3",
     "url": "thread-brand-guidelines/",
     "blurb": "A brand guidelines mini site for Thread with framework, voice, logo, type, colour, photography, badges and motion.",
-    "about": "Brand Guidelines Mini Site is a one-page guidelines site for the Thread brand. Browse the tiles for framework, voice and tone, logo, typography, colour, photography, badges and motion, and try the controls to see each rule applied.",
+    "about": "Brand Guidelines Mini Site is a one-page guidelines site for Thread, a marketing conference brand. It gives external vendors and teams outside of marketing easy access to the brand rules. Browse the tiles for framework, voice and tone, logo, typography, colour, photography, badges and motion, and try the controls to see each rule applied.",
     "preview": "clips/thread-brand-guidelines.webp?v=3",
     "caseStudyContent": [
       {
@@ -79,7 +79,7 @@
     "thumbnail": "pattern-generator/thumbnail.jpg?v=3",
     "url": "pattern-generator/",
     "blurb": "An ASCII pattern engine for brand backgrounds, with seven motifs, movable objects and live brand colours.",
-    "about": "Pattern Generator is an ASCII pattern engine that turns rows of code, tickers and contract text into animated brand backgrounds. Pick a motif, then choose whether the pattern fills the wall, sits inside an object, or mixes both. Drag on the artboard to move a gem, circle, ring, square or your own word, and use the panel to set direction, speed, density, spacing and colour. Press 1 to 7 to switch motifs, Space to pause, and Export PNG to save the result.",
+    "about": "Pattern Generator is an ASCII pattern engine that turns rows of code, tickers and contract text into animated brand backgrounds. The animations are packaged as a generator so designers without motion skills can still make motion, with control over motif, direction, speed, density and colour.",
     "caseStudyContent": [
       {
         "type": "image",
@@ -169,7 +169,7 @@
     "thumbnail": "hero-banner-engine/thumbnail.jpg?v=2",
     "url": "hero-banner-engine/",
     "blurb": "Pick a format, edit the copy and style, and preview a banner template live.",
-    "about": "Banner Template Studio is a banner builder. Choose an aspect ratio, edit the eyebrow, heading and subheading, toggle style options, and watch the banner update live in the preview.",
+    "about": "Banner Template Studio is an AI-built banner builder that helps teams outside Brand Design produce visuals faster. Typography, grid, and layout rules stay locked into the template, so everyone moves quickly while design keeps control of quality.",
     "preview": "clips/hero-banner-engine.webp?v=2",
     "caseStudyContent": [
       {
