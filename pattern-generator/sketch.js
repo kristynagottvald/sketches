@@ -457,7 +457,7 @@ function buildUI() {
   s.append(el('p', 'note', 'Snaps motion to whole cycles so the last frame flows straight into the first. Speeds may shift slightly to fit.'));
 
   const act = el('div', 'actions');
-  const png = el('button', 'primary', 'Export PNG'); png.onclick = () => saveCanvas('spellbook-pattern', 'png');
+  const png = el('button', 'primary', 'Export PNG'); png.onclick = exportPNG;
   const mp4 = el('button', 'primary', 'Export MP4'); mp4.onclick = () => exportVideo(mp4);
   const rnd = el('button', null, 'Randomise colours'); rnd.onclick = randomise;
   const pause = el('button', null, 'Pause'); pause.onclick = () => { S.paused = !S.paused; syncUI(); };
@@ -483,6 +483,18 @@ const REC = { on: false, rec: null, ctx: null, btn: null, t0: 0, D: 0, left: 0 }
 function copyArtboard() {
   const pd = pixelDensity(), c = REC.ctx.canvas;
   REC.ctx.drawImage(cnv.elt, PANEL_W * pd, 0, (width - PANEL_W) * pd, (height - CAP_H) * pd, 0, 0, c.width, c.height);
+}
+
+// PNG export: saves just the artboard (no panel or caption bar) at the canvas's full pixel resolution.
+function exportPNG() {
+  const pd = pixelDensity(), cv = document.createElement('canvas');
+  cv.width = Math.round((width - PANEL_W) * pd); cv.height = Math.round((height - CAP_H) * pd);
+  cv.getContext('2d').drawImage(cnv.elt, PANEL_W * pd, 0, cv.width, cv.height, 0, 0, cv.width, cv.height);
+  cv.toBlob(b => {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(b); a.download = 'spellbook-pattern.png'; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }, 'image/png');
 }
 
 function exportVideo(btn) {
