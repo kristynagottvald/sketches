@@ -79,7 +79,7 @@
     "thumbnail": "pattern-generator/thumbnail.jpg?v=3",
     "url": "pattern-generator/",
     "blurb": "An ASCII pattern engine for brand backgrounds, with seven motifs, movable objects and live brand colours.",
-    "about": "Pattern Generator is an ASCII pattern engine that turns rows of code, tickers and contract text into animated brand backgrounds. The animations are packaged as a generator so designers without motion skills can still make motion, with control over motif, direction, speed, density and colour. Export a PNG or MP4 to use in other designs.",
+    "about": "Pattern Generator is an ASCII pattern engine that turns rows of code, tickers and contract text into animated brand backgrounds. The animations are packaged as a generator so designers without motion skills can still make motion, with control over motif, direction, speed, density and colour.",
     "caseStudyContent": [
       {
         "type": "image",

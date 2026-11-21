@@ -1,4 +1,4 @@
-const CSS = "\n  :root {\n    --bg: #0f1315; --plate: #1d2326; --fg: #ffffff; --grey: #9aa0a3; --line: rgba(255,255,255,.14);\n    --orange: #ff4a14; --yellow: #f5b800; --blue: #009dff; --green: #006837; --purple: #7a2fb4; --ink: #26292b;\n  }\n  * { box-sizing: border-box; }\n  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }\n  #panel { position: fixed; left: 0; top: " + NAV_H + "px; bottom: 0; width: 344px; z-index: 5; overflow-y: auto; padding: 22px 22px 40px; background: var(--bg); border-right: 1px solid var(--line); }\n  #caption { position: fixed; left: 344px; right: 0; bottom: 0; height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 20px; background: var(--bg); border-top: 1px solid var(--line); font-size: 13px; color: var(--grey); }\n  #caption b { color: #fff; letter-spacing: 1.2px; font-size: 11px; margin-right: 10px; }\n  #caption .r { white-space: nowrap; font-size: 12px; }\n\n  .eyebrow { font-size: 11px; letter-spacing: 1.4px; color: var(--grey); margin: 0 0 6px; }\n  #panel h1 { font: 400 46px/1 'Instrument Serif', Georgia, serif; margin: 0 0 20px; }\n  .rule4 { height: 4px; background: #fff; margin-bottom: 16px; }\n\n  #panel section { border-top: 1px solid var(--line); padding: 16px 0 6px; margin-top: 14px; }\n  #panel h3 { margin: 0 0 12px; font-size: 11px; letter-spacing: 1.4px; font-weight: 700; color: #fff; display: flex; gap: 10px; }\n  #panel h3 span { color: var(--grey); font-weight: 400; }\n  .group { margin-bottom: 14px; transition: opacity .15s; }\n  .group.off { opacity: .3; pointer-events: none; }\n  .hide { display: none !important; }\n  .lbl { font-size: 10px; letter-spacing: 1.2px; color: var(--grey); margin: 0 0 7px; display: block; }\n\n  .motifs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }\n  .motifs button { text-align: left; padding: 11px 12px; background: var(--plate); color: #fff; border: 0; font: 700 13px Arial; cursor: pointer; display: flex; gap: 9px; border-radius: 0; }\n  .motifs button b { opacity: .45; font-weight: 700; }\n  .motifs button:hover { background: #283034; }\n  .motifs button.on { background: var(--c); color: var(--ci); }\n  .motifs button.on b { opacity: .6; }\n\n  .seg { display: flex; gap: 0; background: var(--plate); }\n  .seg button { flex: 1; padding: 10px 6px; background: transparent; color: var(--grey); border: 0; font: 700 12px Arial; cursor: pointer; border-radius: 0; }\n  .seg button:hover { color: #fff; }\n  .seg button.on { background: #fff; color: var(--bg); }\n\n  .dirs { display: grid; grid-template-columns: repeat(3, 44px); gap: 4px; }\n  .dirs button { height: 44px; background: var(--plate); color: #fff; border: 0; font-size: 18px; cursor: pointer; border-radius: 0; }\n  .dirs button:hover { background: #283034; }\n  .dirs button.on { background: var(--orange); }\n  .dirrow { display: flex; gap: 18px; align-items: flex-start; }\n\n  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--plate); color: var(--grey); font: 700 12px Arial; border: 0; cursor: pointer; border-radius: 0; }\n  .chip i { width: 10px; height: 10px; border: 2px solid var(--grey); display: block; }\n  .chip.on { color: #fff; } .chip.on i { background: var(--orange); border-color: var(--orange); }\n\n  .sl { display: grid; grid-template-columns: 1fr auto; row-gap: 5px; margin-bottom: 13px; font-size: 12px; color: #fff; }\n  .sl span { font-size: 10px; letter-spacing: 1.2px; color: var(--grey); }\n  .sl output { font-size: 11px; color: #fff; font-variant-numeric: tabular-nums; }\n  .sl input { grid-column: 1 / 3; width: 100%; margin: 0; accent-color: var(--orange); }\n\n  input[type=text] { width: 100%; padding: 10px 12px; background: var(--plate); border: 1px solid transparent; color: #fff; font: 700 13px Arial; letter-spacing: 1px; border-radius: 0; margin-top: 8px; }\n  input[type=text]:focus { outline: none; border-color: var(--orange); }\n\n  .sw { display: flex; flex-wrap: wrap; gap: 6px; }\n  .sw button { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,.35); cursor: pointer; padding: 0; border-radius: 0; }\n  .sw button.on { outline: 2px solid #fff; outline-offset: 2px; }\n  .sw .multi { background: conic-gradient(var(--orange) 0 25%, var(--green) 0 50%, var(--blue) 0 75%, var(--yellow) 0); }\n\n  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 18px; }\n  .actions button { padding: 12px; border: 0; font: 700 12px Arial; letter-spacing: .5px; cursor: pointer; background: var(--plate); color: #fff; border-radius: 0; }\n  .actions button:hover { background: #283034; }\n  .actions .primary { background: #fff; color: var(--bg); grid-column: 1 / 3; }\n  .actions .primary:hover { background: #e8e8e8; }\n\n  \n  html, body { overflow: hidden; }\n";
+const CSS = "\n  :root {\n    --bg: #0f1315; --plate: #1d2326; --fg: #ffffff; --grey: #9aa0a3; --line: rgba(255,255,255,.14);\n    --orange: #ff4a14; --yellow: #f5b800; --blue: #009dff; --green: #006837; --purple: #7a2fb4; --ink: #26292b;\n  }\n  * { box-sizing: border-box; }\n  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }\n  #panel { position: fixed; left: 0; top: " + NAV_H + "px; bottom: 0; width: 344px; z-index: 5; overflow-y: auto; padding: 22px 22px 40px; background: var(--bg); border-right: 1px solid var(--line); }\n  #caption { position: fixed; left: 344px; right: 0; bottom: 0; height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 20px; background: var(--bg); border-top: 1px solid var(--line); font-size: 13px; color: var(--grey); }\n  #caption b { color: #fff; letter-spacing: 1.2px; font-size: 11px; margin-right: 10px; }\n  #caption .r { white-space: nowrap; font-size: 12px; }\n\n  .eyebrow { font-size: 11px; letter-spacing: 1.4px; color: var(--grey); margin: 0 0 6px; }\n  #panel h1 { font: 400 46px/1 'Instrument Serif', Georgia, serif; margin: 0 0 20px; }\n  .rule4 { height: 4px; background: #fff; margin-bottom: 16px; }\n\n  #panel section { border-top: 1px solid var(--line); padding: 16px 0 6px; margin-top: 14px; }\n  #panel h3 { margin: 0 0 12px; font-size: 11px; letter-spacing: 1.4px; font-weight: 700; color: #fff; display: flex; gap: 10px; }\n  #panel h3 span { color: var(--grey); font-weight: 400; }\n  .group { margin-bottom: 14px; transition: opacity .15s; }\n  .group.off { opacity: .3; pointer-events: none; }\n  .hide { display: none !important; }\n  .lbl { font-size: 10px; letter-spacing: 1.2px; color: var(--grey); margin: 0 0 7px; display: block; }\n\n  .motifs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }\n  .motifs button { text-align: left; padding: 11px 12px; background: var(--plate); color: #fff; border: 0; font: 700 13px Arial; cursor: pointer; display: flex; gap: 9px; border-radius: 0; }\n  .motifs button b { opacity: .45; font-weight: 700; }\n  .motifs button:hover { background: #283034; }\n  .motifs button.on { background: var(--c); color: var(--ci); }\n  .motifs button.on b { opacity: .6; }\n\n  .seg { display: flex; gap: 0; background: var(--plate); }\n  .seg button { flex: 1; padding: 10px 6px; background: transparent; color: var(--grey); border: 0; font: 700 12px Arial; cursor: pointer; border-radius: 0; }\n  .seg button:hover { color: #fff; }\n  .seg button.on { background: #fff; color: var(--bg); }\n\n  .dirs { display: grid; grid-template-columns: repeat(3, 44px); gap: 4px; }\n  .dirs button { height: 44px; background: var(--plate); color: #fff; border: 0; font-size: 18px; cursor: pointer; border-radius: 0; }\n  .dirs button:hover { background: #283034; }\n  .dirs button.on { background: var(--orange); }\n  .dirrow { display: flex; gap: 18px; align-items: flex-start; }\n\n  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--plate); color: var(--grey); font: 700 12px Arial; border: 0; cursor: pointer; border-radius: 0; }\n  .chip i { width: 10px; height: 10px; border: 2px solid var(--grey); display: block; }\n  .chip.on { color: #fff; } .chip.on i { background: var(--orange); border-color: var(--orange); }\n\n  .sl { display: grid; grid-template-columns: 1fr auto; row-gap: 5px; margin-bottom: 13px; font-size: 12px; color: #fff; }\n  .sl span { font-size: 10px; letter-spacing: 1.2px; color: var(--grey); }\n  .sl output { font-size: 11px; color: #fff; font-variant-numeric: tabular-nums; }\n  .sl input { grid-column: 1 / 3; width: 100%; margin: 0; accent-color: var(--orange); }\n\n  input[type=text] { width: 100%; padding: 10px 12px; background: var(--plate); border: 1px solid transparent; color: #fff; font: 700 13px Arial; letter-spacing: 1px; border-radius: 0; margin-top: 8px; }\n  input[type=text]:focus { outline: none; border-color: var(--orange); }\n\n  .sw { display: flex; flex-wrap: wrap; gap: 6px; }\n  .sw button { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,.35); cursor: pointer; padding: 0; border-radius: 0; }\n  .sw button.on { outline: 2px solid #fff; outline-offset: 2px; }\n  .sw .multi { background: conic-gradient(var(--orange) 0 25%, var(--green) 0 50%, var(--blue) 0 75%, var(--yellow) 0); }\n\n  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 18px; }\n  .actions button { padding: 12px; border: 0; font: 700 12px Arial; letter-spacing: .5px; cursor: pointer; background: var(--plate); color: #fff; border-radius: 0; }\n  .actions button:hover { background: #283034; }\n  .actions .primary { background: #fff; color: var(--bg); grid-column: 1 / 3; }\n  .actions .primary:hover { background: #e8e8e8; }\n  .note { margin: 8px 0 10px; font-size: 11px; line-height: 1.45; color: var(--grey); }\n\n  \n  html, body { overflow: hidden; }\n";
 
 
 const PAL = {
@@ -27,6 +27,7 @@ const DEFAULTS = {
   density: 6, fill: 0.85, rowGap: 1, colGap: 1, hRules: 0, vRules: 0, gain: 1.2,
   size: 0.55, mixDim: 0.3, invert: false, ox: 0.5, oy: 0.5,
   bg: 'Green', ink: 'White', obj: 'White', paused: false,
+  expDur: 6, loop: true,
 };
 const S = Object.assign({}, DEFAULTS);
 
@@ -67,6 +68,25 @@ const wrapN = (a, n) => ((a % n) + n) % n;
 const h2 = (a, b) => { const s = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return s - Math.floor(s); };
 
 let T = 0, COLS = 0, ROWS = 0;
+// Loop mode (used while exporting a perfectly looped video): time is driven by a 0..1 phase
+// instead of the free-running clock, and every motion is snapped to whole cycles / whole cells.
+const TAU = Math.PI * 2;
+let LOOP = null, GX = 0, GY = 0, SX = 0, SY = 0;
+const tph = (rate) => TAU * Math.max(1, Math.round(rate * S.speed * LOOP.D / TAU)) * LOOP.phi;
+function sph(a, b) {
+  const v = a * SX + b * SY;
+  return v ? TAU * Math.sign(v) * Math.max(1, Math.round(Math.abs(v) / TAU)) * LOOP.phi : 0;
+}
+function wave(a, b, c, tr, stat, X, Y) {
+  if (!LOOP) return a * X + b * Y + c - (stat ? tr * T : 0);
+  return a * GX + b * GY + c - (stat ? Math.sign(tr) * tph(Math.abs(tr)) : sph(a, b));
+}
+function loopShift(D) {
+  const d = DIRS[S.dir], diag = d[0] && d[1] && !S.alt;
+  const pc = S.motif === 'binary' ? 5 : S.motif === 'lattice' ? 2 : 1;
+  const raw = 6 * S.speed * (diag ? 0.7071 : 1) * D;
+  return Math.max(pc * Math.ceil(10 / pc), pc * Math.round(raw / pc));
+}
 let FX = 0, FY = 0, GCH = '', GA = 0;
 let maskCv = null, maskData = null, maskKey = '', fontsReady = 0;
 let cnv, dragging = false;
@@ -160,7 +180,18 @@ function windowResized() {
 }
 
 function flow(gx, gy) {
-  const d = DIRS[S.dir], dx = d[0], dy = d[1], k = (dx && dy) ? 0.7071 : 1, off = T * 6;
+  const d = DIRS[S.dir], dx = d[0], dy = d[1];
+  if (LOOP) {
+    let sx = dx, sy = dy;
+    if (S.alt) {
+      if (Math.abs(dx) >= Math.abs(dy)) { sx = ((gy & 1) ? -1 : 1) * dx; sy = 0; }
+      else { sy = ((gx & 1) ? -1 : 1) * dy; sx = 0; }
+    }
+    SX = sx * LOOP.n; SY = sy * LOOP.n;
+    FX = gx - SX * LOOP.phi; FY = gy - SY * LOOP.phi;
+    return;
+  }
+  const k = (dx && dy) ? 0.7071 : 1, off = T * 6;
   if (S.alt) {
     if (Math.abs(dx) >= Math.abs(dy)) { const s = (gy & 1) ? -1 : 1; FX = gx - s * dx * off; FY = gy; }
     else { const s = (gx & 1) ? -1 : 1; FX = gx; FY = gy - s * dy * off; }
@@ -168,21 +199,23 @@ function flow(gx, gy) {
 }
 
 function glyph(gx, gy) {
+  GX = gx; GY = gy;
   flow(gx, gy);
   const d = DIRS[S.dir], stat = !d[0] && !d[1], vert = Math.abs(d[1]) > Math.abs(d[0]);
   const ix = Math.floor(FX), iy = Math.floor(FY);
   switch (S.motif) {
     case 'binary': {
       GCH = wrapN(ix * 7 + iy * 13 + ix * iy * 3, 5) < 2 ? '1' : '0';
-      const w = 0.5 + 0.5 * Math.sin(FX * 0.55 + FY * 0.35 - (stat ? T * 1.6 : 0));
+      const w = 0.5 + 0.5 * Math.sin(wave(0.55, 0.35, 0, 1.6, stat, FX, FY));
       GA = 0.1 + 0.75 * w * w; break;
     }
     case 'ticker': case 'cmd': case 'clause': {
       const arr = S.motif === 'ticker' ? tickerRows : S.motif === 'cmd' ? cmdRows : clauseRows;
       const across = vert ? gx : gy, along = vert ? FY : FX;
       const L = arr[wrapN(across, arr.length)];
-      GCH = L[wrapN(Math.floor(along), L.length)];
-      GA = 0.16 + 0.7 * Math.pow(0.5 + 0.5 * Math.sin(across * 0.45 - T * 1.2), 2); break;
+      const ai = Math.floor(along);
+      GCH = L[wrapN(LOOP ? wrapN(ai, LOOP.n) : ai, L.length)];
+      GA = 0.16 + 0.7 * Math.pow(0.5 + 0.5 * Math.sin(across * 0.45 - (LOOP ? tph(1.2) : T * 1.2)), 2); break;
     }
     case 'rain': {
       const across = vert ? gx : gy, pos = vert ? gy : gx, M = vert ? ROWS : COLS;
@@ -190,20 +223,23 @@ function glyph(gx, gy) {
       if (S.alt && (across & 1)) sgn = -sgn;
       const p = sgn > 0 ? pos : M - 1 - pos;
       const sp = 0.5 + h2(across, 7) * 1.1, trail = 8 + h2(across, 3) * 16, cyc = M + trail + 10;
-      const head = wrapN(T * 7 * sp + h2(across, 11) * cyc, cyc), dd = head - p;
+      const adv = LOOP ? Math.max(1, Math.round(7 * sp * S.speed * LOOP.D / cyc)) * cyc * LOOP.phi : T * 7 * sp;
+      const head = wrapN(adv + h2(across, 11) * cyc, cyc), dd = head - p;
       GA = (dd >= 0 && dd <= trail) ? Math.pow(1 - dd / trail, 1.4) : 0.05;
       if (dd >= 0 && dd < 1.2) GA = 1;
-      GCH = RAIN[Math.floor(h2(across * 3.1 + pos, Math.floor(T * 3 + across) * 1.3) * RAIN.length)]; break;
+      const tc = LOOP ? Math.max(1, Math.round(3 * S.speed * LOOP.D)) : 0;
+      const tick = LOOP ? wrapN(Math.floor(LOOP.phi * tc), tc) : Math.floor(T * 3);
+      GCH = RAIN[Math.floor(h2(across * 3.1 + pos, (tick + across) * 1.3) * RAIN.length)]; break;
     }
     case 'shade': {
-      const v = 0.5 + 0.25 * Math.sin(FX * 0.17 + FY * 0.11 - (stat ? T * 0.8 : 0)) + 0.25 * Math.sin(FY * 0.23 - FX * 0.07 + 1.7 + (stat ? T * 0.5 : 0));
+      const v = 0.5 + 0.25 * Math.sin(wave(0.17, 0.11, 0, 0.8, stat, FX, FY)) + 0.25 * Math.sin(wave(-0.07, 0.23, 1.7, -0.5, stat, FX, FY));
       GCH = RAMP[Math.floor(constrain(v, 0, 0.999) * RAMP.length)];
       GA = 0.2 + 0.7 * v; break;
     }
     default: {
       const ex = wrapN(ix, 2) === 0, ey = wrapN(iy, 2) === 0;
       GCH = ex && ey ? '+' : (ey ? '-' : (ex ? '|' : '.'));
-      GA = 0.2 + 0.7 * Math.pow(0.5 + 0.5 * Math.sin(ix * 0.3 + iy * 0.22 - (stat ? T * 2 : 0)), 2);
+      GA = 0.2 + 0.7 * Math.pow(0.5 + 0.5 * Math.sin(wave(0.3, 0.22, 0, 2, stat, ix, iy)), 2);
     }
   }
 }
@@ -251,7 +287,16 @@ function draw() {
   ctx.clip();
   ctx.fillStyle = PAL[S.bg];
   ctx.fillRect(0, 0, W, H);
-  if (!S.paused) T += Math.min(deltaTime, 50) / 1000 * S.speed;
+  if (REC.on) {
+    const el = (performance.now() - REC.t0) / 1000;
+    if (el >= REC.D) { REC.on = false; LOOP = null; REC.rec.stop(); }
+    else {
+      if (LOOP) LOOP.phi = el / REC.D;
+      const left = Math.ceil(REC.D - el);
+      if (left !== REC.left) { REC.left = left; REC.btn.textContent = 'Recording… ' + left + 's'; }
+    }
+  }
+  if (!S.paused && !LOOP) T += Math.min(deltaTime, 50) / 1000 * S.speed;
 
   const fs = map(S.density, 1, 10, 46, 13);
   const cw = fs * 0.6 * S.colGap, ch = fs * 1.15 * S.rowGap;
@@ -297,6 +342,7 @@ function draw() {
   ctx.restore();
   ctx.restore();
   drawChrome(ctx);
+  if (REC.rec && REC.rec.state === 'recording') copyArtboard();
   cursor(S.cover !== 'wall' ? (dragging ? 'grabbing' : 'grab') : 'default');
 }
 
@@ -405,6 +451,11 @@ function buildUI() {
   swatches(s, 'ASCII WALL', 'ink', PAL_KEYS);
   swatches(s, 'ASCII OBJECT', 'obj', OBJ_KEYS);
 
+  s = section('06', 'EXPORT');
+  slider(s, 'VIDEO LENGTH', 'expDur', 2, 12, 1, v => v + 's');
+  chip(s, 'Perfect loop', 'loop');
+  s.append(el('p', 'note', 'Snaps motion to whole cycles so the last frame flows straight into the first. Speeds may shift slightly to fit.'));
+
   const act = el('div', 'actions');
   const png = el('button', 'primary', 'Export PNG'); png.onclick = () => saveCanvas('spellbook-pattern', 'png');
   const mp4 = el('button', 'primary', 'Export MP4'); mp4.onclick = () => exportVideo(mp4);
@@ -424,39 +475,45 @@ function buildUI() {
   syncUI();
 }
 
-// Records the live canvas for a few seconds and downloads it as MP4
-// (falls back to WebM in browsers that can't encode MP4).
-let recording = false;
-function exportVideo(btn, seconds = 6) {
-  if (recording) return;
-  const canvas = cnv.elt;
-  if (!window.MediaRecorder || !canvas.captureStream) {
-    alert('Video export is not supported in this browser.');
-    return;
-  }
-  const type = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm']
-    .find(t => MediaRecorder.isTypeSupported(t));
+// Video export: records just the artboard (not the panel) and downloads it as MP4,
+// falling back to WebM in browsers that can't encode MP4. With "Perfect loop" on, the
+// clip is driven by a 0..1 phase so the last frame flows straight into the first.
+const REC = { on: false, rec: null, ctx: null, btn: null, t0: 0, D: 0, left: 0 };
+
+function copyArtboard() {
+  const pd = pixelDensity(), c = REC.ctx.canvas;
+  REC.ctx.drawImage(cnv.elt, PANEL_W * pd, 0, (width - PANEL_W) * pd, (height - CAP_H) * pd, 0, 0, c.width, c.height);
+}
+
+function exportVideo(btn) {
+  if (REC.rec) return;
+  const type = window.MediaRecorder && HTMLCanvasElement.prototype.captureStream &&
+    ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm'].find(t => MediaRecorder.isTypeSupported(t));
   if (!type) { alert('Video export is not supported in this browser.'); return; }
   const ext = type.startsWith('video/mp4') ? 'mp4' : 'webm';
-  const chunks = [];
-  const rec = new MediaRecorder(canvas.captureStream(30), { mimeType: type, videoBitsPerSecond: 12e6 });
+  const pd = pixelDensity(), cv = document.createElement('canvas');
+  cv.width = Math.floor((width - PANEL_W) * pd / 2) * 2;   // encoders want even dimensions
+  cv.height = Math.floor((height - CAP_H) * pd / 2) * 2;
+  REC.ctx = cv.getContext('2d'); REC.btn = btn; REC.D = S.expDur; REC.left = 0;
+  copyArtboard();
+  const chunks = [], wasPaused = S.paused;
+  const rec = REC.rec = new MediaRecorder(cv.captureStream(30), { mimeType: type, videoBitsPerSecond: 12e6 });
   rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+  rec.onstart = () => { REC.t0 = performance.now(); REC.on = true; };
   rec.onstop = () => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob(chunks, { type }));
     a.download = 'spellbook-pattern.' + ext;
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-    S.paused = wasPaused; recording = false;
+    S.paused = wasPaused; LOOP = null;
+    REC.on = false; REC.rec = null; REC.ctx = null;
     btn.textContent = 'Export MP4'; btn.disabled = false; syncUI();
   };
-  const wasPaused = S.paused;
-  S.paused = false; recording = true; btn.disabled = true; syncUI();
-  let left = seconds;
-  btn.textContent = 'Recording… ' + left + 's';
-  const tick = setInterval(() => { if (--left > 0) btn.textContent = 'Recording… ' + left + 's'; }, 1000);
+  S.paused = false;
+  LOOP = S.loop ? { phi: 0, D: S.expDur, n: loopShift(S.expDur) } : null;
+  btn.disabled = true; btn.textContent = 'Recording… ' + S.expDur + 's'; syncUI();
   rec.start();
-  setTimeout(() => { clearInterval(tick); rec.stop(); }, seconds * 1000);
 }
 
 function syncUI() {
