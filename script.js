@@ -26,7 +26,7 @@
     try {
       const res = await fetch('projects.json', { cache: 'no-cache' });
       if (!res.ok) throw new Error(res.status);
-      projects = await res.json();
+      projects = (await res.json()).filter((p) => !p.hidden);
       projects.forEach((p) => { 
         if (!p.url) {
           p.slug = String(p.title).toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); 
