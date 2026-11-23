@@ -255,6 +255,7 @@ function mousePressed() {
     let distToCircle = dist(mX, mY, circleX, circleY);
 
     if (!isTextPickedUp && !isPeriodPickedUp && !isCirclePickedUp) {
+      rememberPickup();
       if (currentMotif === 'Micro' && distToPeriod < Math.max(20, txtSize * 0.4)) {
         isPeriodPickedUp = true;
         showDeleteButton = true;
@@ -277,6 +278,12 @@ function mousePressed() {
   }
 }
 
+// where the text, period and circle were when a piece was picked up, so leaving the canvas can put them back
+let pickOrigin = null;
+function rememberPickup() {
+  pickOrigin = { textX, textY, periodX, periodY, periodOffX, periodOffY, circleX, circleY };
+}
+
 function mouseMoved() {
   let vpX = 30;
   let vpY = 20;
@@ -285,6 +292,25 @@ function mouseMoved() {
 
   let mX = mouseX - (vpX + vpW / 2);
   let mY = mouseY - (vpY + vpH / 2);
+
+  // A picked-up piece only follows the pointer while it is over the canvas. Once the pointer leaves (for example to click a motif
+  // in the panel) the piece is put down where it last was, instead of being dragged off the canvas.
+  const overCanvas = mouseX >= vpX && mouseX <= vpX + vpW && mouseY >= vpY && mouseY <= vpY + vpH;
+  if (!overCanvas) {
+    if ((isTextPickedUp || isPeriodPickedUp || isCirclePickedUp) && pickOrigin) {
+      // cancel the move: the piece goes back to where it was before it was picked up
+      textX = pickOrigin.textX; textY = pickOrigin.textY;
+      periodX = pickOrigin.periodX; periodY = pickOrigin.periodY;
+      periodOffX = pickOrigin.periodOffX; periodOffY = pickOrigin.periodOffY;
+      circleX = pickOrigin.circleX; circleY = pickOrigin.circleY;
+      sliders.posX.value(textX);
+      sliders.posY.value(textY);
+    }
+    isTextPickedUp = false;
+    isPeriodPickedUp = false;
+    isCirclePickedUp = false;
+    return;
+  }
 
   if (isTextPickedUp) {
     let dx = mX - textX;
