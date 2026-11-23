@@ -43,7 +43,7 @@ function setup() {
       flex-direction: column; 
       align-items: center; 
       justify-content: center;
-      min-height: calc(100vh - 72px);
+      min-height: calc(100vh - 80px);
       padding: 30px 20px;
     }
 

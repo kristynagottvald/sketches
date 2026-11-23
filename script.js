@@ -27,13 +27,14 @@
 
   /* ---------- Hero: every project clip plays in turn, no slide indicator ---------- */
 
+
   function renderHero() {
     if (!projects.length) return;
     const slides = projects.map((p, i) => {
       const el = document.createElement('div');
       el.className = 'slide';
       el.setAttribute('aria-hidden', 'true');
-      el.innerHTML = `<img class="slide-bg" alt=""><div class="slide-card"><img alt="${esc(p.title)}"></div>` +
+      el.innerHTML = `<div class="slide-card"><img alt="${esc(p.title)}"></div>` +
         `<div class="slide-cap"><span class="slide-name caps">${esc(p.category || '')}</span><h2>${esc(p.title)}</h2>` +
         `<a class="slide-cta caps" href="${esc(p.url)}" tabindex="-1"><span>${esc(p.cta || 'Open tool')}</span>${ARROW}</a></div>`;
       el.dataset.src = (reduced || !p.preview) ? p.thumbnail : p.preview;
