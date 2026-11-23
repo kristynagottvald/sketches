@@ -7,9 +7,5 @@
 .site-nav img { display: block; max-width: 100%; }
 .site-nav ul, .site-nav li { list-style: none; padding: 0; }
 .site-nav .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-.site-nav .hb-bar { position: relative; display: flex; align-items: center; height: 44px; padding: 0 12px 0 14px; gap: 20px; white-space: nowrap; }
-.site-nav .logo { flex: none; display: inline-flex; align-items: baseline; gap: 2px; font: 700 16px/1 var(--sans); letter-spacing: -0.4px; color: #fff; transform: translateY(-2px); }
-.site-nav .hb-label { font: 400 10px/1.2 var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--grey); margin-right: -17px; }
-.site-nav .hb-toggle { margin-left: 0; width: 15px; height: 24px; position: relative; display: flex; align-items: center; color: var(--grey); }
 .site-nav .nav-ptr { display: block; transform: translateY(-3px) rotate(-45deg); transform-origin: 11.3px 10.4px; color: var(--grey); }
 .site-nav { z-index: 200; }
