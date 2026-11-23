@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@300;400&family=Inter:wght@300;400;500&display=swap");
 /* Soft-black top bar for sketch pages: in flow (not sticky), drops down on hover.
    Logo, label and arrow reuse the home page's .logo / .hb-label / .nav-ptr styles. */
-:root { --nav-h: 72px; }
+:root { --nav-h: 80px; }
 /* Same bar as the home page: condensed name, then "Tools: [Tool Name]" in small letter-spaced caps */
 .site-nav { --soft: #181716; --cond: "Barlow Semi Condensed", "Helvetica Neue", Arial, sans-serif; --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif; --grey: #989898; }
 .site-nav .hb-bar { display: flex; align-items: baseline; height: auto; padding: 0; gap: 48px; white-space: nowrap; }
@@ -48,9 +48,9 @@
 canvas.p5Canvas { touch-action: none; }
 html, body { overscroll-behavior: none; }
 
-/* Phones: like the home nav. Row 1 is the name; row 2 has the current tool on the left and "All Tools" with an arrow on the right, which opens the dropdown. The bar stays 72px so the tools' canvases still fit. */
+/* Phones: like the home nav. Row 1 is the name; row 2 has the current tool on the left and "All Tools" with an arrow on the right, which opens the dropdown. The bar is the same 80px as on desktop (72px bar + the 8px gap the home page leaves under its nav). */
 @media (max-width: 600px) {
-  header.site-nav { padding: 14px 30px 0; align-items: flex-start; }
+  header.site-nav { padding: 18px 30px 0; align-items: flex-start; }
   header.site-nav .hb-bar { display: grid; grid-template-columns: 1fr auto; row-gap: 8px; align-items: baseline; width: 100%; height: auto; min-width: 0; padding: 0; }
   header.site-nav .hb-bar > .logo { grid-column: 1 / -1; height: auto; font-size: 22px; }
   header.site-nav .hb-bar > .hb-label { display: contents; height: auto; }
