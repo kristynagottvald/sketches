@@ -5,6 +5,17 @@
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   let list = [], cur = 0;
 
+  // nav: "Contact" sits next to the current tool's name and scrolls to this page's contact section
+  const lab = document.querySelector('.site-nav .hb-label');
+  const home = lab && lab.querySelector('a:not(.hb-contact)');
+  if (home && !home.querySelector('.tn-d')) home.innerHTML = '<span class="tn-d">All Tools</span><span class="tn-m">Interactive Brand Tools</span>';
+  if (lab && !lab.querySelector('.hb-contact')) {
+    const c = document.createElement('a');
+    c.className = 'hb-contact'; c.href = '#contact'; c.textContent = 'Contact';
+    c.addEventListener('click', (e) => { const t = document.getElementById('contact'); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); } });
+    lab.appendChild(c);
+  }
+
   fetch('../projects.json', { cache: 'no-cache' }).then((r) => r.json()).then((items) => {
     list = items;
     const here = location.pathname.replace(/index\.html$/, '');
@@ -38,9 +49,12 @@
     const tp = document.createElement('section');
     tp.className = 'tools-project'; tp.id = 'allTools'; tp.setAttribute('aria-label', 'All Tools');
     const ARROW = '<svg class="tp-arrow" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
-    tp.innerHTML = `<div class="tp-side"><h2>All Tools</h2></div><div class="tp-list">${list.filter((q, i) => i !== cur && !q.hidden).map((q) =>
-      `<article class="tp-card"><a href="../${esc(q.url || '#')}" aria-label="${esc(q.title)}"><div class="tp-media"><img src="../${esc(q.thumbnail)}" data-still="../${esc(q.thumbnail)}" data-preview="${q.preview ? '../' + esc(q.preview) : ''}" alt="" loading="lazy"></div><div class="tp-meta"><h3>${esc(q.title)}</h3><p>${esc(q.category || '')}</p>${ARROW}</div></a></article>`).join('')}</div>`;
-    const swap = (e, on) => { const a = e.target.closest('.tp-card a'); if (!a || (e.relatedTarget && a.contains(e.relatedTarget))) return; const im = a.querySelector('img'); if (im && im.dataset.preview) im.src = on ? im.dataset.preview : im.dataset.still; };
+    const EYE = '<svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path d="M1 7s3.2-6 9-6 9 6 9 6-3.2 6-9 6-9-6-9-6z" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="7" r="2.6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>';
+    tp.innerHTML = `<div class="tp-side"><h2>All Tools</h2></div><div class="tp-list">${list.filter((q) => !q.hidden).map((q) => {
+      const here = q === list[cur];
+      return `<article class="tp-card${here ? ' is-current' : ''}"><a href="${here ? '#' : '../' + esc(q.url || '#')}" aria-label="${esc(q.title)}${here ? ' (currently viewing)' : ''}"${here ? ' aria-current="page" tabindex="-1"' : ''}><div class="tp-media"><img src="../${esc(q.thumbnail)}" data-still="../${esc(q.thumbnail)}" data-preview="${!here && q.preview ? '../' + esc(q.preview) : ''}" alt="" loading="lazy">${here ? `<div class="tp-viewing">${EYE}<span>Viewing</span></div>` : ''}</div><div class="tp-meta"><h3>${esc(q.title)}</h3><p>${esc(q.category || '')}</p>${ARROW}</div></a></article>`;
+    }).join('')}</div>`;
+    const swap = (e, on) => { const a = e.target.closest('.tp-card:not(.is-current) a'); if (!a || (e.relatedTarget && a.contains(e.relatedTarget))) return; const im = a.querySelector('img'); if (im && im.dataset.preview) im.src = on ? im.dataset.preview : im.dataset.still; };
     tp.addEventListener('mouseover', (e) => swap(e, true)); tp.addEventListener('mouseout', (e) => swap(e, false));
     // the copyright footer closes the page
     const cf = document.createElement('footer');

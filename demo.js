@@ -53,13 +53,13 @@
     if (!e.isTrusted) return;
     const tgt = e.target;
     const scrollish = e.type === 'wheel' || e.type.startsWith('touch');   // the tool never sees these, wherever they land, so it cannot cancel page scrolling
-    if (!scrollish && tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-dock')) return;   // nav, About and Contact keep working
+    if (!scrollish && tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.tools-project,.foot-project,.demo-dock')) return;   // nav, About and Contact keep working
     e.stopImmediatePropagation();   // no preventDefault: the page still scrolls, links in the nav still work
   }, true));
   KEYS.forEach((t) => window.addEventListener(t, (e) => {
     if (!e.isTrusted) return;
     const tgt = e.target;
-    if (tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-dock')) return;
+    if (tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.tools-project,.foot-project,.demo-dock')) return;
     e.stopImmediatePropagation();
     if (!SCROLL_KEYS.has(e.key) && e.key !== 'Tab') e.preventDefault();
   }, true));
@@ -151,7 +151,7 @@
     const r = el.getBoundingClientRect();
     return { x: r.left + r.width * fx, y: r.top + r.height * fy, el };
   }
-  const elAt = (x, y) => (document.elementsFromPoint(x, y) || []).find((e) => !e.closest('[' + UI + ']') && !e.closest('.site-nav,.about-project,.contact-project,.demo-dock')) || null;
+  const elAt = (x, y) => (document.elementsFromPoint(x, y) || []).find((e) => !e.closest('[' + UI + ']') && !e.closest('.site-nav,.about-project,.contact-project,.tools-project,.foot-project,.demo-dock')) || null;
 
   function fire(el, type, x, y, buttons = 0, button = 0) {
     if (!el) return;
@@ -227,6 +227,28 @@
       for (let i = 0; i < steps; i++) {
         try { el.dispatchEvent(new WheelEvent('wheel', { bubbles: true, cancelable: true, composed: true, view: window, clientX: pos.x, clientY: pos.y, deltaY: dy / steps, deltaMode: 0 })); } catch (e) { /* ignore */ }
         await api.wait(ms / steps);
+      }
+      return true;
+    },
+    /* scroll the nearest scrolling panel around a control so the control (and what it changes) is on screen */
+    reveal: async (t, ms = 900, frac = 0.4) => {
+      const el = resolve(t); if (!el) return false;
+      let sc = el.parentElement;
+      while (sc && sc !== document.body && sc !== document.documentElement) {
+        const cs = getComputedStyle(sc);
+        if (/(auto|scroll)/.test(cs.overflowY) && sc.scrollHeight > sc.clientHeight + 2) break;
+        sc = sc.parentElement;
+      }
+      if (!sc || sc === document.body || sc === document.documentElement) return false;
+      const r = el.getBoundingClientRect(), sr = sc.getBoundingClientRect();
+      const to = Math.max(0, Math.min(sc.scrollHeight - sc.clientHeight, sc.scrollTop + (r.top - sr.top) - sc.clientHeight * frac + r.height / 2));
+      const from = sc.scrollTop, t0 = performance.now();
+      while (alive) {
+        if (!onTop()) await api.idle();
+        const k = Math.min(1, (performance.now() - t0) / ms);
+        sc.scrollTop = from + (to - from) * ease(k);
+        if (k >= 1) break;
+        await new Promise((rr) => requestAnimationFrame(rr));
       }
       return true;
     },

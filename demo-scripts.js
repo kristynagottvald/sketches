@@ -30,7 +30,7 @@ D['ribbon-text'] = async (d) => {
   await d.slider(s[0], 50, 800); await d.slider(s[2], 55, 800);
 };
 
-/* Marketing Minesweeper: plays a clean game. It reads the board, so it never clicks a mine, and starts a fresh board each time round. */
+/* Marketing Minesweeper: opens an area and a couple of safe squares, then steps on a bomb. A fresh board is dealt each time round. */
 D['marketing-mine'] = async (d) => {
   if (typeof initGame !== 'function' || typeof gridElements === 'undefined') return;
   initGame();                                                        // a fresh board every loop
@@ -43,21 +43,14 @@ D['marketing-mine'] = async (d) => {
   const zero = all().filter((c) => !c.isMine && c.neighborCount === 0).sort((a, b) => dist(a) - dist(b))[0];
   if (zero) { await d.click(at(zero), 900); await d.wait(1100); }
   d.say('Numbers count the mines next to a square');
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 2; i++) {
     const next = all().filter((c) => !c.revealed && !c.isMine && nbrs(c).some((n) => n.revealed && n.neighborCount > 0))[0];
     if (!next) break;
-    await d.click(at(next), 800); await d.wait(650);
+    await d.click(at(next), 800); await d.wait(800);
   }
-  d.say('Right-click to flag a mine');
-  const mines = all().filter((c) => c.isMine && !c.flagged && nbrs(c).some((n) => n.revealed)).slice(0, 2);
-  for (const m of mines) { await d.rightClick(at(m), 800); await d.wait(500); }
-  d.say('Keep clearing safe squares');
-  for (let i = 0; i < 3; i++) {
-    const next = all().filter((c) => !c.revealed && !c.isMine && nbrs(c).some((n) => n.revealed))[0];
-    if (!next) break;
-    await d.click(at(next), 700); await d.wait(550);
-  }
-  await d.wait(1200);
+  d.say('One wrong click and it is a mine');
+  const bomb = all().filter((c) => c.isMine && !c.revealed && nbrs(c).some((n) => n.revealed)).sort((a, b) => dist(a) - dist(b))[0] || all().find((c) => c.isMine && !c.revealed);
+  if (bomb) { await d.click(at(bomb), 900); await d.wait(2600); }   // the board then shows every mine
 };
 
 /* Brand Guidelines Mini Site: open sections from the tiles and use their generators (logo, type, colour, motion), coming back to the tiles each time */
@@ -66,7 +59,8 @@ D['thread-brand-guidelines'] = async (d) => {
   const chip = (sel) => d.click(sel, 650);
 
   d.say('Open a section from the tiles');
-  await d.click('a.tile[data-sec="logo"]', 900); await d.wait(1700);
+  await d.click('a.tile[data-sec="logo"]', 900); await d.wait(1500);
+  await d.reveal('#lgKind', 900);   // scroll the section so the controls and the logo they change are on screen
   d.say('Logo: change the lockup');
   await chip('#lgKind button[data-v="monogram"]'); await d.wait(900);
   d.say('Logo: resize it');
@@ -78,7 +72,8 @@ D['thread-brand-guidelines'] = async (d) => {
   await home();
 
   d.say('Typography: try the three families');
-  await d.click('a.tile[data-sec="typography"]', 900); await d.wait(1700);
+  await d.click('a.tile[data-sec="typography"]', 900); await d.wait(1500);
+  await d.reveal('button.chip[data-f="script"]', 900);
   await chip('button.chip[data-f="script"]'); await d.wait(900);
   await chip('button.chip[data-f="sans"]'); await d.wait(800);
   await chip('#tCaps'); await d.wait(800);
@@ -86,15 +81,18 @@ D['thread-brand-guidelines'] = async (d) => {
   await home();
 
   d.say('Colour: pick an approved pairing');
-  await d.click('a.tile[data-sec="color"]', 900); await d.wait(1700);
+  await d.click('a.tile[data-sec="color"]', 900); await d.wait(1500);
+  await d.reveal('#pgrid', 900);
   const pairs = d.$$('#pgrid button');
   for (const i of [2, 6, 10]) { if (pairs[i]) { await d.click(pairs[i], 700); await d.wait(700); } }
   d.say('Colour: click a swatch to copy its hex');
+  await d.reveal('#swCore', 800, 0.5);
   const sw = d.$('#swCore button'); if (sw) { await d.click(sw, 800); await d.wait(1200); }
   await home();
 
   d.say('Motion: change the style and the pen');
-  await d.click('a.tile[data-sec="motion"]', 900); await d.wait(1700);
+  await d.click('a.tile[data-sec="motion"]', 900); await d.wait(1500);
+  await d.reveal('#moStyle', 900);
   await chip('#moStyle button[data-v="tilts"]'); await d.wait(1000);
   await d.slider('#moW', 9, 1000); await d.wait(700);
   await chip('#moTheme button[data-v="yellow"]'); await d.wait(1000);
