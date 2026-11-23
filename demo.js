@@ -75,7 +75,7 @@
       .demo-cursor.on{opacity:1}
       .demo-cursor svg{display:block;transition:transform .12s ease-out;transform-origin:3px 2px}
       .demo-cursor.down svg{transform:scale(.82)}
-      .demo-dock{position:fixed;left:16px;bottom:16px;z-index:150;display:flex;flex-direction:column;align-items:flex-start;gap:8px;max-width:calc(100vw - 32px);pointer-events:none}
+      .demo-dock{position:absolute;left:16px;bottom:16px;z-index:96;display:flex;flex-direction:column;align-items:flex-start;gap:8px;max-width:calc(100vw - 32px);pointer-events:none}
       .demo-caption{max-width:100%;pointer-events:none;display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;background:rgba(24,23,22,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#e8e8e8;font:400 12px/1.3 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;transition:opacity .3s}
       .demo-caption, .demo-caption span{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:none!important}
       .demo-caption{background:rgba(24,23,22,.86)!important}
@@ -90,7 +90,7 @@
       .demo-frame i{position:absolute;inset:0 8px 8px 8px;border-radius:8px;box-shadow:0 0 0 100vmax #181716}
       html.embed .demo-frame{display:none!important}
       html.embed .demo-dock{display:none!important}
-      @media (max-width:600px){.demo-dock{left:10px;bottom:10px}.demo-caption{font-size:11px}}`;
+      @media (max-width:600px){.demo-caption{font-size:11px}}`;
     document.head.appendChild(css);
     shield = document.createElement('div'); shield.className = 'demo-shield'; shield.setAttribute(UI, ''); shield.setAttribute('aria-hidden', 'true');
     cursor = document.createElement('div'); cursor.className = 'demo-cursor'; cursor.setAttribute(UI, ''); cursor.innerHTML = SVG;
