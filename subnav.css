@@ -4,13 +4,13 @@
 :root { --nav-h: 72px; }
 /* Same bar as the home page: condensed name, then "Tools: [Tool Name]" in small letter-spaced caps */
 .site-nav { --soft: #181716; --cond: "Barlow Semi Condensed", "Helvetica Neue", Arial, sans-serif; --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif; --grey: #989898; }
-.site-nav .hb-bar { display: flex; align-items: baseline; padding: 0; gap: 48px; white-space: nowrap; }
+.site-nav .hb-bar { display: flex; align-items: baseline; height: auto; padding: 0; gap: 48px; white-space: nowrap; }
 .site-nav .logo { transform: none; font: 400 29px/1 var(--cond); letter-spacing: -.02em; color: #fff; }
 .site-nav .hb-label { display: flex; gap: 32px; margin: 0; font: 400 12px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
 .site-nav .hb-label a { transition: color .2s; }
 .site-nav .hb-label a:hover { color: #fff; }
 .site-nav .hb-label b { font-weight: 400; color: #fff; }
-.site-nav .hb-toggle { margin-left: -34px; }
+.site-nav .hb-toggle { margin-left: -34px; align-self: center; }
 .site-nav { position: relative; z-index: 50; height: var(--nav-h); background: var(--soft, #181716); color: #fff; display: flex; align-items: flex-start; padding: 24px 30px 0; }
 .nav-toggle { background: none; border: 0; padding: 0; cursor: pointer; }
 .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: var(--soft, #181716); border-top: 1px solid var(--line); box-shadow: 0 20px 40px rgba(0,0,0,.35); padding: 24px 0 28px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .17s linear, transform .3s var(--ease), visibility .17s; }
