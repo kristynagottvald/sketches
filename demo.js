@@ -178,6 +178,7 @@
     /* move the cursor to a selector, element, [fx, fy] (fractions of the tool area) or {x, y} */
     move: async (t, ms = 800, fx = .5, fy = .5) => {
       const p = point(t, fx, fy); if (!p) return false;
+      ms = Math.max(260, ms * 0.62);   // the cursor travels a touch quicker than the durations the scripts ask for
       const x0 = pos.x, y0 = pos.y, t0 = performance.now();
       while (alive) {
         if (!onTop()) await api.idle();

@@ -59,22 +59,18 @@ function setup() {
   }, 2000);
 }
 
+let CW = 800, CH = 400;   // the composition fills the whole canvas
+
 function draw() {
   background(15);
+  CW = width; CH = height;
 
   push();
-  // scale the 800 x 400 composition down to fit narrow screens
-  translate(width / 2, height / 2);
-  scale(min(1, (width - 24) / 800));
-  translate(-400, -200);
-  
   drawingContext.save();
   drawingContext.beginPath();
-  drawingContext.rect(0, 0, 800, 400);
+  drawingContext.rect(0, 0, CW, CH);
   drawingContext.clip();
-  
   generateComposition();
-  
   drawingContext.restore();
   pop();
 }
@@ -90,34 +86,34 @@ function generateComposition() {
 
   noStroke();
   fill(bgCol);
-  rect(0, 0, 800, 400);
+  rect(0, 0, CW, CH);
 
   if (compositionType === 0) {
     // Type 0: Full Line Network
-    drawLineNetwork(0, 0, 800, 400, lineCol);
+    drawLineNetwork(0, 0, CW, CH, lineCol);
   } else if (compositionType === 1) {
     // Type 1: Color Grid 
-    drawColorGrid(0, 0, 800, 400, palette);
+    drawColorGrid(0, 0, CW, CH, palette);
   } else {
     // Type 2: Split Screen Hybrid
     let splitRatios = [0.5, 0.618, 0.382];
-    let splitX = 800 * random(splitRatios);
+    let splitX = CW * random(splitRatios);
     
     // Left side (Lines over Background)
     noStroke();
     fill(bgCol);
-    rect(0, 0, splitX, 400);
-    drawLineNetwork(0, 0, splitX, 400, lineCol);
+    rect(0, 0, splitX, CH);
+    drawLineNetwork(0, 0, splitX, CH, lineCol);
 
     // Right side (Solid block using a DIFFERENT color from the bg)
     let rightBlockCol = random(palette.colors.filter(c => c !== bgCol));
     fill(rightBlockCol);
     noStroke();
-    rect(splitX, 0, 800 - splitX, 400);
+    rect(splitX, 0, CW - splitX, CH);
     
     // 50% chance to add stripes, strictly using the safe contrast color for rightBlockCol
     if (random() > 0.5) {
-      drawStripes(splitX, 0, 800 - splitX, 400, palette.safeLines[rightBlockCol]);
+      drawStripes(splitX, 0, CW - splitX, CH, palette.safeLines[rightBlockCol]);
     }
   }
 }
@@ -127,7 +123,7 @@ function drawLineNetwork(startX, startY, w, h, lineCol) {
   strokeWeight(2);
   noFill();
   
-  let numRects = floor(random(4, 8));
+  let numRects = floor(random(4, 8) * max(1, sqrt((w * h) / 320000)));
   let gridSize = 40; 
   
   for (let i = 0; i < numRects; i++) {

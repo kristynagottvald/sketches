@@ -22,7 +22,7 @@ D['ribbon-text'] = async (d) => {
   const s = d.$$('input[type=range]');
   d.say('Bend the ribbon');
   await d.slider(s[0], 120, 1100); await d.wait(600);
-  d.say('Thicken the type');
+  d.say('Thicken the ribbons');
   await d.slider(s[2], 80, 1100); await d.wait(600);
   d.say('Randomise the pattern');
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);
@@ -60,14 +60,46 @@ D['marketing-mine'] = async (d) => {
   await d.wait(1200);
 };
 
-/* Brand Guidelines Mini Site: open a section, come back */
+/* Brand Guidelines Mini Site: open sections from the tiles and use their generators (logo, type, colour, motion), coming back to the tiles each time */
 D['thread-brand-guidelines'] = async (d) => {
-  d.say('Open a section');
-  await d.click('a.tile[data-sec="color"]'); await d.wait(2600);
-  await d.click('a.logo'); await d.wait(1200);
-  d.say('Open another');
-  await d.click('a.tile[data-sec="typography"]'); await d.wait(2600);
-  await d.click('a.logo'); await d.wait(1000);
+  const home = async () => { await d.click('.site .logo', 700); await d.wait(1100); };
+  const chip = (sel) => d.click(sel, 650);
+
+  d.say('Open a section from the tiles');
+  await d.click('a.tile[data-sec="logo"]', 900); await d.wait(1700);
+  d.say('Logo: change the lockup');
+  await chip('#lgKind button[data-v="monogram"]'); await d.wait(900);
+  d.say('Logo: resize it');
+  await d.slider('#lgSize', 520, 1100); await d.wait(500);
+  await d.slider('#lgSize', 300, 800);
+  d.say('Logo: switch the colour');
+  await chip('#lgTheme button[data-v="ink"]'); await d.wait(900);
+  await chip('#lgTheme button[data-v="yellow"]'); await d.wait(500);
+  await home();
+
+  d.say('Typography: try the three families');
+  await d.click('a.tile[data-sec="typography"]', 900); await d.wait(1700);
+  await chip('button.chip[data-f="script"]'); await d.wait(900);
+  await chip('button.chip[data-f="sans"]'); await d.wait(800);
+  await chip('#tCaps'); await d.wait(800);
+  await chip('#tCaps'); await chip('button.chip[data-f="serif"]'); await d.wait(400);
+  await home();
+
+  d.say('Colour: pick an approved pairing');
+  await d.click('a.tile[data-sec="color"]', 900); await d.wait(1700);
+  const pairs = d.$$('#pgrid button');
+  for (const i of [2, 6, 10]) { if (pairs[i]) { await d.click(pairs[i], 700); await d.wait(700); } }
+  d.say('Colour: click a swatch to copy its hex');
+  const sw = d.$('#swCore button'); if (sw) { await d.click(sw, 800); await d.wait(1200); }
+  await home();
+
+  d.say('Motion: change the style and the pen');
+  await d.click('a.tile[data-sec="motion"]', 900); await d.wait(1700);
+  await chip('#moStyle button[data-v="tilts"]'); await d.wait(1000);
+  await d.slider('#moW', 9, 1000); await d.wait(700);
+  await chip('#moTheme button[data-v="yellow"]'); await d.wait(1000);
+  await chip('#moStyle button[data-v="loops"]'); await d.slider('#moW', 5, 700);
+  await home();
 };
 
 /* Pattern Generator: change motif, nudge a control, move an object, recolour */
