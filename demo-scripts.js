@@ -222,16 +222,29 @@ D['mail-stack'] = async (d) => {
   if (s[0]) await d.slider(s[0], 100, 900);
 };
 
-/* Brand Motion System: motifs, palette, a drag */
+/* Brand Motion System: pick a motif, randomise the palette, move the word (click it, move, click to drop), switch motif again */
 D['brand-motion'] = async (d) => {
   d.say('Pick a motion motif');
   await d.click(d.byText('button', 'orbit')); await d.wait(1600);
   await d.click(d.byText('button', 'stack')); await d.wait(1600);
   d.say('Randomise the palette');
   await d.click(d.byText('button', 'randomize')); await d.wait(1400);
-  d.say('Drag a piece around the frame');
-  await d.drag([0.3, 0.5], [0.4, 0.38], 1000); await d.wait(900);
-  await d.click(d.byText('button', 'grow')); await d.wait(900);
+  if (typeof textX !== 'undefined' && typeof width !== 'undefined') {
+    // this tool picks a piece up with a click and puts it down with a second click
+    const cx = 30 + (width - 370) / 2, cy = 20 + (height - 100) / 2;
+    const ox = textX, oy = textY;
+    d.say('Click the word to pick it up');
+    await d.click(d.canvasPoint(cx + ox, cy + oy), 800); await d.wait(300);
+    d.say('Move it, then click to put it down');
+    await d.move(d.canvasPoint(cx + ox - 150, cy + oy - 90), 900); await d.wait(300);
+    await d.click(d.canvasPoint(cx + ox - 150, cy + oy - 90), 200); await d.wait(900);
+    // put the word back for the next loop
+    await d.click(d.canvasPoint(cx + textX, cy + textY), 700); await d.wait(200);
+    await d.move(d.canvasPoint(cx + ox, cy + oy), 700);
+    await d.click(d.canvasPoint(cx + ox, cy + oy), 200); await d.wait(500);
+  }
+  d.say('Switch to another motif');
+  await d.click(d.byText('button', 'grow')); await d.wait(1200);
 };
 
 /* Postmark Award Motion Styles: switch style, edit text, speed */
