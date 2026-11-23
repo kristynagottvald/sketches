@@ -86,6 +86,7 @@
         <div class="cp-rows"><div class="cp-row"><h3>Contact</h3><div>
           <a href="mailto:kgottvald@gmail.com">Email</a>
           <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://kristynagottvald.github.io/" target="_blank" rel="noopener noreferrer">Portfolio</a>
         </div></div></div></div>`;
     }
     // All Tools: the same heading-left, two-column card list as the home page (the tool you are on is left out)

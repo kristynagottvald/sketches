@@ -607,6 +607,6 @@ function boot(){
 const imgs = [...grid.querySelectorAll('img')];
 Promise.all([document.fonts.ready, ...imgs.map(i => i.decode().catch(() => {}))]).then(() => { drawPost(tcv, 300); drawPost(postCv, 400); boot(); });
 </script>
-<script src="../subnav.js?v=23"></script>
+<script src="../subnav.js?v=24"></script>
 </body>
 </html>
