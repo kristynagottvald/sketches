@@ -53,13 +53,13 @@
     if (!e.isTrusted) return;
     const tgt = e.target;
     const scrollish = e.type === 'wheel' || e.type.startsWith('touch');   // the tool never sees these, wherever they land, so it cannot cancel page scrolling
-    if (!scrollish && tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-dock')) return;   // nav, About and Contact keep working
+    if (!scrollish && tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.tools-project,.foot-project,.demo-dock')) return;   // nav, About and Contact keep working
     e.stopImmediatePropagation();   // no preventDefault: the page still scrolls, links in the nav still work
   }, true));
   KEYS.forEach((t) => window.addEventListener(t, (e) => {
     if (!e.isTrusted) return;
     const tgt = e.target;
-    if (tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-dock')) return;
+    if (tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.tools-project,.foot-project,.demo-dock')) return;
     e.stopImmediatePropagation();
     if (!SCROLL_KEYS.has(e.key) && e.key !== 'Tab') e.preventDefault();
   }, true));
@@ -151,7 +151,7 @@
     const r = el.getBoundingClientRect();
     return { x: r.left + r.width * fx, y: r.top + r.height * fy, el };
   }
-  const elAt = (x, y) => (document.elementsFromPoint(x, y) || []).find((e) => !e.closest('[' + UI + ']') && !e.closest('.site-nav,.about-project,.contact-project,.demo-dock')) || null;
+  const elAt = (x, y) => (document.elementsFromPoint(x, y) || []).find((e) => !e.closest('[' + UI + ']') && !e.closest('.site-nav,.about-project,.contact-project,.tools-project,.foot-project,.demo-dock')) || null;
 
   function fire(el, type, x, y, buttons = 0, button = 0) {
     if (!el) return;

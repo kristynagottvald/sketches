@@ -20,11 +20,12 @@ html, body { overscroll-behavior: none; }
 /* Phones: like the home nav. Row 1 is the name; row 2 has the current tool on the left and "All Tools" on the right, which goes back to the home page. The bar is the same 80px as on desktop (72px bar + the 8px gap the home page leaves under its nav). */
 @media (max-width: 600px) {
   header.site-nav { padding: 18px 30px 0; align-items: flex-start; }
-  header.site-nav .hb-bar { display: grid; grid-template-columns: 1fr auto; row-gap: 8px; align-items: baseline; width: 100%; height: auto; min-width: 0; padding: 0; }
+  header.site-nav .hb-bar { display: grid; grid-template-columns: 1fr auto auto; column-gap: 20px; row-gap: 8px; align-items: baseline; width: 100%; height: auto; min-width: 0; padding: 0; }
   header.site-nav .hb-bar > .logo { grid-column: 1 / -1; height: auto; font-size: 22px; }
   header.site-nav .hb-bar > .hb-label { display: contents; height: auto; }
   header.site-nav .hb-label b { grid-row: 2; grid-column: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   header.site-nav .hb-label a { grid-row: 2; grid-column: 2; display: inline-flex; align-items: center; gap: 6px; color: #fff; }
+  header.site-nav .hb-label .hb-contact { grid-column: 3; }
   header.site-nav .hb-bar > .tools { grid-column: 1 / -1; }
 }
 
@@ -111,3 +112,12 @@ html.embed .site-nav, html.embed .about-project, html.embed .contact-project { d
 
 /* p5 canvases are inline by default, which leaves a few pixels under them where the page background shows */
 canvas.p5Canvas { display: block; }
+
+/* the current tool in All Tools: blurred, with an eye icon and "Viewing" over it (like the current card on the portfolio) */
+.tp-card.is-current a { cursor: default; pointer-events: none; }
+.tp-card.is-current .tp-media img { filter: blur(14px) brightness(.45); transform: scale(1.12); }
+.tp-viewing { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 12px; color: #fff; background: rgba(0,0,0,.25); font: 400 12px/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; }
+@media (min-width: 700px) { .tp-list:hover .tp-card.is-current a { opacity: 1; } }
+
+/* stacked layouts (phones and tablets): the Contact row lines up with the heading above it */
+@media (max-width: 899px) { .cp-row h3 { padding-left: 22px; } .cp-rows { padding-right: 12px; } }
