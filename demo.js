@@ -6,6 +6,9 @@
    Load this file in the <head> (before the tool's own scripts) so the input filter runs first. */
 (() => {
   'use strict';
+  /* ?embed=1: the page is shown inside the home page hero. No nav, About or Contact, the tool fills the frame, and the demo waits for the home page to say go. */
+  const EMBED = /[?&]embed=1/.test(location.search);
+  if (EMBED) document.documentElement.classList.add('embed');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const UI = 'data-demo-ui';
   const inUI = (el) => !!(el && el.closest && el.closest('[' + UI + '],.site-nav,.about-project,.contact-project'));
@@ -42,8 +45,11 @@
       .demo-cursor svg{display:block;transition:transform .12s ease-out;transform-origin:3px 2px}
       .demo-cursor.down svg{transform:scale(.82)}
       .demo-caption{position:fixed;left:16px;bottom:16px;z-index:96;pointer-events:none;display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;background:rgba(24,23,22,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#e8e8e8;font:400 12px/1.3 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;transition:opacity .3s}
+      .demo-caption, .demo-caption span{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:none!important}
+      .demo-caption{background:rgba(24,23,22,.86)!important}
       .demo-caption i{width:6px;height:6px;border-radius:50%;background:#8fd694;flex:none}
       .site-nav .tools{display:none!important}
+      html.embed .demo-caption{display:none!important}
       @media (max-width:600px){.demo-caption{left:10px;bottom:10px;font-size:11px}}`;
     document.head.appendChild(css);
     shield = document.createElement('div'); shield.className = 'demo-shield'; shield.setAttribute(UI, ''); shield.setAttribute('aria-hidden', 'true');
@@ -204,7 +210,7 @@
   async function run(script) {
     cursor.classList.add('on');
     setCursor(innerWidth * 0.55, navH + (innerHeight - navH) * 0.6);
-    await api.wait(1200);
+    await api.wait(EMBED ? 150 : 1200);
     while (alive) {
       try { await script(api); } catch (e) { console.warn('demo step failed', e); await api.wait(1000); }
       api.say('');
@@ -232,8 +238,14 @@
     if (reduced) { cursor.remove(); return; }
     const id = (location.pathname.replace(/\/index\.html$/, '').match(/([^/]+)\/?$/) || [])[1];
     const script = window.DEMOS && window.DEMOS[id];
-    if (script) setTimeout(() => run(script), 1200);
-    else cursor.remove();
+    if (!script) { cursor.remove(); if (EMBED) parent.postMessage({ demo: 'ready' }, '*'); return; }
+    if (EMBED) {
+      let go = false;
+      const begin = () => { if (!go) { go = true; run(script); } };
+      window.addEventListener('message', (e) => { if (e.data && e.data.demo === 'start') begin(); });
+      setTimeout(begin, 12000);   // safety net if the home page never sends the signal
+      parent.postMessage({ demo: 'ready' }, '*');
+    } else setTimeout(() => run(script), 1200);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

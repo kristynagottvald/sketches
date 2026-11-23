@@ -39,7 +39,7 @@ let currentMotif = 'Grow';
 const RIGHT_MARGIN = 80;
 
 // Site header height; the sketch lives in a <main> below it
-const HEADER_H = 80;
+const HEADER_H = /[?&]embed=1/.test(location.search) ? 0 : 80;
 
 // UI Controls
 let motifButtons = [];

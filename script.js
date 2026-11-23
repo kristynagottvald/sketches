@@ -7,7 +7,6 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ARROW = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
   const CARD_ARROW = '<svg class="card-arrow" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
-  const SLIDE_MS = 6000;   // one full loop of each clip
 
   const hero = $('#hero');
   let projects = [];
@@ -25,38 +24,65 @@
     renderGrid();
   }
 
-  /* ---------- Hero: every project clip plays in turn, no slide indicator ---------- */
+  /* ---------- Hero: 2.5 seconds of each tool's own demo, played live from the tool page ---------- */
 
+  const DEMO_MS = 2500;          // how long each tool's demo shows
+  const VW = 1280, VH = 720;     // the size each tool is laid out at inside its frame, scaled to fill the hero
 
   function renderHero() {
     if (!projects.length) return;
-    const slides = projects.map((p, i) => {
+    const slides = projects.map((p) => {
       const el = document.createElement('div');
       el.className = 'slide';
       el.setAttribute('aria-hidden', 'true');
-      el.innerHTML = `<div class="slide-card"><img alt="${esc(p.title)}"></div>` +
+      el.innerHTML = `<div class="slide-card"><img class="still" src="${esc(p.thumbnail)}" alt=""><iframe class="slide-frame" title="${esc(p.title)} demo" tabindex="-1" aria-hidden="true" loading="eager"></iframe></div>` +
         `<div class="slide-cap"><span class="slide-name caps">${esc(p.category || '')}</span><h2>${esc(p.title)}</h2>` +
         `<a class="slide-cta caps" href="${esc(p.url)}" tabindex="-1"><span>${esc(p.cta || 'Open tool')}</span>${ARROW}</a></div>`;
-      el.dataset.src = (reduced || !p.preview) ? p.thumbnail : p.preview;
       hero.appendChild(el);
       return el;
     });
+    const frames = slides.map((s) => s.querySelector('iframe'));
+    const cards = slides.map((s) => s.querySelector('.slide-card'));
+    const n = slides.length;
 
-    // a fresh src on a cached clip always starts from its first frame
-    const load = (el) => el.querySelectorAll('img').forEach((im) => { if (im.getAttribute('src') !== el.dataset.src) im.src = el.dataset.src; });
-    const restart = (el) => el.querySelectorAll('img').forEach((im) => { im.removeAttribute('src'); im.src = el.dataset.src; });
+    // scale each frame so the 1280x720 tool fills its card like object-fit: cover
+    const fit = () => frames.forEach((f, i) => {
+      const w = cards[i].clientWidth, h = cards[i].clientHeight; if (!w || !h) return;
+      f.style.transform = `translate(-50%, -50%) scale(${Math.max(w / VW, h / VH)})`;
+    });
+    fit(); new ResizeObserver(fit).observe(hero); window.addEventListener('resize', fit);
 
-    let cur = -1;
-    const show = (i) => {
-      i = (i + slides.length) % slides.length;
-      slides.forEach((s, k) => { s.classList.toggle('is-on', k === i); s.setAttribute('aria-hidden', String(k !== i)); s.querySelector('.slide-cta').tabIndex = k === i ? 0 : -1; });
-      restart(slides[i]);
-      load(slides[(i + 1) % slides.length]);   // warm the next clip so it plays from frame 0 on cue
-      cur = i;
-    };
-    show(0);
-    if (reduced) return;
-    setInterval(() => { if (!document.hidden) show(cur + 1); }, SLIDE_MS);
+    const show = (i) => slides.forEach((s, k) => {
+      s.classList.toggle('is-on', k === i);
+      s.setAttribute('aria-hidden', String(k !== i));
+      s.querySelector('.slide-cta').tabIndex = k === i ? 0 : -1;
+    });
+    if (reduced) { show(0); return; }   // reduced motion: just the still of the first tool
+
+    const ready = new Array(n).fill(false);
+    frames.forEach((f, i) => f.addEventListener('load', () => { if (f.dataset.on) setTimeout(() => { ready[i] = true; }, 350); }));
+    const prep = (i) => { const f = frames[i]; if (f.dataset.on) return; f.dataset.on = '1'; ready[i] = false; f.classList.remove('live'); f.src = projects[i].url.replace(/\/?$/, '/') + 'index.html?embed=1'; };
+    const release = (i) => setTimeout(() => { const f = frames[i]; f.dataset.on = ''; f.classList.remove('live'); ready[i] = false; f.src = 'about:blank'; }, 1200);
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    (async () => {
+      let i = 0, prev = -1;
+      prep(0);
+      for (;;) {
+        while (document.hidden) await sleep(400);
+        const t0 = performance.now();
+        while (!ready[i] && performance.now() - t0 < 7000) await sleep(100);   // a slow tool shows its still image instead
+        show(i);
+        if (ready[i]) {
+          frames[i].classList.add('live');
+          try { frames[i].contentWindow.postMessage({ demo: 'start' }, '*'); } catch (e) { /* ignore */ }
+        }
+        if (prev >= 0) release(prev);
+        prep((i + 1) % n);   // load the next tool while this one plays
+        await sleep(DEMO_MS);
+        prev = i; i = (i + 1) % n;
+      }
+    })();
   }
 
   /* ---------- All tools: same card as Selected Work; hover plays the tool's clip ---------- */

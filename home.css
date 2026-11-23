@@ -59,18 +59,21 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 
 /* ---------- Hero preview: 70% of the first screen, every tool's clip in turn ---------- */
 .hero { position: relative; margin: 8px var(--pad) 0; height: max(360px, calc((100svh - var(--nav-h) - 8px) * .7)); border-radius: var(--r-sm); overflow: hidden; background: var(--off-black); container-type: size; }
-.slide { --R: 16px; position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .9s linear, visibility 0s .9s; background: var(--off-black); }
+.slide { --R: 8px; position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .9s linear, visibility 0s .9s; background: var(--off-black); }
 .slide.is-on { opacity: 1; visibility: visible; transition: opacity .9s linear; }
 /* the clip is the whole hero background */
 .slide-card { position: absolute; inset: 0; background: #000; }
-.slide-card img { width: 100%; height: 100%; object-fit: cover; }
+.slide-card { overflow: hidden; }
+.slide-card .still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.slide-frame { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; max-width: none; border: 0; background: #000; transform-origin: center; pointer-events: none; opacity: 0; transition: opacity .4s linear; }
+.slide-frame.live { opacity: 1; }
 /* inset soft-black tab in the bottom-right corner, flush with the edges, carrying the type */
-.slide-cap { position: absolute; right: 0; bottom: 0; z-index: 1; width: min(44cqw, 620px); padding: 28px 32px 30px 34px; display: grid; gap: 20px; background: var(--bg); border-top-left-radius: var(--R); }
+.slide-cap { position: absolute; right: 0; bottom: 0; z-index: 1; width: max-content; max-width: calc(100% - 40px); padding: 28px 32px 30px 34px; display: grid; gap: 20px; background: var(--bg); border-top-left-radius: var(--R); }
 .slide-cap::before, .slide-cap::after { content: ""; position: absolute; width: var(--R); height: var(--R); background: radial-gradient(circle at 0 0, transparent var(--R), var(--bg) calc(var(--R) + .5px)); pointer-events: none; }
 .slide-cap::before { right: 0; bottom: 100%; }   /* soft curve where the tab meets the right edge */
 .slide-cap::after { right: 100%; bottom: 0; }    /* and where it meets the bottom edge */
 .slide-name { color: var(--grey); }
-.slide-cap h2 { font: 300 clamp(44px, 3.9cqw, 64px)/1.04 var(--cond); letter-spacing: var(--ls-head); text-wrap: balance; color: #fff; }
+.slide-cap h2 { font: 300 clamp(40px, 3.6cqw, 56px)/1.04 var(--cond); letter-spacing: var(--ls-head); white-space: nowrap; color: #fff; }
 .slide-cta { justify-self: start; margin-top: 4px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--r-md); background: rgba(255,255,255,.08); color: #fff; transition: background .25s; }
 .slide-cta:hover { background: rgba(255,255,255,.16); }
 .slide-cta svg { transition: transform .3s var(--ease); }
@@ -144,14 +147,10 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .hero { height: auto; container-type: normal; display: grid; }
   .slide { position: relative; grid-area: 1 / 1; display: grid; align-content: start; background: var(--bg); }
   .slide-card { position: relative; inset: auto; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--r-sm); overflow: hidden; }
-  .slide-cap { position: static; width: 100%; padding: 22px 14px 18px; gap: 8px; border-radius: 0; }
+  .slide-cap { position: static; width: 100%; max-width: none; padding: 22px 14px 18px; gap: 8px; border-radius: 0; }
   .slide-cap::before, .slide-cap::after { display: none; }
-  .slide-cap h2 { font-size: 44px; line-height: 1; }
+  .slide-cap h2 { font-size: min(44px, 9.4vw); line-height: 1; }
   .slide-cta { margin-top: 6px; }
-}
-@media (max-width: 700px) {
-  /* phones: the slide is the clip, the category, the project title and the link */
-  .slide-cap h2 { font-size: 44px; }
 }
 .nav-jump, .tagline { display: none; }
 @media (max-width: 760px) {
