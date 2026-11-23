@@ -61,7 +61,9 @@ let paletteLowerTop = 0;
 let paletteBaseH = 48;
 const PALETTE_WRAP_H = 92;
 const PAD = 14;          // inner padding of the settings boxes
-const COL1 = 15 + PAD;   // left column x
+const PANEL_W = 320;     // the controls panel is the right-hand 320px
+let UIX = 0;             // x of the panel's left edge: width - PANEL_W (set in setup and on resize)
+const COL1 = 15 + PAD;   // left column x, inside the panel
 const COL2 = 165;        // right column x
 let paletteWrap;
 let paletteWrapTop = 0;
@@ -96,6 +98,7 @@ let t = 0;
 
 function setup() {
   let cnv = createCanvas(windowWidth, windowHeight - HEADER_H);
+  UIX = windowWidth - PANEL_W;
   cnv.parent(document.querySelector('main'));
 
   // Dynamically load Google Font 'Poppins'
@@ -152,21 +155,21 @@ function draw() {
   // Sidebar Panel Background
   noStroke();
   fill(0, 50);
-  rect(0, 0, 320, height + 10);
+  rect(UIX, 0, PANEL_W, height + 10);
 
   // Header in Sidebar
   fill(COLORS.white);
   textSize(22);
   textStyle(BOLD);
   textAlign(LEFT, TOP);
-  text("grubclub", 25, 22);
+  text("grubclub", UIX + 25, 22);
 
   fill(COLORS.robinsEgg);
   textSize(14);
-  text("MOTION SYSTEM", 25, 56);
+  text("MOTION SYSTEM", UIX + 25, 56);
 
   // Canvas Viewport Frame Coordinates
-  let vpX = 340;
+  let vpX = 30;
   let vpY = 20;
   let vpW = width - 370;
   let vpH = height - 100;
@@ -217,7 +220,7 @@ function draw() {
 // =============================================================
 
 function mousePressed() {
-  let vpX = 340;
+  let vpX = 30;
   let vpY = 20;
   let vpW = width - 370;
   let vpH = height - 100;
@@ -275,7 +278,7 @@ function mousePressed() {
 }
 
 function mouseMoved() {
-  let vpX = 340;
+  let vpX = 30;
   let vpY = 20;
   let vpW = width - 370;
   let vpH = height - 100;
@@ -556,7 +559,7 @@ function createUI() {
   // Motif Selector Buttons
   MOTIFS.forEach((motif, index) => {
     let btn = createButton(motif);
-    btn.position(15, startY + index * 30);
+    btn.position(UIX + 15, startY + index * 30);
     btn.size(290, 26);
     styleButton(btn, motif === currentMotif);
 
@@ -579,13 +582,13 @@ function createUI() {
   createControlLabel("BRAND COLOR PALETTE", COL1, uiY + PAD);
 
   randColorBtn = createButton("RANDOMIZE");
-  randColorBtn.position(COL1, uiY + PAD + 16);
+  randColorBtn.position(UIX + COL1, uiY + PAD + 16);
   randColorBtn.size(74, 28);
   styleRandButton(randColorBtn);
   randColorBtn.mousePressed(randomizePalette);
 
   paletteBox = createDiv();
-  paletteBox.position(COL1 + 82, uiY + PAD + 16);
+  paletteBox.position(UIX + COL1 + 82, uiY + PAD + 16);
   paletteBox.style('width', '180px');
   paletteBox.style('padding', '6px 6px 4px');
   paletteBox.style('box-sizing', 'border-box');
@@ -614,7 +617,7 @@ function createUI() {
 
   createControlLabel("TEXT CONTENT", COL1, uiY);
   textInput = createInput('fullplate.');
-  textInput.position(COL1, uiY + 16);
+  textInput.position(UIX + COL1, uiY + 16);
   textInput.size(244, 22);
   styleInput(textInput);
 
@@ -622,21 +625,21 @@ function createUI() {
 
   createControlLabel("TEXT SIZE", COL1, uiY);
   sliders.textSize = createSlider(12, 120, 36, 1);
-  sliders.textSize.position(COL1, uiY + 16);
+  sliders.textSize.position(UIX + COL1, uiY + 16);
 
   createControlLabel("TRACKING", COL2, uiY);
   sliders.tracking = createSlider(-2, 20, 0, 0.5);
-  sliders.tracking.position(COL2, uiY + 16);
+  sliders.tracking.position(UIX + COL2, uiY + 16);
 
   uiY += 40;
 
   createControlLabel("LINE HEIGHT", COL1, uiY);
   sliders.leading = createSlider(0.8, 3.0, 1.2, 0.1);
-  sliders.leading.position(COL1, uiY + 16);
+  sliders.leading.position(UIX + COL1, uiY + 16);
 
   sliders.posXLabel = createControlLabel("POS X", COL2, uiY);
   sliders.posX = createSlider(-400, 400, 0, 1);
-  sliders.posX.position(COL2, uiY + 16);
+  sliders.posX.position(UIX + COL2, uiY + 16);
   sliders.posX.input(() => {
     let dx = sliders.posX.value() - textX;
     textX = sliders.posX.value();
@@ -647,7 +650,7 @@ function createUI() {
 
   sliders.posYLabel = createControlLabel("POS Y", COL1, uiY);
   sliders.posY = createSlider(-300, 300, 0, 1);
-  sliders.posY.position(COL1, uiY + 16);
+  sliders.posY.position(UIX + COL1, uiY + 16);
   sliders.posY.input(() => {
     let dy = sliders.posY.value() - textY;
     textY = sliders.posY.value();
@@ -661,17 +664,17 @@ function createUI() {
 
   createControlLabel("MOTION SPEED", COL1, uiY);
   sliders.speed = createSlider(0.1, 3.0, 1.0, 0.1);
-  sliders.speed.position(COL1, uiY + 16);
+  sliders.speed.position(UIX + COL1, uiY + 16);
 
   sliders.param1Label = createControlLabel("PARAM 1", COL2, uiY);
   sliders.param1 = createSlider(0.5, 2.5, 1.0, 0.05);
-  sliders.param1.position(COL2, uiY + 16);
+  sliders.param1.position(UIX + COL2, uiY + 16);
 
   uiY += 40;
 
   sliders.param2Label = createControlLabel("PARAM 2", COL1, uiY);
   sliders.param2 = createSlider(1, 10, 5, 1);
-  sliders.param2.position(COL1, uiY + 16);
+  sliders.param2.position(UIX + COL1, uiY + 16);
 
   let allSliders = selectAll('input');
   allSliders.forEach(s => {
@@ -816,7 +819,7 @@ function randomizePalette() {
 // Rounded panel that groups a set of controls (created first so the controls sit on top)
 function makeWrapper(y, h) {
   let w = createDiv();
-  w.position(15, y);
+  w.position(UIX + 15, y);
   w.style('width', '290px');
   w.style('height', h + 'px');
   w.style('box-sizing', 'border-box');
@@ -828,7 +831,7 @@ function makeWrapper(y, h) {
 
 function createControlLabel(txt, x, y) {
   let lbl = createSpan(txt);
-  lbl.position(x, y);
+  lbl.position(UIX + x, y);
   lbl.style('color', '#8CE39B');
   lbl.style('font-family', 'Poppins, sans-serif');
   lbl.style('font-size', '10px');
@@ -955,5 +958,14 @@ function drawFooterInfo(x, y, w) {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight - HEADER_H);
+  // slide the panel's controls along with its right-hand edge
+  const next = windowWidth - PANEL_W, dx = next - UIX;
+  if (dx) {
+    document.querySelectorAll('body > *').forEach((el) => {
+      if (el.tagName === 'CANVAS' || el.tagName === 'MAIN' || el.tagName === 'HEADER' || el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el.hasAttribute('data-demo-ui')) return;
+      if (el.style.position === 'absolute' && el.style.left) el.style.left = (parseFloat(el.style.left) + dx) + 'px';
+    });
+    UIX = next;
+  }
   placeTextFarRight();
 }

@@ -19,6 +19,11 @@
       window[k] = Quiet;
     });
     HTMLMediaElement.prototype.play = function () { this.muted = true; this.volume = 0; return Promise.resolve(); };
+    // Inside the home page hero the tool must never move the visitor's scroll position: scrollIntoView and focus() in a frame
+    // also scroll the page that contains the frame.
+    Element.prototype.scrollIntoView = function () {};
+    HTMLElement.prototype.focus = function () {};
+    window.focus = function () {};
   }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const UI = 'data-demo-ui';
@@ -221,7 +226,7 @@
   async function run(script) {
     cursor.classList.add('on');
     setCursor(innerWidth * 0.55, navH + (innerHeight - navH) * 0.6);
-    await api.wait(EMBED ? 150 : 1200);
+    await api.wait(150);
     while (alive) {
       try { await script(api); } catch (e) { console.warn('demo step failed', e); await api.wait(1000); }
       api.say('');
@@ -256,7 +261,11 @@
       window.addEventListener('message', (e) => { if (e.data && e.data.demo === 'start') begin(); });
       setTimeout(begin, 12000);   // safety net if the home page never sends the signal
       parent.postMessage({ demo: 'ready' }, '*');
-    } else setTimeout(() => run(script), 1200);
+    } else {
+      // start once the page and the tool's own setup are done, without the old long pause
+      const go = () => setTimeout(() => run(script), 450);
+      if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();
