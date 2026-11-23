@@ -69,7 +69,6 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .slide-cap { position: absolute; left: calc(var(--m) + var(--cw) + 4cqw); right: var(--m); top: 50%; transform: translateY(-50%); max-width: 28em; display: grid; gap: 28px; }
 .slide-name { color: rgba(255,255,255,.72); }
 .slide-cap h2 { font: 300 clamp(64px, 4.8cqw, 76px)/1.05 var(--cond); letter-spacing: var(--ls-head); text-wrap: balance; color: #fff; text-shadow: 0 2px 28px rgba(0,0,0,.45); }
-.slide-cap p { font: 300 var(--fs-body)/var(--lh-body) var(--sans); color: rgba(255,255,255,.72); }
 .slide-cta { justify-self: start; margin-top: 12px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--r-md); background: rgba(0,0,0,.45); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #e8e8e8; transition: background .25s; }
 .slide-cta:hover { background: rgba(0,0,0,.7); }
 .slide-cta svg { transition: transform .3s var(--ease); }
@@ -146,8 +145,7 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 }
 @media (max-width: 700px) {
   /* phones: the slide is the clip, the project title and the link */
-  .slide-name, .slide-cap p { display: none; }
-  .slide-cap { gap: 6px; padding: 28px 14px 6px; }
+  .slide-name,   .slide-cap { gap: 6px; padding: 28px 14px 6px; }
   .slide-cap h2 { font-size: 50px; }
   .slide-cta { margin-top: 4px; }
 }

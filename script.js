@@ -34,7 +34,7 @@
       el.className = 'slide';
       el.setAttribute('aria-hidden', 'true');
       el.innerHTML = `<img class="slide-bg" alt=""><div class="slide-card"><img alt="${esc(p.title)}"></div>` +
-        `<div class="slide-cap"><span class="slide-name caps">${esc(p.category || '')}</span><h2>${esc(p.title)}</h2><p>${esc(p.blurb || '')}</p>` +
+        `<div class="slide-cap"><span class="slide-name caps">${esc(p.category || '')}</span><h2>${esc(p.title)}</h2>` +
         `<a class="slide-cta caps" href="${esc(p.url)}" tabindex="-1"><span>View full project</span>${ARROW}</a></div>`;
       el.dataset.src = (reduced || !p.preview) ? p.thumbnail : p.preview;
       hero.appendChild(el);
