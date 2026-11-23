@@ -5,99 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kristyna Gottvald • Interactive Brand Tools</title>
   <meta name="description" content="Interactive brand tools and generative systems by Kristyna Gottvald.">
-  <meta name="theme-color" content="#000000">
-  
+  <meta name="theme-color" content="#1a1918">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@300;400&display=swap">
-  <link rel="stylesheet" href="styles.css?v=17">
+  <link rel="stylesheet" href="home.css?v=1">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <script src="favicon.js" defer></script>
-  <script src="script.js?v=13" defer></script>
+  <script src="script.js?v=14" defer></script>
 </head>
 <body>
 
-  <!-- Floating Navigation Pill -->
-  <header class="hb" id="hb">
-    <div class="hb-pill">
-      <div class="hb-bar">
-        <a class="logo" href="#" aria-label="Kristyna Gottvald">KRISTYNA</a>
-        <span class="hb-label" id="hb-label">Tools</span>
-        <button class="hb-toggle" id="hb-toggle" type="button" aria-expanded="false" aria-controls="hb-menu">
-          <span class="sr">Toggle menu</span>
-          <svg class="nav-ptr" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M7.2 6.4l8.4 3.3-3.6 1.4-1.4 3.6z" fill="currentColor"/>
-          </svg>
-        </button>
-      </div>
-      <nav class="hb-menu" id="hb-menu" aria-label="Main Navigation">
-        <a href="#" data-nav="sketches"><b>Tools</b><span>Brand tools &amp; systems</span></a>
-        <a href="#about" data-nav="about"><b>About</b><span>About me &amp; how I work</span></a>
-        <div class="hb-channels">
-          <a href="https://kristynagottvald.github.io/" target="_blank" rel="noopener noreferrer">Design Portfolio</a>
-          <a href="https://dribbble.com/gottbot/" target="_blank" rel="noopener noreferrer">Dribbble</a>
-          <a href="https://openprocessing.org/user/500421/#sketches" target="_blank" rel="noopener noreferrer">OpenProcessing</a>
-          <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div>
-      </nav>
-    </div>
+  <header class="top">
+    <a class="logo" href="#" aria-label="Kristyna Gottvald, top of page">Krıstyna Gottvald</a>
+    <nav class="top-nav caps" aria-label="Main Navigation">
+      <a href="#tools">Tools</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="status caps" href="#contact"><i aria-hidden="true"></i>Open to new projects</a>
   </header>
 
-  <main id="main">
-
-    <!-- View 1: Sketches Gallery -->
-    <section id="view-sketches" class="work" aria-label="Interactive Brand Tools">
-      <div class="work-side">
-        <div class="work-side-in">
-          <h1 class="t-condensed">Interactive Brand Tools</h1>
-          <p class="work-sub">Generative systems and creative code that help growing companies scale their visual identity.</p>
-          <h2 class="t-condensed grey" id="work-active">&nbsp;</h2>
-        </div>
-      </div>
-      <!-- Project tiles populated dynamically via script.js -->
-      <div class="pj-grid" id="pj-grid"></div>
+  <main>
+    <!-- Hero preview: every tool's clip plays in turn (slides are built in script.js) -->
+    <section class="hero" id="hero" aria-label="Tool previews">
     </section>
 
-    <!-- View 2: Minimal About Page -->
-    <section id="view-about" class="about" aria-labelledby="about-title" hidden>
-      <div class="about-inner">
-        <h1 id="about-title" class="t-condensed">I create interactive brand tools and generative art.</h1>
-        <div class="about-cols">
-          <p>I'm Kristyna Gottvald, a multidisciplinary designer specializing in interactive experiences, algorithmic art, and creative coding with WebGL and p5.js.</p>
-          <p>I use code and agentic workflows to build brand tools and interactive systems that scale brand design. Generators, plug-ins and live templates let teams produce on-brand work quickly, while the rules, motion and craft stay built in.</p>
-          <p>Looking to build a tool or generative system for your brand? <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">Send me a message.</a></p>
-        </div>
-      </div>
+    <section class="intro" aria-label="Introduction">
+      <h1 class="sr">Kristyna Gottvald, Interactive Brand Tools</h1>
+      <p>Interactive Brand Tools. <span>Generative systems and creative code that help growing companies scale their visual identity.</span></p>
     </section>
 
+    <section class="tools" id="tools" aria-label="All tools">
+      <div class="tools-head caps"><span>All tools</span><span id="tools-count"></span></div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section class="about" id="about" aria-labelledby="about-title">
+      <h2 id="about-title">Let’s hit your next milestone together.</h2>
+      <div class="about-cols">
+        <p>I'm Kristyna Gottvald, a multidisciplinary designer blending creative coding (WebGL, p5.js) and agentic workflows to turn static brand rules into live, self-serve tools. From type labs and pattern generators to plug-ins and live templates, I build systems that help teams ship quickly without losing craft.</p>
+        <p>Open to full-time roles and select projects across Canada and the US. <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">Send me a message</a> if you'd like to collaborate.</p>
+      </div>
+    </section>
   </main>
 
-  <!-- Footer -->
   <footer class="contact" id="contact" aria-label="Contact">
-    <div class="contact-grid">
-      <div class="contact-head"><h2 class="t-condensed">Contact</h2></div>
-      <div class="contact-rows">
-        <div class="contact-row"><h3>Email</h3><div><a id="mail" href="mailto:kgottvald@gmail.com">kgottvald@gmail.com</a></div></div>
-        <div class="contact-row"><h3>Channels</h3><div class="grey">
-          <a href="https://kristynagottvald.github.io/" target="_blank" rel="noopener noreferrer">Design Portfolio</a>
-          <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://dribbble.com/gottbot/" target="_blank" rel="noopener noreferrer">Dribbble</a>
-          <a href="https://openprocessing.org/user/500421/#sketches" target="_blank" rel="noopener noreferrer">OpenProcessing</a>
-        </div></div>
-      </div>
+    <h2>Contact</h2>
+    <div class="contact-rows">
+      <div class="contact-row"><h3>Email</h3><div><a href="mailto:kgottvald@gmail.com">kgottvald@gmail.com</a></div></div>
+      <div class="contact-row"><h3>Channels</h3><div>
+        <a href="https://kristynagottvald.github.io/" target="_blank" rel="noopener noreferrer">Design Portfolio</a>
+        <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://dribbble.com/gottbot/" target="_blank" rel="noopener noreferrer">Dribbble</a>
+        <a href="https://openprocessing.org/user/500421/#sketches" target="_blank" rel="noopener noreferrer">OpenProcessing</a>
+      </div></div>
     </div>
-    <div class="contact-base">
-      <div class="widget">
-        <div class="widget-body">
-          <span class="caps grey">Design Portfolio</span>
-          <span class="widget-mail">kristynagottvald.github.io</span>
-        </div>
-        <a href="https://kristynagottvald.github.io/" target="_blank" rel="noopener noreferrer" class="copy">View</a>
-      </div>
-      <div class="foot">
-        <span>© Kristyna Gottvald</span>
-        <a href="#">Back to top ↑</a>
-      </div>
+    <div class="foot caps">
+      <span>© Kristyna Gottvald</span>
+      <a href="#">Back to top ↑</a>
     </div>
   </footer>
 
