@@ -87,9 +87,10 @@
       const ft = document.createElement('footer');
       ft.className = 'contact-project'; ft.id = 'contact'; ft.setAttribute('aria-label', 'Contact');
       ft.innerHTML = `<div class="cp-grid"><div class="cp-head"><h2>Want a tool like this?<br>Let’s build it.</h2></div>
-        <div class="cp-rows">
-          <div class="cp-row"><h3>Email</h3><div><a href="mailto:kgottvald@gmail.com">kgottvald@gmail.com</a></div></div>
-          <div class="cp-row"><h3>LinkedIn</h3><div><a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">linkedin.com/in/kgottvald</a></div></div></div></div>
+        <div class="cp-rows"><div class="cp-row"><div>
+          <a href="mailto:kgottvald@gmail.com">Email</a>
+          <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div></div></div></div>
         <div class="cp-foot"><span>© Kristyna Gottvald</span><a href="#" id="cpTop">Back to top ↑</a></div>`;
       document.body.appendChild(ft);
       document.documentElement.classList.add('has-about');
