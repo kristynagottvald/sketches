@@ -15,7 +15,7 @@
 <style>
 :root{
   --ink:#0D0D2B; --bg:#F4F3FB; --navy:#FFFFFF; --panel:#ECEAF8; --line:#D8D5EC; --indigo:#3F30F2; --magenta:#E85DF4;
-  --lime:#6F7A00; --lav:#A18BFF; --coral:#FF6F5B; --text:#15153A; --muted:#6B6896;
+  --lime:#12A057; --lav:#A18BFF; --coral:#FF6F5B; --text:#15153A; --muted:#6B6896;
   --font:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
@@ -53,7 +53,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
 .grid{flex:1;min-height:0;overflow:hidden;padding:2px 20px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-content:start;grid-auto-rows:max-content}
 .card{background:var(--navy);border:2px solid transparent;border-radius:10px;overflow:hidden;position:relative;will-change:transform,opacity}
 .card.sel{border-color:var(--coral);box-shadow:0 0 0 4px rgba(255,111,91,.18)}
-.media{height:0;padding-bottom:100%;background:#08081f;position:relative}
+.media{height:0;padding-bottom:100%;background:#C3C1D3;position:relative}
 .media img,.media canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
 .tag{position:absolute;top:7px;left:7px;font:500 10px var(--mono);background:rgba(0,0,0,.72);padding:2px 5px;border-radius:3px;color:#fff}
 .ver{left:auto;right:7px}
@@ -68,7 +68,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
 .steps i.f{background:var(--c)}
 .detail{flex:none;width:300px;border-left:1px solid var(--line);background:#fff;padding:20px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
 .detail .empty{margin:auto;text-align:center;color:var(--muted);font-size:13px;max-width:200px}
-.dthumb{aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#08081f;display:grid;place-items:center}
+.dthumb{aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#C3C1D3;display:grid;place-items:center}
 .dthumb{position:relative}.dthumb canvas{position:absolute;inset:0;width:100%;height:100%}
 .dname{font:600 13px var(--mono);word-break:break-all}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:12.5px}
@@ -327,7 +327,7 @@ const ST = {
   scanning:{label:'Scanning',     step:2, c:'#6A4DE8', spin:1},
   needs:   {label:'Needs review', step:3, c:'#C23CD0'},
   changes: {label:'Changes',      step:3, c:'#E5483A'},
-  approved:{label:'Approved',     step:4, c:'#6F7A00'}
+  approved:{label:'Approved',     step:4, c:'#12A057'}
 };
 const STATUS = ['approved','needs','needs','approved','changes','POST','scanning','approved'];
 const FLAGN = {approved:0, needs:3, changes:5, scanning:0, queued:0};
