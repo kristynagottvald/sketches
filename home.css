@@ -73,7 +73,7 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 
 /* ---------- Intro: the other 30% of the first screen ---------- */
 .intro { display: flex; align-items: center; min-height: calc((100svh - var(--nav-h) - 8px) * .3); padding: 28px var(--pad) 28px calc(var(--pad) + var(--left)); }
-.intro p { max-width: 22em; font: 300 var(--fs-h2)/var(--lh-head) var(--cond); letter-spacing: var(--ls-head); text-wrap: pretty; }
+.intro p { max-width: 30em; font: 300 var(--fs-h3)/var(--lh-head) var(--cond); letter-spacing: var(--ls-head); text-wrap: pretty; }
 .intro p span { color: var(--grey); }
 
 /* ---------- All tools: heading left, 2-column grid right (same as Selected Work on the portfolio) ---------- */
