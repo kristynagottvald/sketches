@@ -10,7 +10,8 @@
 .site-nav .hb-label a { transition: color .2s; }
 .site-nav .hb-label a:hover { color: #fff; }
 .site-nav .hb-label b { font-weight: 400; color: #fff; }
-.site-nav .hb-toggle { margin-left: -34px; align-self: center; }
+.site-nav .hb-toggle { display: none; }   /* no arrow: the dropdown opens on hover, or on tap of the tool name */
+.site-nav .hb-label b { cursor: pointer; }
 .site-nav { position: relative; z-index: 50; height: var(--nav-h); background: var(--soft, #181716); color: #fff; display: flex; align-items: flex-start; padding: 24px 30px 0; }
 .nav-toggle { background: none; border: 0; padding: 0; cursor: pointer; }
 .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: var(--soft, #181716); border-top: 1px solid var(--line); box-shadow: 0 20px 40px rgba(0,0,0,.35); padding: 24px 0 28px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .17s linear, transform .3s var(--ease), visibility .17s; }
@@ -63,5 +64,4 @@ html, body { overscroll-behavior: none; }
   .site-nav .hb-label { gap: 16px; min-width: 0; overflow: hidden; }
   .site-nav .hb-label a { flex: none; }
   .site-nav .hb-label b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .site-nav .hb-toggle { margin-left: -8px; flex: none; }
 }

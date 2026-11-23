@@ -6,6 +6,8 @@
   const btn = document.getElementById('navToggle');
   const set = (o) => { nav.classList.toggle('open', o); btn.setAttribute('aria-expanded', String(o)); };
   btn.addEventListener('click', () => set(!nav.classList.contains('open')));
+  const nameEl = nav.querySelector('.hb-label b');   // the arrow is gone: tapping the tool name opens the dropdown on touch screens
+  if (nameEl) nameEl.addEventListener('click', () => set(!nav.classList.contains('open')));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
   document.addEventListener('click', (e) => { if (!nav.contains(e.target)) set(false); });
 
