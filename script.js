@@ -6,6 +6,7 @@
     String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const ARROW = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
+  const CARD_ARROW = '<svg class="card-arrow" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
   const SLIDE_MS = 6000;   // one full loop of each clip
 
   const hero = $('#hero');
@@ -57,24 +58,28 @@
     setInterval(() => { if (!document.hidden) show(cur + 1); }, SLIDE_MS);
   }
 
-  /* ---------- Tools grid: hover a tile to play its clip ---------- */
+  /* ---------- All tools: same card as Selected Work; hover plays the tool's clip ---------- */
 
   function renderGrid() {
-    const grid = $('#grid');
-    $('#tools-count').textContent = String(projects.length).padStart(2, '0');
-    grid.innerHTML = projects.map((p) => `<a class="tile" href="${esc(p.url)}" aria-label="${esc(p.title)}">
-      <div class="tile-media"><img src="${esc(p.thumbnail)}" data-still="${esc(p.thumbnail)}" data-preview="${esc(p.preview || '')}" alt="" loading="lazy"></div>
-      <div class="tile-cap"><span>${esc(p.title)}</span><span>${esc(p.category || '')}</span></div>
-    </a>`).join('');
+    const list = $('#cards');
+    list.innerHTML = projects.map((p) => `<article class="card">
+      <a href="${esc(p.url)}" aria-label="${esc(p.title)}">
+        <div class="card-media"><img src="${esc(p.thumbnail)}" data-still="${esc(p.thumbnail)}" data-preview="${esc(p.preview || '')}" alt="" loading="lazy"></div>
+        <div class="card-meta">
+          <h3 class="card-title">${esc(p.title)}</h3>
+          <p class="card-sub">${esc(p.category || '')}</p>${CARD_ARROW}
+        </div>
+      </a>
+    </article>`).join('');
     const play = (e, on) => {
-      const t = e.target.closest('.tile');
-      if (!t || (e.relatedTarget && t.contains(e.relatedTarget))) return;
-      const im = t.querySelector('img');
+      const a = e.target.closest('.card a');
+      if (!a || (e.relatedTarget && a.contains(e.relatedTarget))) return;
+      const im = a.querySelector('img');
       if (im.dataset.preview) im.src = on ? im.dataset.preview : im.dataset.still;
     };
     if (!reduced) {
-      grid.addEventListener('mouseover', (e) => play(e, true));
-      grid.addEventListener('mouseout', (e) => play(e, false));
+      list.addEventListener('mouseover', (e) => play(e, true));
+      list.addEventListener('mouseout', (e) => play(e, false));
     }
   }
 

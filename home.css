@@ -76,17 +76,31 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .intro p { max-width: 22em; font: 300 var(--fs-h2)/var(--lh-head) var(--cond); letter-spacing: var(--ls-head); text-wrap: pretty; }
 .intro p span { color: var(--grey); }
 
-/* ---------- Tools grid ---------- */
-.tools { margin: 72px var(--pad) 0; padding: 72px 0 120px; border-top: 1px solid var(--line); }
-.tools-head { display: flex; justify-content: space-between; padding: 0 var(--indent) 24px var(--left); color: var(--grey); }
-.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-.tile { display: block; }
-.tile-media { position: relative; overflow: hidden; aspect-ratio: 16 / 9; border-radius: var(--r-md); background: var(--off-black); }
-.tile-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.tile-cap { display: flex; justify-content: space-between; gap: 16px; padding: 10px var(--indent) 18px var(--left); font-size: var(--fs-body); line-height: var(--lh-body); }
-.tile-cap span:last-child { color: var(--grey); font-weight: 300; text-align: right; }
-.grid:hover .tile { opacity: .35; transition: opacity .3s linear; }
-.grid .tile:hover { opacity: 1; }
+/* ---------- All tools: heading left, 2-column grid right (same as Selected Work on the portfolio) ---------- */
+.t-condensed { font-family: var(--cond); font-weight: 300; font-size: var(--fs-h2); line-height: var(--lh-head); letter-spacing: var(--ls-head); }
+.work { display: grid; grid-template-columns: 1fr; padding: 72px var(--pad) 120px; border-top: 1px solid var(--line); margin: 72px var(--pad) 0; padding-left: 0; padding-right: 0; }
+.work-side { padding: 0 0 24px var(--left); }
+.work-list { display: grid; grid-template-columns: 1fr; }
+.card a { display: flex; flex-direction: column; gap: 10px; padding: 12px; transition: opacity .17s linear; }
+.card-media { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--r-md); background: var(--off-black); container-type: size; }
+.card-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card-meta { position: relative; padding: 0 20px 4px 0; }
+.card-title { font-size: var(--fs-body); }
+.card-sub { color: var(--grey); font-size: var(--fs-body); font-weight: 300; }
+.card-arrow { position: absolute; top: 5px; right: 0; color: var(--grey); transition: color .2s; }
+.card a:hover .card-arrow { color: var(--ink); }
+.work-list .card { border-top: 1px solid var(--line); }
+.work-list .card:first-child { border-top: 0; }
+@media (min-width: 700px) {
+  .work { grid-template-columns: calc(25.45% - 12px) 1fr; gap: 12px; }
+  .work-list { grid-template-columns: 1fr 1fr; }
+  .work-list .card:nth-child(2) { border-top: 0; }
+  .work-list .card:nth-child(even) { border-left: 1px solid var(--line); }
+  .work-list .card a { padding: 12px 12px 16px; }
+  .work-list:hover .card a { opacity: .35; }
+  .work-list .card a:hover { opacity: 1; }
+}
+@media (hover: none) { .work-list:hover .card a { opacity: 1; } }
 
 /* ---------- About: 5fr / 9fr split, same as Contact ---------- */
 .about { display: grid; grid-template-columns: 5fr 9fr; gap: 72px 8px; margin: 0 var(--pad); padding: 72px 0 120px; min-height: 90vh; align-content: start; border-top: 1px solid var(--line); }
@@ -132,10 +146,6 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .logo { grid-column: 1 / -1; }
   .top-nav { gap: 20px; grid-column: 1; grid-row: 2; }
   .status { display: none; }
-  .grid { grid-template-columns: 1fr; gap: 6px; }
   .contact-row { grid-template-columns: 1fr 1fr; }
-}
-@media (hover: none) {
-  .grid:hover .tile { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } html { scroll-behavior: auto; } }
