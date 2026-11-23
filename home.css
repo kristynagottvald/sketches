@@ -147,9 +147,11 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 }
 @media (max-width: 700px) {
   /* phones: the slide is the clip, the project title and the link */
-  .slide-name,   .slide-cap { gap: 6px; padding: 28px 14px 6px; }
+  .slide-name { display: none; }
+  .slide-cap { gap: 6px; padding: 24px 14px 6px; }
   .slide-cap h2 { font-size: 50px; }
-  .slide-cta { margin-top: 4px; }
+  .slide-cta { margin-top: 2px; }
+}
 }
 .nav-jump { display: none; }
 @media (max-width: 760px) {
