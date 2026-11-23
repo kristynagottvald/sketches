@@ -76,7 +76,6 @@
           <div class="ap-rows">
             <div class="ap-row"><h3>Type</h3><div>${esc(p.category || '')}</div></div>
             ${p.year ? `<div class="ap-row"><h3>Year</h3><div>${esc(p.year)}</div></div>` : ''}
-            <div class="ap-row"><h3>More</h3><div><a href="../#tools">All tools</a></div></div>
           </div></div>`;
     }
     // Contact + footer, same as the home page, with copy for a visitor who has just seen a tool
