@@ -74,8 +74,8 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .slide-cap::after { right: 100%; bottom: 0; }    /* and where it meets the bottom edge */
 .slide-name { color: var(--grey); }
 .slide-cap h2 { font: 300 clamp(40px, 3.6cqw, 56px)/1.04 var(--cond); letter-spacing: var(--ls-head); white-space: nowrap; color: #fff; }
-.slide-cta { justify-self: start; margin-top: 4px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--r-md); background: rgba(255,255,255,.08); color: #fff; transition: background .25s; }
-.slide-cta:hover { background: rgba(255,255,255,.16); }
+.slide-cta { justify-self: start; margin-top: 4px; display: inline-flex; align-items: center; gap: 10px; padding: 0 0 6px; border-bottom: 1px solid rgba(255,255,255,.45); color: #fff; transition: border-color .25s; }   /* thin underline, no button box */
+.slide-cta:hover { border-bottom-color: #fff; }
 .slide-cta svg { transition: transform .3s var(--ease); }
 .slide-cta:hover svg { transform: translate(2px, -2px); }
 
