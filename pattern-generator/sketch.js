@@ -1,4 +1,4 @@
-const CSS = "\n  :root {\n    --bg: #0f1315; --plate: #1d2326; --fg: #ffffff; --grey: #9aa0a3; --line: rgba(255,255,255,.14);\n    --orange: #ff4a14; --yellow: #f5b800; --blue: #009dff; --green: #006837; --purple: #7a2fb4; --ink: #26292b;\n  }\n  * { box-sizing: border-box; }\n  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }\n  #panel { position: fixed; left: 0; top: " + NAV_H + "px; bottom: 0; width: 344px; z-index: 5; overflow-y: auto; padding: 22px 22px 40px; background: var(--bg); border-right: 1px solid var(--line); }\n  #caption { position: fixed; left: 344px; right: 0; bottom: 0; height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 20px; background: var(--bg); border-top: 1px solid var(--line); font-size: 13px; color: var(--grey); }\n  #caption b { color: #fff; letter-spacing: 1.2px; font-size: 11px; margin-right: 10px; }\n  #caption .r { white-space: nowrap; font-size: 12px; }\n\n  .eyebrow { font-size: 11px; letter-spacing: 1.4px; color: var(--grey); margin: 0 0 6px; }\n  #panel h1 { font: 400 46px/1 'Instrument Serif', Georgia, serif; margin: 0 0 20px; }\n  .rule4 { height: 4px; background: #fff; margin-bottom: 16px; }\n\n  #panel section { border-top: 1px solid var(--line); padding: 16px 0 6px; margin-top: 14px; }\n  #panel h3 { margin: 0 0 12px; font-size: 11px; letter-spacing: 1.4px; font-weight: 700; color: #fff; display: flex; gap: 10px; }\n  #panel h3 span { color: var(--grey); font-weight: 400; }\n  .group { margin-bottom: 14px; transition: opacity .15s; }\n  .group.off { opacity: .3; pointer-events: none; }\n  .hide { display: none !important; }\n  .lbl { font-size: 10px; letter-spacing: 1.2px; color: var(--grey); margin: 0 0 7px; display: block; }\n\n  .motifs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }\n  .motifs button { text-align: left; padding: 11px 12px; background: var(--plate); color: #fff; border: 0; font: 700 13px Arial; cursor: pointer; display: flex; gap: 9px; border-radius: 0; }\n  .motifs button b { opacity: .45; font-weight: 700; }\n  .motifs button:hover { background: #283034; }\n  .motifs button.on { background: var(--c); color: var(--ci); }\n  .motifs button.on b { opacity: .6; }\n\n  .seg { display: flex; gap: 0; background: var(--plate); }\n  .seg button { flex: 1; padding: 10px 6px; background: transparent; color: var(--grey); border: 0; font: 700 12px Arial; cursor: pointer; border-radius: 0; }\n  .seg button:hover { color: #fff; }\n  .seg button.on { background: #fff; color: var(--bg); }\n\n  .dirs { display: grid; grid-template-columns: repeat(3, 44px); gap: 4px; }\n  .dirs button { height: 44px; background: var(--plate); color: #fff; border: 0; font-size: 18px; cursor: pointer; border-radius: 0; }\n  .dirs button:hover { background: #283034; }\n  .dirs button.on { background: var(--orange); }\n  .dirrow { display: flex; gap: 18px; align-items: flex-start; }\n\n  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--plate); color: var(--grey); font: 700 12px Arial; border: 0; cursor: pointer; border-radius: 0; }\n  .chip i { width: 10px; height: 10px; border: 2px solid var(--grey); display: block; }\n  .chip.on { color: #fff; } .chip.on i { background: var(--orange); border-color: var(--orange); }\n\n  .sl { display: grid; grid-template-columns: 1fr auto; row-gap: 5px; margin-bottom: 13px; font-size: 12px; color: #fff; }\n  .sl span { font-size: 10px; letter-spacing: 1.2px; color: var(--grey); }\n  .sl output { font-size: 11px; color: #fff; font-variant-numeric: tabular-nums; }\n  .sl input { grid-column: 1 / 3; width: 100%; margin: 0; accent-color: var(--orange); }\n\n  input[type=text] { width: 100%; padding: 10px 12px; background: var(--plate); border: 1px solid transparent; color: #fff; font: 700 13px Arial; letter-spacing: 1px; border-radius: 0; margin-top: 8px; }\n  input[type=text]:focus { outline: none; border-color: var(--orange); }\n\n  .sw { display: flex; flex-wrap: wrap; gap: 6px; }\n  .sw button { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,.35); cursor: pointer; padding: 0; border-radius: 0; }\n  .sw button.on { outline: 2px solid #fff; outline-offset: 2px; }\n  .sw .multi { background: conic-gradient(var(--orange) 0 25%, var(--green) 0 50%, var(--blue) 0 75%, var(--yellow) 0); }\n\n  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 18px; }\n  .actions button { padding: 12px; border: 0; font: 700 12px Arial; letter-spacing: .5px; cursor: pointer; background: var(--plate); color: #fff; border-radius: 0; }\n  .actions button:hover { background: #283034; }\n  .actions .primary { background: #fff; color: var(--bg); grid-column: 1 / 3; }\n  .actions .primary:hover { background: #e8e8e8; }\n  .note { margin: 8px 0 10px; font-size: 11px; line-height: 1.45; color: var(--grey); }\n\n  \n  html, body { overflow: hidden; }\n";
+const CSS = "\n  :root {\n    --bg: #0f1315; --plate: #1d2326; --fg: #ffffff; --grey: #9aa0a3; --line: rgba(255,255,255,.14);\n    --orange: #ff4a14; --yellow: #f5b800; --blue: #009dff; --green: #006837; --purple: #7a2fb4; --ink: #26292b;\n  }\n  * { box-sizing: border-box; }\n  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font-family: Arial, Helvetica, sans-serif; }\n  #panel { position: fixed; right: 0; top: " + NAV_H + "px; bottom: 0; width: 344px; z-index: 5; overflow-y: auto; padding: 22px 22px 40px; background: var(--bg); border-left: 1px solid var(--line); }\n  #caption { position: fixed; left: 0; right: 344px; bottom: 0; height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 20px; background: var(--bg); border-top: 1px solid var(--line); font-size: 13px; color: var(--grey); }\n  #caption b { color: #fff; letter-spacing: 1.2px; font-size: 11px; margin-right: 10px; }\n  #caption .r { white-space: nowrap; font-size: 12px; }\n\n  .eyebrow { font-size: 11px; letter-spacing: 1.4px; color: var(--grey); margin: 0 0 6px; }\n  #panel h1 { font: 400 46px/1 'Instrument Serif', Georgia, serif; margin: 0 0 20px; }\n  .rule4 { height: 4px; background: #fff; margin-bottom: 16px; }\n\n  #panel section { border-top: 1px solid var(--line); padding: 16px 0 6px; margin-top: 14px; }\n  #panel h3 { margin: 0 0 12px; font-size: 11px; letter-spacing: 1.4px; font-weight: 700; color: #fff; display: flex; gap: 10px; }\n  #panel h3 span { color: var(--grey); font-weight: 400; }\n  .group { margin-bottom: 14px; transition: opacity .15s; }\n  .group.off { opacity: .3; pointer-events: none; }\n  .hide { display: none !important; }\n  .lbl { font-size: 10px; letter-spacing: 1.2px; color: var(--grey); margin: 0 0 7px; display: block; }\n\n  .motifs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }\n  .motifs button { text-align: left; padding: 11px 12px; background: var(--plate); color: #fff; border: 0; font: 700 13px Arial; cursor: pointer; display: flex; gap: 9px; border-radius: 0; }\n  .motifs button b { opacity: .45; font-weight: 700; }\n  .motifs button:hover { background: #283034; }\n  .motifs button.on { background: var(--c); color: var(--ci); }\n  .motifs button.on b { opacity: .6; }\n\n  .seg { display: flex; gap: 0; background: var(--plate); }\n  .seg button { flex: 1; padding: 10px 6px; background: transparent; color: var(--grey); border: 0; font: 700 12px Arial; cursor: pointer; border-radius: 0; }\n  .seg button:hover { color: #fff; }\n  .seg button.on { background: #fff; color: var(--bg); }\n\n  .dirs { display: grid; grid-template-columns: repeat(3, 44px); gap: 4px; }\n  .dirs button { height: 44px; background: var(--plate); color: #fff; border: 0; font-size: 18px; cursor: pointer; border-radius: 0; }\n  .dirs button:hover { background: #283034; }\n  .dirs button.on { background: var(--orange); }\n  .dirrow { display: flex; gap: 18px; align-items: flex-start; }\n\n  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--plate); color: var(--grey); font: 700 12px Arial; border: 0; cursor: pointer; border-radius: 0; }\n  .chip i { width: 10px; height: 10px; border: 2px solid var(--grey); display: block; }\n  .chip.on { color: #fff; } .chip.on i { background: var(--orange); border-color: var(--orange); }\n\n  .sl { display: grid; grid-template-columns: 1fr auto; row-gap: 5px; margin-bottom: 13px; font-size: 12px; color: #fff; }\n  .sl span { font-size: 10px; letter-spacing: 1.2px; color: var(--grey); }\n  .sl output { font-size: 11px; color: #fff; font-variant-numeric: tabular-nums; }\n  .sl input { grid-column: 1 / 3; width: 100%; margin: 0; accent-color: var(--orange); }\n\n  input[type=text] { width: 100%; padding: 10px 12px; background: var(--plate); border: 1px solid transparent; color: #fff; font: 700 13px Arial; letter-spacing: 1px; border-radius: 0; margin-top: 8px; }\n  input[type=text]:focus { outline: none; border-color: var(--orange); }\n\n  .sw { display: flex; flex-wrap: wrap; gap: 6px; }\n  .sw button { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,.35); cursor: pointer; padding: 0; border-radius: 0; }\n  .sw button.on { outline: 2px solid #fff; outline-offset: 2px; }\n  .sw .multi { background: conic-gradient(var(--orange) 0 25%, var(--green) 0 50%, var(--blue) 0 75%, var(--yellow) 0); }\n\n  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 18px; }\n  .actions button { padding: 12px; border: 0; font: 700 12px Arial; letter-spacing: .5px; cursor: pointer; background: var(--plate); color: #fff; border-radius: 0; }\n  .actions button:hover { background: #283034; }\n  .actions .primary { background: #fff; color: var(--bg); grid-column: 1 / 3; }\n  .actions .primary:hover { background: #e8e8e8; }\n  .note { margin: 8px 0 10px; font-size: 11px; line-height: 1.45; color: var(--grey); }\n\n  \n  html, body { overflow: hidden; }\n";
 
 
 const PAL = {
@@ -142,35 +142,35 @@ function queueSnap() {
 
 function drawChrome(ctx) {
   const W = width - PANEL_W, H = height - CAP_H;
-  if (panelImg) ctx.drawImage(panelImg, 0, 0, panelImg.width * (PANEL_W / panelImg.width), min(height, panelImg.height * (PANEL_W / panelImg.width)));
-  else { ctx.fillStyle = '#0f1315'; ctx.fillRect(0, 0, PANEL_W, height); }
+  if (panelImg) ctx.drawImage(panelImg, W, 0, panelImg.width * (PANEL_W / panelImg.width), min(height, panelImg.height * (PANEL_W / panelImg.width)));
+  else { ctx.fillStyle = '#0f1315'; ctx.fillRect(W, 0, PANEL_W, height); }
   ctx.fillStyle = 'rgba(255,255,255,0.14)';
-  ctx.fillRect(PANEL_W - 1, 0, 1, height);
+  ctx.fillRect(W, 0, 1, height);
   ctx.fillStyle = '#0f1315';
-  ctx.fillRect(PANEL_W, H, W, CAP_H);
+  ctx.fillRect(0, H, W, CAP_H);
   ctx.fillStyle = 'rgba(255,255,255,0.14)';
-  ctx.fillRect(PANEL_W, H, W, 1);
+  ctx.fillRect(0, H, W, 1);
   const m = MOTIFS.find(x => x.id === S.motif);
   ctx.textBaseline = 'middle';
   ctx.textAlign = 'left';
   ctx.font = '700 11px Arial';
   ctx.fillStyle = '#ffffff';
-  ctx.fillText(m.name.toUpperCase(), PANEL_W + 20, H + CAP_H / 2);
+  ctx.fillText(m.name.toUpperCase(), 20, H + CAP_H / 2);
   const nw = ctx.measureText(m.name.toUpperCase()).width;
   ctx.font = '13px Arial';
   ctx.fillStyle = '#9aa0a3';
   ctx.font = '12px Arial';
   const rw = S.cover !== 'wall' ? ctx.measureText('Drag on the artboard to move the object').width + 40 : 20;
   ctx.font = '13px Arial';
-  const avail = width - rw - (PANEL_W + 30 + nw);
+  const avail = W - rw - (30 + nw);
   let hint = m.hint;
   while (hint.length > 4 && ctx.measureText(hint).width > avail) hint = hint.slice(0, -2);
   if (hint !== m.hint) hint = hint.trim() + '...';
-  ctx.fillText(hint, PANEL_W + 20 + nw + 10, H + CAP_H / 2);
+  ctx.fillText(hint, 20 + nw + 10, H + CAP_H / 2);
   if (S.cover !== 'wall') {
     ctx.textAlign = 'right';
     ctx.font = '12px Arial';
-    ctx.fillText('Drag on the artboard to move the object', width - 20, H + CAP_H / 2);
+    ctx.fillText('Drag on the artboard to move the object', W - 20, H + CAP_H / 2);
   }
 }
 
@@ -281,7 +281,7 @@ function draw() {
   const W = width - PANEL_W, H = height - CAP_H, ctx = drawingContext;
   background('#0f1315');
   ctx.save();
-  ctx.translate(PANEL_W, 0);
+  ctx.translate(0, 0);
   ctx.beginPath();
   ctx.rect(0, 0, W, H);
   ctx.clip();
@@ -346,7 +346,7 @@ function draw() {
   cursor(S.cover !== 'wall' ? (dragging ? 'grabbing' : 'grab') : 'default');
 }
 
-function moveObj() { S.ox = constrain((mouseX - PANEL_W) / (width - PANEL_W), 0, 1); S.oy = constrain(mouseY / (height - CAP_H), 0, 1); }
+function moveObj() { S.ox = constrain(mouseX / (width - PANEL_W), 0, 1); S.oy = constrain(mouseY / (height - CAP_H), 0, 1); }
 function mousePressed(e) {
   if (e && e.target !== cnv.elt) return;
   if (S.cover !== 'wall') { dragging = true; moveObj(); }
@@ -482,14 +482,14 @@ const REC = { on: false, rec: null, ctx: null, btn: null, t0: 0, D: 0, left: 0 }
 
 function copyArtboard() {
   const pd = pixelDensity(), c = REC.ctx.canvas;
-  REC.ctx.drawImage(cnv.elt, PANEL_W * pd, 0, (width - PANEL_W) * pd, (height - CAP_H) * pd, 0, 0, c.width, c.height);
+  REC.ctx.drawImage(cnv.elt, 0, 0, (width - PANEL_W) * pd, (height - CAP_H) * pd, 0, 0, c.width, c.height);
 }
 
 // PNG export: saves just the artboard (no panel or caption bar) at the canvas's full pixel resolution.
 function exportPNG() {
   const pd = pixelDensity(), cv = document.createElement('canvas');
   cv.width = Math.round((width - PANEL_W) * pd); cv.height = Math.round((height - CAP_H) * pd);
-  cv.getContext('2d').drawImage(cnv.elt, PANEL_W * pd, 0, cv.width, cv.height, 0, 0, cv.width, cv.height);
+  cv.getContext('2d').drawImage(cnv.elt, 0, 0, cv.width, cv.height, 0, 0, cv.width, cv.height);
   cv.toBlob(b => {
     const a = document.createElement('a');
     a.href = URL.createObjectURL(b); a.download = 'spellbook-pattern.png'; a.click();

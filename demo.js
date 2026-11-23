@@ -9,6 +9,22 @@
   /* ?embed=1: the page is shown inside the home page hero. No nav, About or Contact, the tool fills the frame, and the demo waits for the home page to say go. */
   const EMBED = /[?&]embed=1/.test(location.search);
   if (EMBED) document.documentElement.classList.add('embed');
+  if (EMBED) {
+    // the hero demo is silent: audio contexts are created suspended and can never resume, media never plays
+    ['AudioContext', 'webkitAudioContext'].forEach((k) => {
+      const Orig = window[k]; if (!Orig) return;
+      Orig.prototype.resume = function () { return Promise.resolve(); };
+      const Quiet = function (...args) { const c = new Orig(...args); try { c.suspend(); } catch (e) { /* ignore */ } return c; };
+      Quiet.prototype = Orig.prototype;
+      window[k] = Quiet;
+    });
+    HTMLMediaElement.prototype.play = function () { this.muted = true; this.volume = 0; return Promise.resolve(); };
+    // Inside the home page hero the tool must never move the visitor's scroll position: scrollIntoView and focus() in a frame
+    // also scroll the page that contains the frame.
+    Element.prototype.scrollIntoView = function () {};
+    HTMLElement.prototype.focus = function () {};
+    window.focus = function () {};
+  }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const UI = 'data-demo-ui';
   const inUI = (el) => !!(el && el.closest && el.closest('[' + UI + '],.site-nav,.about-project,.contact-project'));
@@ -210,7 +226,7 @@
   async function run(script) {
     cursor.classList.add('on');
     setCursor(innerWidth * 0.55, navH + (innerHeight - navH) * 0.6);
-    await api.wait(EMBED ? 150 : 1200);
+    await api.wait(150);
     while (alive) {
       try { await script(api); } catch (e) { console.warn('demo step failed', e); await api.wait(1000); }
       api.say('');
@@ -245,7 +261,11 @@
       window.addEventListener('message', (e) => { if (e.data && e.data.demo === 'start') begin(); });
       setTimeout(begin, 12000);   // safety net if the home page never sends the signal
       parent.postMessage({ demo: 'ready' }, '*');
-    } else setTimeout(() => run(script), 1200);
+    } else {
+      // start once the page and the tool's own setup are done, without the old long pause
+      const go = () => setTimeout(() => run(script), 450);
+      if (document.readyState === 'complete') go(); else window.addEventListener('load', go);
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

@@ -32,7 +32,7 @@ function setup() {
 
   // --- UI Setup ---
   uiContainer = createDiv('');
-  uiContainer.position(20, NAV_H + 20);
+  uiContainer.style('position', 'absolute').style('right', '20px').style('left', 'auto').style('top', (NAV_H + 20) + 'px');
   uiContainer.style('font-family', 'sans-serif');
   uiContainer.style('color', 'white');
   uiContainer.style('background', 'rgba(0, 0, 0, 0.5)');
@@ -93,9 +93,8 @@ function setup() {
 
 function layoutPanel() {
   if (windowWidth >= 700) {
-    uiContainer.style('position', 'absolute').style('display', 'block').style('left', '20px').style('right', 'auto').style('bottom', 'auto')
-      .style('max-width', '240px').style('max-height', 'none').style('overflow', 'visible');
-    uiContainer.position(20, NAV_H + 20);
+    uiContainer.style('position', 'absolute').style('display', 'block').style('left', 'auto').style('right', '20px').style('bottom', 'auto')
+      .style('max-width', '240px').style('max-height', 'none').style('overflow', 'visible').style('top', (NAV_H + 20) + 'px');
     panelBtn.hide();
     return;
   }

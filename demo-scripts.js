@@ -157,7 +157,7 @@ D['brand-motion'] = async (d) => {
   d.say('Randomise the palette');
   await d.click(d.byText('button', 'randomize')); await d.wait(1400);
   d.say('Drag a piece around the frame');
-  await d.drag([0.62, 0.5], [0.74, 0.38], 1000); await d.wait(900);
+  await d.drag([0.3, 0.5], [0.4, 0.38], 1000); await d.wait(900);
   await d.click(d.byText('button', 'grow')); await d.wait(900);
 };
 
@@ -168,7 +168,7 @@ D['postmark-awards-motion'] = async (d) => {
   for (const b of [styles[1], styles[2], styles[3]]) { await d.click(b); await d.wait(2200); }
   d.say('Edit the text');
   const f = d.$('#fields input[type=text]'), orig = f ? f.value : '';
-  await d.type(f, 'BEST IN SHOW', 80); await d.wait(1600);
+  await d.type(f, 'MAILPIECE', 80); await d.wait(1600);
   d.say('Speed it up');
   await d.slider('#speed', 1.7, 1000); await d.wait(1600);
   await d.slider('#speed', 1, 800);

@@ -423,13 +423,17 @@ function layoutScenes() {
   ctx.letterSpacing = '0px';
 }
 
-// the piece is 1920 x 1080; scale it to fit the space under the nav
+// the piece is 1920 x 1080; scale it to cover the space under the nav (centred, edges cropped), so there are no letterbox bars
 function fitCanvas() {
   const el = drawingContext.canvas;
-  const s = Math.min(window.innerWidth / W, (window.innerHeight - NAV_H) / H);
-  el.style.width = Math.floor(W * s) + 'px';
-  el.style.height = Math.floor(H * s) + 'px';
-  el.style.marginTop = Math.max(0, Math.floor((window.innerHeight - NAV_H - H * s) / 2)) + 'px';
+  const ih = window.innerHeight - NAV_H;
+  const s = Math.max(window.innerWidth / W, ih / H);
+  el.style.width = Math.ceil(W * s) + 'px';
+  el.style.height = Math.ceil(H * s) + 'px';
+  el.style.position = 'relative';
+  el.style.left = '50%';
+  el.style.transform = 'translateX(-50%)';
+  el.style.marginTop = Math.floor((ih - H * s) / 2) + 'px';
 }
 
 function setup() {

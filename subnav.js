@@ -67,7 +67,7 @@
 
     // "About this project": a soft-black section under the tool, styled like the home page's About and Contact sections
     const p = list[cur];
-    let sec = null, ft = null, place = () => {};
+    let sec = null, ft = null;
     if (p && (p.about || p.blurb)) {
       sec = document.createElement('section');
       sec.className = 'about-project'; sec.id = 'aboutProject'; sec.setAttribute('aria-labelledby', 'apTitle');
@@ -78,36 +78,32 @@
             ${p.year ? `<div class="ap-row"><h3>Year</h3><div>${esc(p.year)}</div></div>` : ''}
             <div class="ap-row"><h3>More</h3><div><a href="../#tools">All tools</a></div></div>
           </div></div>`;
-      document.body.appendChild(sec);
-      document.documentElement.classList.add('has-about');
-      // the tool fills the first screen; the section starts right below it
-      place = () => { sec.style.marginTop = '0px'; const top = sec.getBoundingClientRect().top + window.scrollY; sec.style.marginTop = Math.max(0, window.innerHeight - top) + 'px'; };
-      place(); window.addEventListener('resize', place); window.addEventListener('load', place); setTimeout(place, 800);
     }
     // Contact + footer, same as the home page, with copy for a visitor who has just seen a tool
     if (!document.getElementById('contact')) {
       ft = document.createElement('footer');
       ft.className = 'contact-project'; ft.id = 'contact'; ft.setAttribute('aria-label', 'Contact');
-      ft.innerHTML = `<div class="cp-grid"><div class="cp-head"><span class="cp-label">Contact</span><h2>Want a tool like this?<br>Let’s build it.</h2></div>
-        <div class="cp-rows">
-          <div class="cp-row"><h3>Email</h3><div><a href="mailto:kgottvald@gmail.com">kgottvald@gmail.com</a></div></div>
-          <div class="cp-row"><h3>LinkedIn</h3><div><a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">linkedin.com/in/kgottvald</a></div></div>
-        </div></div>
+      ft.innerHTML = `<div class="cp-grid"><div class="cp-head"><h2>Want a tool like this?<br>Let’s build it.</h2></div>
+        <div class="cp-rows"><div class="cp-row"><h3>Contact</h3><div>
+          <a href="mailto:kgottvald@gmail.com">Email</a>
+          <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div></div></div></div>
         <div class="cp-foot"><span>© Kristyna Gottvald</span><a href="#" id="cpTop">Back to top ↑</a></div>`;
-      document.body.appendChild(ft);
-      document.documentElement.classList.add('has-about');
       ft.querySelector('#cpTop').addEventListener('click', (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
     }
-    // The tools add their own containers (p5's <main>, canvases) to the page at any time. Keep the About and Contact sections last.
-    if (ft) {
-      const tidy = () => {
-        let stray = false;
-        for (let n = ft.nextElementSibling; n; n = n.nextElementSibling) if (!n.hasAttribute('data-demo-ui') && n.tagName !== 'SCRIPT') stray = true;
-        if (sec && sec.nextElementSibling !== ft) stray = true;
-        if (stray) { document.body.append(...(sec ? [sec, ft] : [ft])); place(); }
-      };
-      new MutationObserver(tidy).observe(document.body, { childList: true });
-      window.addEventListener('load', tidy); tidy();
+    // Both sections live in one wrapper on <html>, just below the first screen. Nothing here takes space from the tool's own layout,
+    // so tools that stretch to the page height (flex or 100vh layouts) keep their full size.
+    if (sec || ft) {
+      const wrap = document.createElement('div');
+      wrap.id = 'toolAfter';
+      if (sec) wrap.appendChild(sec);
+      if (ft) wrap.appendChild(ft);
+      document.documentElement.appendChild(wrap);
+      document.documentElement.classList.add('has-about');
+      const place = () => { wrap.style.top = Math.max(window.innerHeight, Math.round(document.body.getBoundingClientRect().bottom + window.scrollY)) + 'px'; };
+      place(); window.addEventListener('resize', place); window.addEventListener('load', place);
+      [400, 1200, 3000].forEach((ms) => setTimeout(place, ms));
+      if ('ResizeObserver' in window) new ResizeObserver(place).observe(document.body);
     }
     layout();
     track.querySelectorAll('img').forEach((im) => im.addEventListener('load', layout));

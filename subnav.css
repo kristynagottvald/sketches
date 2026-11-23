@@ -65,8 +65,9 @@ html, body { overscroll-behavior: none; }
 }
 
 /* About this project: soft black section under each tool, same split and type as the home page's About and Contact */
-html.has-about { height: auto !important; overflow-y: auto !important; overflow-x: hidden !important; }
-html.has-about body { height: auto !important; min-height: 100%; overflow: visible !important; }
+html.has-about { overflow-y: auto !important; overflow-x: hidden !important; }
+html.has-about body { overflow: visible !important; }   /* the body keeps its own height, so tools that fill the page keep their size */
+#toolAfter { position: absolute; left: 0; right: 0; top: 100vh; z-index: 100; }
 .about-project { --soft: #181716; --grey: #989898; --mid-grey: #6b6b6b; --line: rgba(255,255,255,.1); --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif; --cond: "Barlow Semi Condensed", "Helvetica Neue", Arial, sans-serif;
   position: relative; z-index: 100; box-sizing: border-box; display: grid; grid-template-columns: 5fr 9fr; gap: 72px 8px; padding: 72px 8px 120px; background: var(--soft); color: #fff; border-top: 1px solid var(--line); font: 400 20px/1.25 var(--sans); -webkit-font-smoothing: auto; }
 .about-project *, .about-project *::before, .about-project *::after { box-sizing: border-box; }
