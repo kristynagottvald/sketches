@@ -76,8 +76,8 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .about-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 40px; }
 .about-cols p { grid-column: 2; max-width: 52ch; font-size: 19px; line-height: 27px; color: var(--grey); }
 .about-cols p:first-child { color: #fff; }
-.about-cols a { color: #fff; border-bottom: 1px solid var(--mid-grey); transition: border-color .2s; }
-.about-cols a:hover { border-color: #fff; }
+.about-cols a { color: var(--grey); border-bottom: 1px solid var(--mid-grey); transition: color .2s, border-color .2s; }
+.about-cols a:hover { color: #fff; border-color: #fff; }
 
 /* ---------- Contact ---------- */
 .contact { padding: 24px var(--pad) 16px; border-top: 1px solid var(--line); min-height: 70svh; display: flex; flex-direction: column; }
