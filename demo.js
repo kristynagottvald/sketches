@@ -73,6 +73,8 @@
       .demo-shield{position:fixed;left:0;right:0;bottom:0;top:80px;z-index:90;background:transparent;touch-action:pan-y pinch-zoom;cursor:default;-webkit-user-select:none;user-select:none}
       .demo-cursor{position:fixed;left:0;top:0;z-index:95;width:20px;height:22px;pointer-events:none;opacity:0;transition:opacity .35s linear;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45));will-change:transform}
       .demo-cursor.on{opacity:1}
+      .demo-ripple{position:fixed;z-index:94;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2px solid rgba(255,255,255,.95);box-shadow:0 0 0 1px rgba(20,20,50,.4),inset 0 0 0 1px rgba(20,20,50,.4);pointer-events:none;opacity:0;transform:scale(.25);animation:demo-ripple .6s ease-out forwards}
+      @keyframes demo-ripple{0%{opacity:.9;transform:scale(.25)}100%{opacity:0;transform:scale(1)}}
       .demo-cursor svg{display:block;transition:transform .12s ease-out;transform-origin:3px 2px}
       .demo-cursor.down svg{transform:scale(.82)}
       .demo-dock{position:absolute;left:16px;bottom:16px;z-index:96;display:flex;flex-direction:column;align-items:flex-start;gap:8px;max-width:calc(100vw - 32px);pointer-events:none}
@@ -162,6 +164,8 @@
     } catch (e) { /* ignore */ }
   }
 
+  /* one subtle ring where the cursor clicks */
+  const ripple = (x, y) => { const r = document.createElement('div'); r.className = 'demo-ripple'; r.setAttribute(UI, ''); r.style.left = x + 'px'; r.style.top = y + 'px'; document.body.appendChild(r); setTimeout(() => r.remove(), 700); };
   let pressed = false;
   function setCursor(x, y) {
     pos.x = x; pos.y = y;
@@ -192,7 +196,7 @@
       return true;
     },
     press: async (hold = 120) => {
-      const el = elAt(pos.x, pos.y); pressed = true; cursor.classList.add('down');
+      const el = elAt(pos.x, pos.y); pressed = true; cursor.classList.add('down'); ripple(pos.x, pos.y);
       fire(el, 'pointerdown', pos.x, pos.y, 1); fire(el, 'mousedown', pos.x, pos.y, 1);
       await api.wait(hold);
       return el;
@@ -211,7 +215,7 @@
     /* right-click (flag, context actions): the cursor goes there, then presses with the right button */
     rightClick: async (t, ms = 800, fx = .5, fy = .5) => {
       if (!(await api.move(t, ms, fx, fy))) return false;
-      const el = elAt(pos.x, pos.y); cursor.classList.add('down');
+      const el = elAt(pos.x, pos.y); cursor.classList.add('down'); ripple(pos.x, pos.y);
       fire(el, 'pointerdown', pos.x, pos.y, 2, 2); fire(el, 'mousedown', pos.x, pos.y, 2, 2);
       await api.wait(110);
       fire(el, 'contextmenu', pos.x, pos.y, 2, 2);
