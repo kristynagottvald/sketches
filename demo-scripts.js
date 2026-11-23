@@ -71,15 +71,6 @@ D['thread-brand-guidelines'] = async (d) => {
   await chip('#lgTheme button[data-v="yellow"]'); await d.wait(500);
   await home();
 
-  d.say('Typography: try the three families');
-  await d.click('a.tile[data-sec="typography"]', 900); await d.wait(1500);
-  await d.reveal('button.chip[data-f="script"]', 900);
-  await chip('button.chip[data-f="script"]'); await d.wait(900);
-  await chip('button.chip[data-f="sans"]'); await d.wait(800);
-  await chip('#tCaps'); await d.wait(800);
-  await chip('#tCaps'); await chip('button.chip[data-f="serif"]'); await d.wait(400);
-  await home();
-
   d.say('Colour: pick an approved pairing');
   await d.click('a.tile[data-sec="color"]', 900); await d.wait(1500);
   await d.reveal('#pgrid', 900);
