@@ -15,7 +15,8 @@
         "alt": "Industry Swapper Plug-in"
       }
     ],
-    "preview": "clips/direct-mail-engine.webp?v=5"
+    "preview": "clips/direct-mail-engine.webp?v=5",
+    "cta": "Swap industries"
   },
   {
     "id": "ribbon-text",
@@ -33,7 +34,8 @@
         "alt": "Postmark Awards"
       }
     ],
-    "preview": "clips/ribbon-text.webp?v=5"
+    "preview": "clips/ribbon-text.webp?v=5",
+    "cta": "Try the ribbons"
   },
   {
     "id": "marketing-mine",
@@ -51,7 +53,8 @@
         "alt": "Marketing Minesweeper"
       }
     ],
-    "preview": "clips/marketing-mine.webp?v=5"
+    "preview": "clips/marketing-mine.webp?v=5",
+    "cta": "Play the game"
   },
   {
     "id": "thread-brand-guidelines",
@@ -69,7 +72,8 @@
         "src": "thread-brand-guidelines/thumbnail.jpg",
         "alt": "Brand Guidelines Mini Site"
       }
-    ]
+    ],
+    "cta": "Browse the guidelines"
   },
   {
     "id": "pattern-generator",
@@ -87,7 +91,8 @@
         "alt": "Pattern Generator"
       }
     ],
-    "preview": "clips/pattern-generator.webp?v=3"
+    "preview": "clips/pattern-generator.webp?v=3",
+    "cta": "Make a pattern"
   },
   {
     "id": "kickoff-type-lab",
@@ -105,7 +110,8 @@
         "alt": "Kick Off Type Lab"
       }
     ],
-    "preview": "clips/kickoff-type-lab.webp?v=6"
+    "preview": "clips/kickoff-type-lab.webp?v=6",
+    "cta": "Set some type"
   },
   {
     "id": "palette-compositions",
@@ -123,7 +129,8 @@
         "alt": "Palette Compositions"
       }
     ],
-    "preview": "clips/palette-compositions.webp?v=5"
+    "preview": "clips/palette-compositions.webp?v=5",
+    "cta": "Cycle palettes"
   },
   {
     "id": "integratron",
@@ -141,7 +148,8 @@
         "src": "integratron/thumbnail.jpg",
         "alt": "Integratron"
       }
-    ]
+    ],
+    "cta": "Enter the dome"
   },
   {
     "id": "reprise-tiles",
@@ -159,7 +167,8 @@
         "src": "reprise-tiles/thumbnail.jpg",
         "alt": "Reprise Tiles"
       }
-    ]
+    ],
+    "cta": "Explore the tiles"
   },
   {
     "id": "hero-banner-engine",
@@ -177,7 +186,8 @@
         "src": "hero-banner-engine/thumbnail.jpg",
         "alt": "Banner Template Studio"
       }
-    ]
+    ],
+    "cta": "Build a banner"
   },
   {
     "id": "binary-grid",
@@ -195,7 +205,8 @@
         "src": "binary-grid/thumbnail.jpg",
         "alt": "No-Code Binary Motif"
       }
-    ]
+    ],
+    "cta": "Flip the grid"
   },
   {
     "id": "sound-bars",
@@ -213,7 +224,8 @@
         "src": "sound-bars/thumbnail.jpg",
         "alt": "Temporary Notes"
       }
-    ]
+    ],
+    "cta": "Play the notes"
   },
   {
     "id": "text-repeater",
@@ -231,7 +243,8 @@
         "src": "text-repeater/thumbnail.jpg",
         "alt": "Text Repeater"
       }
-    ]
+    ],
+    "cta": "Repeat a word"
   },
   {
     "id": "prompt-machine",
@@ -250,7 +263,8 @@
         "src": "prompt-machine/thumbnail.jpg",
         "alt": "Metacognitive Prompt Helper"
       }
-    ]
+    ],
+    "cta": "Rewrite a prompt"
   },
   {
     "id": "mail-stack",
@@ -268,7 +282,8 @@
         "src": "mail-stack/thumbnail.jpg",
         "alt": "Mail Stack"
       }
-    ]
+    ],
+    "cta": "Explore the stack"
   },
   {
     "id": "motion-character",
@@ -286,7 +301,8 @@
         "src": "motion-character/thumbnail.jpg",
         "alt": "Brand Colors"
       }
-    ]
+    ],
+    "cta": "Watch the wipe"
   },
   {
     "id": "postal-fix-animation",
@@ -304,7 +320,8 @@
         "src": "postal-fix-animation/thumbnail.jpg",
         "alt": "Postal Fix Animation"
       }
-    ]
+    ],
+    "cta": "Watch the piece"
   },
   {
     "id": "brand-motion",
@@ -322,7 +339,8 @@
         "alt": "Brand Motion System"
       }
     ],
-    "preview": "clips/brand-motion.webp?v=2"
+    "preview": "clips/brand-motion.webp?v=2",
+    "cta": "Move the motifs"
   },
   {
     "id": "brand-audit-engine",
@@ -340,6 +358,7 @@
         "src": "brand-audit-engine/thumbnail.jpg",
         "alt": "Brand Audit Engine"
       }
-    ]
+    ],
+    "cta": "Run an audit"
   }
 ]

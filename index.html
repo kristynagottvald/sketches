@@ -10,21 +10,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@300;400&family=Inter:wght@300;400;500&display=swap">
-  <link rel="stylesheet" href="home.css?v=2">
+  <link rel="stylesheet" href="home.css?v=7">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <script src="favicon.js" defer></script>
   <script src="script.js?v=14" defer></script>
 </head>
 <body>
 
-  <header class="top">
+  <header class="top" id="top">
     <a class="logo" href="#" aria-label="Kristyna Gottvald, top of page">Krıstyna Gottvald</a>
-    <nav class="top-nav caps" aria-label="Main Navigation">
+    <nav class="top-nav caps" id="top-nav" aria-label="Main Navigation">
       <a href="#tools">Tools</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="nav-jump caps" id="nav-jump" type="button" aria-expanded="false" aria-controls="top-nav"><span id="nav-jump-label">Tools</span> <svg width="10" height="12" viewBox="0 0 10 12" aria-hidden="true"><path d="M5 1v9.5M1.5 7L5 10.5 8.5 7" fill="none" stroke="currentColor"/></svg></button>
     <a class="status caps" href="#contact"><span class="dot-live" aria-hidden="true"></span>Open to new projects</a>
+    <span class="tagline caps">Interactive Brand Tools</span>
   </header>
 
   <main>
@@ -34,16 +36,17 @@
 
     <section class="intro" aria-label="Introduction">
       <h1 class="sr">Kristyna Gottvald, Interactive Brand Tools</h1>
-      <p>Interactive Brand Tools. <span>Generative systems and creative code that help growing companies scale their visual identity.</span></p>
+      <p>Brand systems built to ship fast. <span>Interactive tools and creative code that help growing teams scale without losing the craft.</span></p>
     </section>
 
-    <section class="tools" id="tools" aria-label="All tools">
-      <div class="tools-head caps"><span>All tools</span><span id="tools-count"></span></div>
-      <div class="grid" id="grid"></div>
+    <!-- All tools: heading left, two-column grid of tools right (same structure as Selected Work on the portfolio) -->
+    <section class="work" id="tools" aria-label="All Tools">
+      <div class="work-side"><h2 class="t-condensed">All Tools</h2></div>
+      <div class="work-list" id="cards"></div>
     </section>
 
     <section class="about" id="about" aria-labelledby="about-title">
-      <h2 id="about-title">Let’s hit your next milestone together.</h2>
+      <h2 id="about-title">Let’s hit your next milestone together,<br>with brand tools your whole team can<br>pick up and run.</h2>
       <div class="about-cols">
         <p>I'm Kristyna Gottvald, a multidisciplinary designer blending creative coding (WebGL, p5.js) and agentic workflows to turn static brand rules into live, self-serve tools. From type labs and pattern generators to plug-ins and live templates, I build systems that help teams ship quickly without losing craft.</p>
         <p>Open to full-time roles and select projects across Canada and the US. <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">Send me a message</a> if you'd like to collaborate.</p>
