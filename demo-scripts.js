@@ -172,7 +172,7 @@ D['hero-banner-engine'] = async (d) => {
   await d.click('.seg[data-key="layout"] button[data-v="band"]'); await d.wait(1300);
   d.say('Try a theme');
   const th = d.$$('#themes > *');
-  await d.click(th[2]); await d.wait(1200);
+  await d.click(th[2]); await d.wait(1200);   // Lavender
   d.say('Edit the copy');
   await d.type('#heading', 'Build it once.', 80); await d.wait(1000);
   d.say('Shuffle the visuals');
