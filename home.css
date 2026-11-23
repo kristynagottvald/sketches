@@ -140,6 +140,11 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .slide-card { position: relative; right: auto; top: auto; transform: none; width: 100%; }
   .slide-cap { position: static; transform: none; width: 100%; padding: 0 14px; }
 }
+@media (max-width: 700px) {
+  /* phones: the slide is just the clip and the project title */
+  .slide-name, .slide-cap p, .slide-cta { display: none; }
+  .slide-cap { padding: 0 14px 6px; }
+}
 @media (max-width: 760px) {
   :root { --nav-h: 86px; }
   .top { display: grid; grid-template-columns: 1fr auto; row-gap: 8px; align-content: start; padding-top: 22px; }
