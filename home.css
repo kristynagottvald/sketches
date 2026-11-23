@@ -141,7 +141,9 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .hero { height: auto; container-type: normal; display: grid; }
   .slide { position: relative; grid-area: 1 / 1; display: grid; gap: 20px; padding: 14px 14px 20px; align-content: start; }
   .slide-card { position: relative; left: auto; right: auto; top: auto; transform: none; width: 100%; }
-  .slide-cap { position: static; left: auto; right: auto; max-width: none; transform: none; width: 100%; padding: 0 14px; }
+  .slide-cap { position: static; left: auto; right: auto; max-width: none; transform: none; width: 100%; padding: 28px 14px 6px; gap: 8px; }
+  .slide-cap h2 { line-height: 1; }
+  .slide-cta { margin-top: 6px; }
 }
 @media (max-width: 700px) {
   /* phones: the slide is the clip, the project title and the link */
