@@ -48,10 +48,10 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .slide-cap { position: absolute; left: 4cqw; top: 50%; transform: translateY(-50%); width: min(30cqw, 28em); display: grid; gap: 14px; }
 .slide-cap h2 { font: 300 clamp(30px, 4.4cqw, 64px)/1.05 var(--cond); letter-spacing: -.02em; }
 .slide-cap p { font: 350 16px/1.35 var(--sans); color: rgba(255,255,255,.72); max-width: 24em; }
-.hero-cta { position: absolute; right: 12px; bottom: 12px; z-index: 2; display: inline-flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 8px; background: rgba(0,0,0,.45); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #e8e8e8; transition: background .25s; }
-.hero-cta:hover { background: rgba(0,0,0,.7); }
-.hero-cta svg { transition: transform .3s var(--ease); }
-.hero-cta:hover svg { transform: translate(2px, -2px); }
+.slide-cta { justify-self: start; margin-top: 10px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 8px; background: rgba(0,0,0,.45); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: #e8e8e8; transition: background .25s; }
+.slide-cta:hover { background: rgba(0,0,0,.7); }
+.slide-cta svg { transition: transform .3s var(--ease); }
+.slide-cta:hover svg { transform: translate(2px, -2px); }
 
 /* ---------- Intro ---------- */
 .intro { padding: 36px var(--pad) 96px; }
@@ -99,11 +99,10 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   /* phone / tablet: clip on top, caption underneath, all inside the same rounded panel */
   .hero { height: auto; container-type: normal; }
   .hero { display: grid; }
-  .slide { position: relative; grid-area: 1 / 1; display: grid; gap: 20px; padding: 14px 14px 76px; align-content: start; }
+  .slide { position: relative; grid-area: 1 / 1; display: grid; gap: 20px; padding: 14px 14px 20px; align-content: start; }
   .slide-card { position: relative; right: auto; top: auto; transform: none; width: 100%; }
   .slide-cap { position: static; transform: none; width: 100%; padding: 0 6px; }
   .slide-cap h2 { font-size: 34px; }
-  .hero-cta { left: 12px; right: 12px; justify-content: space-between; }
 }
 @media (max-width: 700px) {
   :root { --pad: 16px; }

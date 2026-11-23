@@ -5,11 +5,10 @@
   const esc = (s) =>
     String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ARROW = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
   const SLIDE_MS = 6000;   // one full loop of each clip
 
   const hero = $('#hero');
-  const cta = $('#hero-cta');
-  const ctaText = $('#hero-cta-text');
   let projects = [];
 
   async function load() {
@@ -34,9 +33,10 @@
       el.className = 'slide';
       el.setAttribute('aria-hidden', 'true');
       el.innerHTML = `<img class="slide-bg" alt=""><div class="slide-card"><img alt="${esc(p.title)}"></div>` +
-        `<div class="slide-cap"><h2>${esc(p.title)}</h2><p>${esc(p.blurb || '')}</p></div>`;
+        `<div class="slide-cap"><h2>${esc(p.title)}</h2><p>${esc(p.blurb || '')}</p>` +
+        `<a class="slide-cta caps" href="${esc(p.url)}" tabindex="-1"><span>View full project</span>${ARROW}</a></div>`;
       el.dataset.src = (reduced || !p.preview) ? p.thumbnail : p.preview;
-      hero.insertBefore(el, cta);
+      hero.appendChild(el);
       return el;
     });
 
@@ -47,12 +47,9 @@
     let cur = -1;
     const show = (i) => {
       i = (i + slides.length) % slides.length;
-      slides.forEach((s, k) => { s.classList.toggle('is-on', k === i); s.setAttribute('aria-hidden', String(k !== i)); });
+      slides.forEach((s, k) => { s.classList.toggle('is-on', k === i); s.setAttribute('aria-hidden', String(k !== i)); s.querySelector('.slide-cta').tabIndex = k === i ? 0 : -1; });
       restart(slides[i]);
       load(slides[(i + 1) % slides.length]);   // warm the next clip so it plays from frame 0 on cue
-      const p = projects[i];
-      ctaText.textContent = p.title;
-      cta.href = p.url;
       cur = i;
     };
     show(0);
