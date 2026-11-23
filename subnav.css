@@ -4,28 +4,21 @@
 :root { --nav-h: 72px; }
 /* Same bar as the home page: condensed name, then "Tools: [Tool Name]" in small letter-spaced caps */
 .site-nav { --soft: #181716; --cond: "Barlow Semi Condensed", "Helvetica Neue", Arial, sans-serif; --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif; --grey: #989898; }
-.site-nav .hb-bar { display: flex; align-items: baseline; padding: 0; gap: 48px; white-space: nowrap; }
+.site-nav .hb-bar { display: flex; align-items: baseline; height: auto; padding: 0; gap: 48px; white-space: nowrap; }
 .site-nav .logo { transform: none; font: 400 29px/1 var(--cond); letter-spacing: -.02em; color: #fff; }
 .site-nav .hb-label { display: flex; gap: 32px; margin: 0; font: 400 12px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
 .site-nav .hb-label a { transition: color .2s; }
 .site-nav .hb-label a:hover { color: #fff; }
 .site-nav .hb-label b { font-weight: 400; color: #fff; }
-.site-nav .hb-toggle { margin-left: -18px; }
+.site-nav .hb-toggle { display: none; }   /* no arrow: the dropdown opens on hover, or on tap of the tool name */
+.site-nav .hb-label b { cursor: pointer; }
 .site-nav { position: relative; z-index: 50; height: var(--nav-h); background: var(--soft, #181716); color: #fff; display: flex; align-items: flex-start; padding: 24px 30px 0; }
 .nav-toggle { background: none; border: 0; padding: 0; cursor: pointer; }
 .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: var(--soft, #181716); border-top: 1px solid var(--line); box-shadow: 0 20px 40px rgba(0,0,0,.35); padding: 24px 0 28px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .17s linear, transform .3s var(--ease), visibility .17s; }
 .site-nav:hover .nav-menu, .site-nav.open .nav-menu, .site-nav:focus-within .nav-menu { opacity: 1; visibility: visible; transform: none; }
-.nav-projects { display: grid; grid-template-columns: 1fr; gap: 28px 0; margin-bottom: 0; }
+.nav-projects { display: block; margin-bottom: 0; }
 .np-carousel { position: relative; --w: 260px; min-width: 0; }
 .np-view { overflow: hidden; margin: 0 64px; }
-.np-about { margin: 0 30px; max-width: 34em; }
-.np-about h3 { margin: 0 0 14px; font: 400 12px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: #fff; }
-.np-about p { margin: 0; color: var(--grey); font: 300 20px/27px var(--sans); }
-.np-about strong { font-weight: 400; color: #fff; }
-@media (min-width: 900px) {
-  .nav-projects { grid-template-columns: 1fr 1fr; gap: 0; }
-  .np-about { margin: 0; max-width: none; padding: 0 64px 0 40px; border-left: 1px solid var(--line); }
-}
 .np-track { display: flex; gap: 20px; transition: transform .45s var(--ease); will-change: transform; }
 .np-track .nav-proj { flex: none; width: var(--w); }
 .np-btn { position: absolute; top: 0; margin: 0; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 0; background: none; color: var(--grey); cursor: pointer; display: grid; place-items: center; transition: color .2s; }
@@ -63,5 +56,25 @@ html, body { overscroll-behavior: none; }
   .site-nav .hb-label { gap: 16px; min-width: 0; overflow: hidden; }
   .site-nav .hb-label a { flex: none; }
   .site-nav .hb-label b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .site-nav .hb-toggle { margin-left: 0; flex: none; }
 }
+
+/* About this project: soft black section under each tool, same split and type as the home page's About and Contact */
+html.has-about, html.has-about body { height: auto !important; min-height: 100%; overflow-y: auto !important; overflow-x: hidden !important; }
+.about-project { --soft: #181716; --grey: #989898; --mid-grey: #6b6b6b; --line: rgba(255,255,255,.1); --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif; --cond: "Barlow Semi Condensed", "Helvetica Neue", Arial, sans-serif;
+  position: relative; z-index: 100; box-sizing: border-box; display: grid; grid-template-columns: 5fr 9fr; gap: 72px 8px; padding: 72px 8px 120px; background: var(--soft); color: #fff; border-top: 1px solid var(--line); font: 400 20px/1.25 var(--sans); -webkit-font-smoothing: auto; }
+.about-project *, .about-project *::before, .about-project *::after { box-sizing: border-box; }
+.about-project h2, .about-project h3, .about-project p { margin: 0; font-weight: inherit; }
+.about-project a { color: inherit; text-decoration: none; }
+.ap-head { padding-left: 22px; display: grid; gap: 14px; align-content: start; }
+.ap-label { font: 400 12px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
+.ap-head h2 { font: 300 40px/1.1 var(--cond); letter-spacing: -0.03em; text-wrap: balance; }
+.ap-body { display: grid; gap: 56px; min-width: 0; padding-right: 12px; align-content: start; }
+.ap-body > p { max-width: 35em; font: 300 20px/27px var(--sans); color: #fff; }
+.ap-rows { display: grid; }
+.ap-row { display: grid; grid-template-columns: 4fr 5fr; gap: 8px; padding: 12px 0 28px; border-top: 1px solid var(--line); }
+.ap-row h3 { font-size: 20px; }
+.ap-row > div { color: var(--grey); font-weight: 300; }
+.ap-row a { transition: color .2s; }
+.ap-row a:hover { color: #fff; }
+@media (max-width: 899px) { .about-project { grid-template-columns: 1fr; gap: 32px; padding-top: 40px; } .ap-body { padding-left: 22px; } }
+@media (max-width: 639px) { .ap-head h2 { font-size: 30px; } .ap-row { grid-template-columns: 1fr 1fr; } }
