@@ -35,7 +35,7 @@
       }
     ],
     "preview": "clips/ribbon-text.webp?v=5",
-    "cta": "Try the ribbons"
+    "cta": "Edit the ribbons"
   },
   {
     "id": "marketing-mine",
@@ -228,23 +228,23 @@
     "cta": "Play the notes"
   },
   {
-    "id": "text-repeater",
-    "title": "Text Repeater",
-    "category": "Generative Art",
+    "id": "postmark-awards-motion",
+    "title": "Postmark Award Motion Styles",
+    "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "text-repeater/thumbnail.jpg?v=5",
-    "url": "text-repeater/",
-    "blurb": "One word repeats outward in ever larger lines, pulsing from the centre in a ripple.",
-    "about": "Text Repeater sets one word repeating outward in ever larger lines, pulsing from the centre in a ripple. Sit back and watch the rhythm, or resize the window to see the type rescale and the ripple reflow.",
-    "preview": "clips/text-repeater.webp?v=5",
+    "thumbnail": "postmark-awards-motion/thumbnail.png?v=1",
+    "url": "postmark-awards-motion/",
+    "blurb": "One motion engine, four award banner styles, with live text, playback and PNG export.",
+    "about": "Postmark Award Motion Styles is one motion engine that plays four award banner styles. Pick a style, type your own text, set the playback speed, then replay, pause or save a PNG of the frame you like.",
+    "preview": "clips/postmark-awards-motion.webp?v=1",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "text-repeater/thumbnail.jpg",
-        "alt": "Text Repeater"
+        "src": "postmark-awards-motion/thumbnail.png",
+        "alt": "Postmark Award Motion Styles"
       }
     ],
-    "cta": "Repeat a word"
+    "cta": "Switch the styles"
   },
   {
     "id": "prompt-machine",
