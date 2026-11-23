@@ -145,7 +145,8 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 @media (max-width: 700px) {
   /* phones: the slide is the clip, the project title and the link */
   .slide-name, .slide-cap p { display: none; }
-  .slide-cap { gap: 18px; padding: 0 14px 6px; }
+  .slide-cap { gap: 6px; padding: 28px 14px 6px; }
+  .slide-cta { margin-top: 4px; }
 }
 @media (max-width: 760px) {
   :root { --nav-h: 86px; }
