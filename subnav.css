@@ -9,6 +9,7 @@
 .site-nav .hb-label { display: flex; gap: 32px; margin: 0; font: 400 12px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
 .site-nav .hb-label a { transition: color .2s; }
 .site-nav .hb-label a:hover { color: #fff; }
+.site-nav .hb-label .tn-m { display: none; }
 .site-nav .hb-label b { font-weight: 400; color: #fff; }
 .site-nav .hb-toggle { display: none; }
 .site-nav { position: relative; z-index: 200; height: var(--nav-h); background: var(--soft, #181716); color: #fff; display: flex; align-items: flex-start; padding: 24px 30px 0; }
@@ -28,9 +29,9 @@ html, body { overscroll-behavior: none; }
   header.site-nav .hb-label .hb-contact { grid-column: 3; }
   /* phone: "Interactive Brand Tools" (home link) under the name, Contact on the right; no All Tools / tool name */
   header.site-nav .hb-label b { display: none; }
-  header.site-nav .hb-label a:not(.hb-contact) { grid-column: 1; font-size: 0; letter-spacing: 0; gap: 0; }
-  header.site-nav .hb-label a:not(.hb-contact) > * { display: none; }
-  header.site-nav .hb-label a:not(.hb-contact)::after { content: "Interactive Brand Tools"; font-size: 12px; letter-spacing: .1em; }
+  header.site-nav .hb-label a:not(.hb-contact) { grid-column: 1; }
+  header.site-nav .hb-label .tn-d { display: none; }
+  header.site-nav .hb-label .tn-m { display: inline; }
   header.site-nav .hb-bar > .tools { grid-column: 1 / -1; }
 }
 

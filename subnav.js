@@ -7,6 +7,8 @@
 
   // nav: "Contact" sits next to the current tool's name and scrolls to this page's contact section
   const lab = document.querySelector('.site-nav .hb-label');
+  const home = lab && lab.querySelector('a:not(.hb-contact)');
+  if (home && !home.querySelector('.tn-d')) home.innerHTML = '<span class="tn-d">All Tools</span><span class="tn-m">Interactive Brand Tools</span>';
   if (lab && !lab.querySelector('.hb-contact')) {
     const c = document.createElement('a');
     c.className = 'hb-contact'; c.href = '#contact'; c.textContent = 'Contact';
