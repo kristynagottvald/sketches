@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Brand Audit Engine</title>
-<link rel="stylesheet" href="../subnav.css?v=14">
+<link rel="stylesheet" href="../subnav.css?v=15">
 <link rel="stylesheet" href="../tool-nav.css?v=2">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <script src="../favicon.js" defer></script>
@@ -603,6 +603,6 @@ function boot(){
 const imgs = [...grid.querySelectorAll('img')];
 Promise.all([document.fonts.ready, ...imgs.map(i => i.decode().catch(() => {}))]).then(() => { drawPost(tcv, 300); drawPost(postCv, 400); boot(); });
 </script>
-<script src="../subnav.js?v=12"></script>
+<script src="../subnav.js?v=13"></script>
 </body>
 </html>

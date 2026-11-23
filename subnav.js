@@ -6,6 +6,8 @@
   const btn = document.getElementById('navToggle');
   const set = (o) => { nav.classList.toggle('open', o); btn.setAttribute('aria-expanded', String(o)); };
   btn.addEventListener('click', () => set(!nav.classList.contains('open')));
+  const allLink = nav.querySelector('.hb-label a');   // phones: "All Tools" with the arrow opens the dropdown instead of leaving the page
+  if (allLink) allLink.addEventListener('click', (e) => { if (matchMedia('(max-width: 600px)').matches) { e.preventDefault(); set(!nav.classList.contains('open')); } });
   const nameEl = nav.querySelector('.hb-label b');   // the arrow is gone: tapping the tool name opens the dropdown on touch screens
   if (nameEl) nameEl.addEventListener('click', () => set(!nav.classList.contains('open')));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
@@ -13,13 +15,16 @@
 
   const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const host = document.getElementById('navProjects');
-  const MARGIN = 64, GAP = 20, MIN_W = 150, MAX_W = 320, PER = 5;
+  const MAX_W = 320;
+  let MARGIN = 64, GAP = 20, MIN_W = 150, PER = 5;   // phones show three small cards at a time (set in layout)
   const arrow = (dir) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${dir < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7'}"/></svg>`;
   const EYE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
   let list = [], start = 0, cur = 0, car, track, prev, next;
 
   function layout() {
     if (!track || !list.length) return;
+    const phone = matchMedia('(max-width: 600px)').matches;
+    MARGIN = phone ? 40 : 64; GAP = phone ? 10 : 20; MIN_W = phone ? 80 : 150; PER = phone ? 3 : 5;
     const V = car.clientWidth - 2 * MARGIN;
     // up to five cards at a time across the full width (fewer only if too narrow); shrink them to fill the row (never above MAX_W)
     const n = Math.max(1, Math.min(PER, list.length, Math.floor((V + GAP) / (MIN_W + GAP))));
