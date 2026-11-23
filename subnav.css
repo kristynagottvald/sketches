@@ -48,14 +48,20 @@
 canvas.p5Canvas { touch-action: none; }
 html, body { overscroll-behavior: none; }
 
-/* Phones: tighter bar so "All Tools" and a long tool name fit on one line (the name truncates) */
+/* Phones: like the home nav. Row 1 is the name; row 2 has the current tool on the left and "All Tools" with an arrow on the right, which opens the dropdown. The bar stays 72px so the tools' canvases still fit. */
 @media (max-width: 600px) {
-  .site-nav { padding: 22px 30px 0; }
-  .site-nav .hb-bar { gap: 20px; min-width: 0; }
-  .site-nav .logo { font-size: 24px; }
-  .site-nav .hb-label { gap: 16px; min-width: 0; overflow: hidden; }
-  .site-nav .hb-label a { flex: none; }
-  .site-nav .hb-label b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  header.site-nav { padding: 14px 30px 0; align-items: flex-start; }
+  header.site-nav .hb-bar { display: grid; grid-template-columns: 1fr auto; row-gap: 8px; align-items: baseline; width: 100%; height: auto; min-width: 0; padding: 0; }
+  header.site-nav .hb-bar > .logo { grid-column: 1 / -1; height: auto; font-size: 22px; }
+  header.site-nav .hb-bar > .hb-label { display: contents; height: auto; }
+  header.site-nav .hb-label b { grid-row: 2; grid-column: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  header.site-nav .hb-label a { grid-row: 2; grid-column: 2; display: inline-flex; align-items: center; gap: 6px; color: #fff; }
+  header.site-nav .hb-label a::after { content: ""; width: 10px; height: 12px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='12' viewBox='0 0 10 12'%3E%3Cpath d='M5 1v9.5M1.5 7L5 10.5 8.5 7' fill='none' stroke='%23fff'/%3E%3C/svg%3E") center / contain no-repeat; transition: transform .25s var(--ease, ease); }
+  header.site-nav.open .hb-label a::after { transform: rotate(180deg); }
+  header.site-nav .hb-bar > .tools { grid-column: 1 / -1; }
+  .site-nav .np-view { margin: 0 40px; }
+  .site-nav .np-track { gap: 10px; }
+  .nav-menu { padding: 16px 0 20px; }
 }
 
 /* About this project: soft black section under each tool, same split and type as the home page's About and Contact */

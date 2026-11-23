@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Brand Guidelines Mini Site</title>
-<link rel="stylesheet" href="../subnav.css?v=14">
+<link rel="stylesheet" href="../subnav.css?v=15">
 <link rel="stylesheet" href="../tool-nav.css?v=2">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <script src="../favicon.js" defer></script>
@@ -1524,6 +1524,6 @@ setInterval(() => { if (US.vis && !US.picked && frozen == null && !reduce) { con
 /* ---------- go: wait for the brand fonts so the canvases don't draw in a fallback ---------- */
 Promise.all([document.fonts.load("172px 'Instrument Serif'"), document.fonts.load("italic 60px 'Instrument Serif'"), document.fonts.load('600 40px Inter'), document.fonts.load('700 40px Inter'), document.fonts.load("100px 'Pinyon Script'")]).catch(() => {}).then(() => document.fonts.ready).then(() => { surfaces.forEach((s) => s.fit()); flourCache.clear(); }).finally(() => { requestAnimationFrame(loop); });
 </script>
-<script src="../subnav.js?v=12"></script>
+<script src="../subnav.js?v=13"></script>
 </body>
 </html>
