@@ -6,6 +6,9 @@
    Load this file in the <head> (before the tool's own scripts) so the input filter runs first. */
 (() => {
   'use strict';
+  /* ?embed=1: the page is shown inside the home page hero. No nav, About or Contact, the tool fills the frame, and the demo waits for the home page to say go. */
+  const EMBED = /[?&]embed=1/.test(location.search);
+  if (EMBED) document.documentElement.classList.add('embed');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const UI = 'data-demo-ui';
   const inUI = (el) => !!(el && el.closest && el.closest('[' + UI + '],.site-nav,.about-project,.contact-project'));
@@ -42,14 +45,17 @@
       .demo-cursor svg{display:block;transition:transform .12s ease-out;transform-origin:3px 2px}
       .demo-cursor.down svg{transform:scale(.82)}
       .demo-caption{position:fixed;left:16px;bottom:16px;z-index:96;pointer-events:none;display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;background:rgba(24,23,22,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#e8e8e8;font:400 12px/1.3 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;transition:opacity .3s}
+      .demo-caption, .demo-caption span{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:none!important}
+      .demo-caption{background:rgba(24,23,22,.86)!important}
       .demo-caption i{width:6px;height:6px;border-radius:50%;background:#8fd694;flex:none}
       .site-nav .tools{display:none!important}
+      html.embed .demo-caption{display:none!important}
       @media (max-width:600px){.demo-caption{left:10px;bottom:10px;font-size:11px}}`;
     document.head.appendChild(css);
     shield = document.createElement('div'); shield.className = 'demo-shield'; shield.setAttribute(UI, ''); shield.setAttribute('aria-hidden', 'true');
     cursor = document.createElement('div'); cursor.className = 'demo-cursor'; cursor.setAttribute(UI, ''); cursor.innerHTML = SVG;
     caption = document.createElement('div'); caption.className = 'demo-caption'; caption.setAttribute(UI, '');
-    caption.innerHTML = '<i></i><span>Walkthrough demo</span>';
+    caption.innerHTML = '<i></i><span>Demo</span>';
     document.body.append(shield, cursor, caption);
     placeShield();
   }
@@ -106,7 +112,7 @@
   const api = {
     wait: async (ms) => { const t0 = performance.now(); while (alive && performance.now() - t0 < ms) { await sleep(Math.min(60, ms)); if (!onTop()) await api.idle(); } },
     idle: async () => { while (alive && !onTop()) await sleep(250); },
-    say: (text) => { caption.lastChild.textContent = text ? 'Walkthrough demo · ' + text : 'Walkthrough demo'; },
+    say: (text) => { caption.lastChild.textContent = text ? 'Demo · ' + text : 'Demo'; },
     /* move the cursor to a selector, element, [fx, fy] (fractions of the tool area) or {x, y} */
     move: async (t, ms = 800, fx = .5, fy = .5) => {
       const p = point(t, fx, fy); if (!p) return false;
@@ -204,7 +210,7 @@
   async function run(script) {
     cursor.classList.add('on');
     setCursor(innerWidth * 0.55, navH + (innerHeight - navH) * 0.6);
-    await api.wait(1200);
+    await api.wait(EMBED ? 150 : 1200);
     while (alive) {
       try { await script(api); } catch (e) { console.warn('demo step failed', e); await api.wait(1000); }
       api.say('');
@@ -212,8 +218,19 @@
     }
   }
 
+  /* Panels the tools pin with position: fixed would stay on screen while the page scrolls. Make them scroll away with the page instead. */
+  function unfix() {
+    document.querySelectorAll('body *').forEach((el) => {
+      if (el.closest('[' + UI + '],.site-nav,.about-project,.contact-project')) return;
+      if (getComputedStyle(el).position === 'fixed') el.style.setProperty('position', 'absolute', 'important');
+    });
+  }
+
   function start() {
     build();
+    [300, 1200, 3000, 6000].forEach((ms) => setTimeout(unfix, ms));
+    window.addEventListener('load', unfix);
+    window.addEventListener('resize', () => setTimeout(unfix, 200));
     window.addEventListener('resize', placeShield);
     window.addEventListener('scroll', placeShield, { passive: true });
     addEventListener('load', placeShield);
@@ -221,8 +238,14 @@
     if (reduced) { cursor.remove(); return; }
     const id = (location.pathname.replace(/\/index\.html$/, '').match(/([^/]+)\/?$/) || [])[1];
     const script = window.DEMOS && window.DEMOS[id];
-    if (script) setTimeout(() => run(script), 1200);
-    else cursor.remove();
+    if (!script) { cursor.remove(); if (EMBED) parent.postMessage({ demo: 'ready' }, '*'); return; }
+    if (EMBED) {
+      let go = false;
+      const begin = () => { if (!go) { go = true; run(script); } };
+      window.addEventListener('message', (e) => { if (e.data && e.data.demo === 'start') begin(); });
+      setTimeout(begin, 12000);   // safety net if the home page never sends the signal
+      parent.postMessage({ demo: 'ready' }, '*');
+    } else setTimeout(() => run(script), 1200);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
 })();

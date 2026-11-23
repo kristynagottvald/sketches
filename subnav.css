@@ -12,7 +12,7 @@
 .site-nav .hb-label b { font-weight: 400; color: #fff; }
 .site-nav .hb-toggle { display: none; }   /* no arrow: the dropdown opens on hover, or on tap of the tool name */
 .site-nav .hb-label b { cursor: pointer; }
-.site-nav { position: relative; z-index: 50; height: var(--nav-h); background: var(--soft, #181716); color: #fff; display: flex; align-items: flex-start; padding: 24px 30px 0; }
+.site-nav { position: relative; z-index: 200; height: var(--nav-h); background: var(--soft, #181716); color: #fff; display: flex; align-items: flex-start; padding: 24px 30px 0; }
 .nav-toggle { background: none; border: 0; padding: 0; cursor: pointer; }
 .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: var(--soft, #181716); border-top: 1px solid var(--line); box-shadow: 0 20px 40px rgba(0,0,0,.35); padding: 24px 0 28px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .17s linear, transform .3s var(--ease), visibility .17s; }
 .site-nav:hover .nav-menu, .site-nav.open .nav-menu, .site-nav:focus-within .nav-menu { opacity: 1; visibility: visible; transform: none; }
@@ -93,7 +93,8 @@ html.has-about body { height: auto !important; min-height: 100%; overflow: visib
 .contact-project h2, .contact-project h3 { margin: 0; font-weight: inherit; }
 .contact-project a { color: inherit; text-decoration: none; }
 .cp-grid { display: grid; grid-template-columns: 1fr; gap: 48px; padding-top: 24px; }
-.cp-head { padding-left: 22px; }
+.cp-head { padding-left: 22px; display: grid; gap: 14px; align-content: start; }
+.cp-label { font: 400 12px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
 .cp-head h2 { font: 300 40px/1.1 var(--cond); letter-spacing: -0.03em; max-width: 20ch; text-wrap: balance; }
 .cp-rows { display: grid; }
 .cp-row { display: grid; grid-template-columns: 4fr 5fr; gap: 8px; padding: 12px 0 36px; border-top: 1px solid var(--line); }
@@ -105,3 +106,7 @@ html.has-about body { height: auto !important; min-height: 100%; overflow: visib
 .cp-foot a:hover { color: #fff; }
 @media (min-width: 900px) { .cp-grid { grid-template-columns: 5fr 9fr; gap: 8px; } .cp-grid .cp-rows { grid-column: 2; } }
 @media (max-width: 639px) { .cp-head h2 { font-size: 30px; } .cp-row { grid-template-columns: 1fr 1fr; } }
+
+/* ?embed=1 (home page hero): just the tool */
+html.embed { --nav-h: 0px; }
+html.embed .site-nav, html.embed .about-project, html.embed .contact-project { display: none !important; }
