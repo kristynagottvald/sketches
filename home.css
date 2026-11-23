@@ -59,14 +59,14 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 
 /* ---------- Hero preview: 70% of the first screen, every tool's clip in turn ---------- */
 .hero { position: relative; margin: 8px var(--pad) 0; height: max(360px, calc((100svh - var(--nav-h) - 8px) * .7)); border-radius: var(--r-sm); overflow: hidden; background: var(--off-black); container-type: size; }
-.slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .9s linear, visibility 0s .9s; }
+.slide { --m: max(48px, 4.5cqw); --cw: min(63cqw, 81.9cqh * 16 / 9); position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .9s linear, visibility 0s .9s; }
 .slide.is-on { opacity: 1; visibility: visible; transition: opacity .9s linear; }
 .slide-bg { position: absolute; inset: -12%; width: 124%; height: 124%; max-width: none; object-fit: cover; filter: blur(48px) brightness(.4) saturate(1.1); }
 .slide::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.18); pointer-events: none; }
 .slide-card, .slide-cap { z-index: 1; }
-.slide-card { position: absolute; left: max(48px, 4.5cqw); top: 50%; transform: translateY(-50%); width: min(63cqw, 81.9cqh * 16 / 9); aspect-ratio: 16 / 9; border-radius: var(--r-md); overflow: hidden; background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+.slide-card { position: absolute; left: var(--m); top: 50%; transform: translateY(-50%); width: var(--cw); aspect-ratio: 16 / 9; border-radius: var(--r-md); overflow: hidden; background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
 .slide-card img { width: 100%; height: 100%; object-fit: cover; }
-.slide-cap { position: absolute; right: max(48px, 4.5cqw); top: 50%; transform: translateY(-50%); width: min(27cqw, 28em); display: grid; gap: 28px; }
+.slide-cap { position: absolute; left: calc(var(--m) + var(--cw) + 4cqw); right: var(--m); top: 50%; transform: translateY(-50%); max-width: 28em; display: grid; gap: 28px; }
 .slide-name { color: rgba(255,255,255,.72); }
 .slide-cap h2 { font: 300 clamp(64px, 4.8cqw, 76px)/1.05 var(--cond); letter-spacing: var(--ls-head); text-wrap: balance; color: #fff; text-shadow: 0 2px 28px rgba(0,0,0,.45); }
 .slide-cap p { font: 300 var(--fs-body)/var(--lh-body) var(--sans); color: rgba(255,255,255,.72); }
@@ -142,7 +142,7 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .hero { height: auto; container-type: normal; display: grid; }
   .slide { position: relative; grid-area: 1 / 1; display: grid; gap: 20px; padding: 14px 14px 20px; align-content: start; }
   .slide-card { position: relative; left: auto; right: auto; top: auto; transform: none; width: 100%; }
-  .slide-cap { position: static; right: auto; transform: none; width: 100%; padding: 0 14px; }
+  .slide-cap { position: static; left: auto; right: auto; max-width: none; transform: none; width: 100%; padding: 0 14px; }
 }
 @media (max-width: 700px) {
   /* phones: the slide is the clip, the project title and the link */
