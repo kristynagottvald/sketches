@@ -83,17 +83,30 @@
     }
   }
 
+  // Phones: the current section's name opens a stacked list of the sections
+  const top = $('#top'), jump = $('#nav-jump'), jumpLabel = $('#nav-jump-label');
+  const setMenu = (open) => { top.classList.toggle('open', open); jump.setAttribute('aria-expanded', String(open)); };
+  jump.addEventListener('click', (e) => { e.stopPropagation(); setMenu(!top.classList.contains('open')); });
+  document.addEventListener('click', (e) => { if (!top.contains(e.target)) setMenu(false); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+  top.querySelectorAll('.top-nav a, .status').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+
   // keep the nav's current section highlighted as you scroll
   const links = [...document.querySelectorAll('.top-nav a')];
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
-        links.forEach((a) => (a.getAttribute('href') === '#' + e.target.id ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current')));
+        links.forEach((a) => {
+          const on = a.getAttribute('href') === '#' + e.target.id;
+          if (on) { a.setAttribute('aria-current', 'true'); jumpLabel.textContent = a.textContent; } else a.removeAttribute('aria-current');
+        });
       });
     }, { rootMargin: '-45% 0px -50% 0px' });
     ['tools', 'about', 'contact'].forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
   }
+
+  addEventListener('scroll', () => { if (scrollY < 120) jumpLabel.textContent = 'Tools'; }, { passive: true });
 
   load();
 })();

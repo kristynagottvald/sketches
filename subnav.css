@@ -54,3 +54,14 @@
 /* Touch: canvases handle their own gestures, so the page should not scroll or zoom under a finger */
 canvas.p5Canvas { touch-action: none; }
 html, body { overscroll-behavior: none; }
+
+/* Phones: tighter bar so "All Tools" and a long tool name fit on one line (the name truncates) */
+@media (max-width: 600px) {
+  .site-nav { padding: 0 16px; }
+  .site-nav .hb-bar { gap: 20px; min-width: 0; }
+  .site-nav .logo { font-size: 24px; }
+  .site-nav .hb-label { gap: 16px; min-width: 0; overflow: hidden; }
+  .site-nav .hb-label a { flex: none; }
+  .site-nav .hb-label b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .site-nav .hb-toggle { margin-left: 0; flex: none; }
+}
