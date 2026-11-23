@@ -152,7 +152,6 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .slide-cap h2 { font-size: 50px; }
   .slide-cta { margin-top: 2px; }
 }
-}
 .nav-jump { display: none; }
 @media (max-width: 760px) {
   :root { --nav-h: 86px; }
