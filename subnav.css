@@ -26,6 +26,11 @@ html, body { overscroll-behavior: none; }
   header.site-nav .hb-label b { grid-row: 2; grid-column: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   header.site-nav .hb-label a { grid-row: 2; grid-column: 2; display: inline-flex; align-items: center; gap: 6px; color: #fff; }
   header.site-nav .hb-label .hb-contact { grid-column: 3; }
+  /* phone: "Interactive Brand Tools" (home link) under the name, Contact on the right; no All Tools / tool name */
+  header.site-nav .hb-label b { display: none; }
+  header.site-nav .hb-label a:not(.hb-contact) { grid-column: 1; font-size: 0; letter-spacing: 0; gap: 0; }
+  header.site-nav .hb-label a:not(.hb-contact) > * { display: none; }
+  header.site-nav .hb-label a:not(.hb-contact)::after { content: "Interactive Brand Tools"; font-size: 12px; letter-spacing: .1em; }
   header.site-nav .hb-bar > .tools { grid-column: 1 / -1; }
 }
 
