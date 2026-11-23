@@ -9,6 +9,17 @@
   /* ?embed=1: the page is shown inside the home page hero. No nav, About or Contact, the tool fills the frame, and the demo waits for the home page to say go. */
   const EMBED = /[?&]embed=1/.test(location.search);
   if (EMBED) document.documentElement.classList.add('embed');
+  if (EMBED) {
+    // the hero demo is silent: audio contexts are created suspended and can never resume, media never plays
+    ['AudioContext', 'webkitAudioContext'].forEach((k) => {
+      const Orig = window[k]; if (!Orig) return;
+      Orig.prototype.resume = function () { return Promise.resolve(); };
+      const Quiet = function (...args) { const c = new Orig(...args); try { c.suspend(); } catch (e) { /* ignore */ } return c; };
+      Quiet.prototype = Orig.prototype;
+      window[k] = Quiet;
+    });
+    HTMLMediaElement.prototype.play = function () { this.muted = true; this.volume = 0; return Promise.resolve(); };
+  }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const UI = 'data-demo-ui';
   const inUI = (el) => !!(el && el.closest && el.closest('[' + UI + '],.site-nav,.about-project,.contact-project'));

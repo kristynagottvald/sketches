@@ -35,7 +35,7 @@
       const el = document.createElement('div');
       el.className = 'slide';
       el.setAttribute('aria-hidden', 'true');
-      el.innerHTML = `<div class="slide-card"><img class="still" src="${esc(p.thumbnail)}" alt=""><iframe class="slide-frame" title="${esc(p.title)} demo" tabindex="-1" aria-hidden="true" loading="eager"></iframe></div>` +
+      el.innerHTML = `<div class="slide-card"><img class="still" src="${esc(p.thumbnail)}" alt=""><iframe class="slide-frame" title="${esc(p.title)} demo" tabindex="-1" aria-hidden="true" loading="eager" allow="autoplay 'none'"></iframe></div>` +
         `<div class="slide-cap"><span class="slide-name caps">${esc(p.category || '')}</span><h2>${esc(p.title)}</h2>` +
         `<a class="slide-cta caps" href="${esc(p.url)}" tabindex="-1"><span>${esc(p.cta || 'Open tool')}</span>${ARROW}</a></div>`;
       hero.appendChild(el);
@@ -50,7 +50,16 @@
       const w = cards[i].clientWidth, h = cards[i].clientHeight; if (!w || !h) return;
       f.style.transform = `translate(-50%, -50%) scale(${Math.max(w / VW, h / VH)})`;
     });
-    fit(); new ResizeObserver(fit).observe(hero); window.addEventListener('resize', fit);
+    // long titles shrink to stay on one line inside the fixed-size tab
+    const fitTitles = () => slides.forEach((sl) => {
+      const h = sl.querySelector('h2'), cap = sl.querySelector('.slide-cap'), cs = getComputedStyle(cap);
+      h.style.fontSize = '';
+      const avail = cap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      if (avail > 0 && h.scrollWidth > avail) h.style.fontSize = (parseFloat(getComputedStyle(h).fontSize) * avail / h.scrollWidth) + 'px';
+    });
+    const fitAll = () => { fit(); fitTitles(); };
+    fitAll(); new ResizeObserver(fitAll).observe(hero); window.addEventListener('resize', fitAll);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
 
     const show = (i) => slides.forEach((s, k) => {
       s.classList.toggle('is-on', k === i);
