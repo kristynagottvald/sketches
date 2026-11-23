@@ -6,7 +6,7 @@
 .site-nav { --soft: #181716; --cond: "Barlow Semi Condensed", "Helvetica Neue", Arial, sans-serif; --sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif; --grey: #989898; }
 .site-nav .hb-bar { display: flex; align-items: center; height: var(--nav-h); padding: 0; gap: 48px; white-space: nowrap; }
 .site-nav .logo { transform: none; font: 400 29px/1 var(--cond); letter-spacing: -.02em; color: #fff; }
-.site-nav .hb-label { margin: 0; font: 400 12px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
+.site-nav .hb-label { display: flex; gap: 32px; margin: 0; font: 400 12px/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--grey); }
 .site-nav .hb-label a { transition: color .2s; }
 .site-nav .hb-label a:hover { color: #fff; }
 .site-nav .hb-label b { font-weight: 400; color: #fff; }
@@ -15,7 +15,7 @@
 .nav-toggle { background: none; border: 0; padding: 0; cursor: pointer; }
 .nav-menu { position: absolute; top: 100%; left: 0; right: 0; background: var(--soft, #181716); border-top: 1px solid var(--line); box-shadow: 0 20px 40px rgba(0,0,0,.35); padding: 24px 0 28px; opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .17s linear, transform .3s var(--ease), visibility .17s; }
 .site-nav:hover .nav-menu, .site-nav.open .nav-menu, .site-nav:focus-within .nav-menu { opacity: 1; visibility: visible; transform: none; }
-.nav-projects { display: grid; grid-template-columns: 1fr; gap: 28px 0; margin-bottom: 22px; }
+.nav-projects { display: grid; grid-template-columns: 1fr; gap: 28px 0; margin-bottom: 0; }
 .np-carousel { position: relative; --w: 260px; min-width: 0; }
 .np-view { overflow: hidden; margin: 0 64px; }
 .np-about { margin: 0 30px; max-width: 34em; }
