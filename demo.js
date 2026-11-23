@@ -49,7 +49,7 @@
     shield = document.createElement('div'); shield.className = 'demo-shield'; shield.setAttribute(UI, ''); shield.setAttribute('aria-hidden', 'true');
     cursor = document.createElement('div'); cursor.className = 'demo-cursor'; cursor.setAttribute(UI, ''); cursor.innerHTML = SVG;
     caption = document.createElement('div'); caption.className = 'demo-caption'; caption.setAttribute(UI, '');
-    caption.innerHTML = '<i></i><span>Walkthrough demo</span>';
+    caption.innerHTML = '<i></i><span>Demo</span>';
     document.body.append(shield, cursor, caption);
     placeShield();
   }
@@ -106,7 +106,7 @@
   const api = {
     wait: async (ms) => { const t0 = performance.now(); while (alive && performance.now() - t0 < ms) { await sleep(Math.min(60, ms)); if (!onTop()) await api.idle(); } },
     idle: async () => { while (alive && !onTop()) await sleep(250); },
-    say: (text) => { caption.lastChild.textContent = text ? 'Walkthrough demo · ' + text : 'Walkthrough demo'; },
+    say: (text) => { caption.lastChild.textContent = text ? 'Demo · ' + text : 'Demo'; },
     /* move the cursor to a selector, element, [fx, fy] (fractions of the tool area) or {x, y} */
     move: async (t, ms = 800, fx = .5, fy = .5) => {
       const p = point(t, fx, fy); if (!p) return false;
@@ -212,8 +212,19 @@
     }
   }
 
+  /* Panels the tools pin with position: fixed would stay on screen while the page scrolls. Make them scroll away with the page instead. */
+  function unfix() {
+    document.querySelectorAll('body *').forEach((el) => {
+      if (el.closest('[' + UI + '],.site-nav,.about-project,.contact-project')) return;
+      if (getComputedStyle(el).position === 'fixed') el.style.setProperty('position', 'absolute', 'important');
+    });
+  }
+
   function start() {
     build();
+    [300, 1200, 3000, 6000].forEach((ms) => setTimeout(unfix, ms));
+    window.addEventListener('load', unfix);
+    window.addEventListener('resize', () => setTimeout(unfix, 200));
     window.addEventListener('resize', placeShield);
     window.addEventListener('scroll', placeShield, { passive: true });
     addEventListener('load', placeShield);
