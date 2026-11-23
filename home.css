@@ -60,7 +60,7 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .9s linear, visibility 0s .9s; }
 .slide.is-on { opacity: 1; visibility: visible; transition: opacity .9s linear; }
 .slide-bg { position: absolute; inset: -12%; width: 124%; height: 124%; max-width: none; object-fit: cover; filter: blur(48px) brightness(.55) saturate(1.2); }
-.slide-card { position: absolute; right: 3.5cqw; top: 50%; transform: translateY(-50%); width: min(60cqw, 78cqh * 16 / 9); aspect-ratio: 16 / 9; border-radius: var(--r-md); overflow: hidden; background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+.slide-card { position: absolute; right: max(48px, 4.5cqw); top: 50%; transform: translateY(-50%); width: min(60cqw, 78cqh * 16 / 9); aspect-ratio: 16 / 9; border-radius: var(--r-md); overflow: hidden; background: #000; box-shadow: 0 30px 80px rgba(0,0,0,.35); }
 .slide-card img { width: 100%; height: 100%; object-fit: cover; }
 .slide-cap { position: absolute; left: max(48px, 4.5cqw); top: 50%; transform: translateY(-50%); width: min(28cqw, 28em); display: grid; gap: 14px; }
 .slide-name { color: rgba(255,255,255,.72); margin-bottom: -4px; }
