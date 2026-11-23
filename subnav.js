@@ -82,6 +82,19 @@
       const place = () => { sec.style.marginTop = '0px'; const top = sec.getBoundingClientRect().top + window.scrollY; sec.style.marginTop = Math.max(0, window.innerHeight - top) + 'px'; };
       place(); window.addEventListener('resize', place); window.addEventListener('load', place); setTimeout(place, 800);
     }
+    // Contact + footer, same as the home page, with copy for a visitor who has just seen a tool
+    if (!document.getElementById('contact')) {
+      const ft = document.createElement('footer');
+      ft.className = 'contact-project'; ft.id = 'contact'; ft.setAttribute('aria-label', 'Contact');
+      ft.innerHTML = `<div class="cp-grid"><div class="cp-head"><h2>Want a tool like this?<br>Let’s build it.</h2></div>
+        <div class="cp-rows">
+          <div class="cp-row"><h3>Email</h3><div><a href="mailto:kgottvald@gmail.com">kgottvald@gmail.com</a></div></div>
+          <div class="cp-row"><h3>LinkedIn</h3><div><a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">linkedin.com/in/kgottvald</a></div></div></div></div>
+        <div class="cp-foot"><span>© Kristyna Gottvald</span><a href="#" id="cpTop">Back to top ↑</a></div>`;
+      document.body.appendChild(ft);
+      document.documentElement.classList.add('has-about');
+      ft.querySelector('#cpTop').addEventListener('click', (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    }
     layout();
     track.querySelectorAll('img').forEach((im) => im.addEventListener('load', layout));
     window.addEventListener('resize', layout);
