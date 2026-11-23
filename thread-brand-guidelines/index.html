@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<script src="../demo.js?v=8"></script>
-<script src="../demo-scripts.js?v=4"></script>
+<script src="../demo.js?v=13"></script>
+<script src="../demo-scripts.js?v=10"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Brand Guidelines Mini Site</title>
 <link rel="stylesheet" href="../subnav.css?v=22">
@@ -125,7 +125,7 @@ a{color:inherit}
 .panel{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;display:none;background:var(--bg);color:var(--fg)}
 .panel.open{display:block}
 .panel>.sec{min-height:100%}
-.ghost{position:absolute;inset:0;z-index:40;pointer-events:none;will-change:clip-path;transition:clip-path .85s var(--ease),opacity .3s}
+.ghost{position:absolute;inset:0;z-index:40;pointer-events:none;will-change:clip-path;transition:clip-path .62s var(--ease),opacity .25s}
 .sec .wrap .in>*{opacity:0;transform:translateY(18px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
 .sec.in .wrap .in>*{opacity:1;transform:none;transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .sec.in .wrap .in>*:nth-child(2){transition-delay:.08s}.sec.in .wrap .in>*:nth-child(3){transition-delay:.16s}.sec.in .wrap .in>*:nth-child(4){transition-delay:.24s}.sec.in .wrap .in>*:nth-child(5){transition-delay:.32s}.sec.in .wrap .in>*:nth-child(n+6){transition-delay:.4s}
@@ -1227,7 +1227,7 @@ function openSec(id, instant) {
   busy = true; homeOn = true; home.style.visibility = 'visible';
   const g = makeGhost(id); g.style.transition = 'none'; g.style.clipPath = clipOf(rectOf(id)); g.style.opacity = 0; app.appendChild(g); g.getBoundingClientRect();
   g.style.transition = ''; g.style.opacity = 1; g.style.clipPath = FULLCLIP;                       // 1. the colour grows to fill the stage
-  setTimeout(() => { if (prev) hidePanel(prev); showPanel(id); g.remove(); home.style.visibility = 'hidden'; homeOn = false; busy = false; }, 900);  // 2. same colour underneath, so the swap is invisible and the content fades up
+  setTimeout(() => { if (prev) hidePanel(prev); showPanel(id); g.remove(); home.style.visibility = 'hidden'; homeOn = false; busy = false; }, 680);  // 2. same colour underneath, so the swap is invisible and the content fades up
 }
 function closeHome() {
   if (!cur || busy) return; busy = true; const id = cur; cur = null; markNav(); homeOn = true;
@@ -1235,8 +1235,8 @@ function closeHome() {
   setTimeout(() => {
     home.style.visibility = 'visible'; const g = makeGhost(id); g.style.transition = 'none'; g.style.clipPath = FULLCLIP; app.appendChild(g); g.getBoundingClientRect();
     hidePanel(id); g.style.transition = ''; g.style.clipPath = clipOf(rectOf(id));               // 2. the colour shrinks into its tile
-    setTimeout(() => { g.style.opacity = 0; }, 800); setTimeout(() => { g.remove(); busy = false; }, 1150);
-  }, 380);
+    setTimeout(() => { g.style.opacity = 0; }, 580); setTimeout(() => { g.remove(); busy = false; }, 860);
+  }, 280);
 }
 links.forEach((a) => { a.dataset.sec = a.getAttribute('href').slice(1); });
 $('#mb').addEventListener('click', () => { const o = $('#site').classList.toggle('open'); $('#mb').setAttribute('aria-expanded', String(o)); });

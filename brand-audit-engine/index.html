@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<script src="../demo.js?v=8"></script>
-<script src="../demo-scripts.js?v=4"></script>
+<script src="../demo.js?v=13"></script>
+<script src="../demo-scripts.js?v=10"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Brand Audit Engine</title>
 <link rel="stylesheet" href="../subnav.css?v=22">
@@ -100,7 +100,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
 .nb{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--coral);color:#fff;font-size:11px;font-weight:700;display:none;place-items:center;transform:translate(-50%,-50%)}
 .ebar{flex:none;height:54px;background:#08081f;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:15px;font-weight:500}
 .ebar span:last-child{font:400 13px var(--mono);color:#C9C6F2}
-.res{flex:none;width:340px;background:var(--ink);border-left:2px solid var(--line);padding:22px 28px;display:flex;flex-direction:column;gap:18px;overflow:hidden}
+.res{flex:none;width:340px;background:var(--ink);border-left:2px solid var(--line);padding:22px 20px;display:flex;flex-direction:column;gap:14px;overflow:hidden}
+.rcard{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:16px 18px}   /* each group sits on its own panel */
+.rcard h4:last-child{margin-bottom:0}
 .res h3{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--coral);text-transform:uppercase;padding-bottom:10px;border-bottom:1px solid var(--line)}
 .res h4{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
 .ticks{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;margin-bottom:8px}
@@ -142,7 +144,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
   .grid{grid-template-columns:repeat(2,1fr);padding:2px 14px 14px;gap:10px}.chips{padding:12px 14px 10px}
   #aud{flex-direction:column}
   .res{width:auto;border-left:0;border-top:2px solid var(--line);padding:14px 16px;gap:12px;flex:none}
-  .res .chk{display:none}
+  .res .chk, .res .rcard:first-child{display:none}   /* phones: the check squares are hidden, so their card goes too */
   .br{height:28px}.br span{font-size:18px}.acc svg{width:70px;height:70px}.acc big{font-size:34px}
   .decide{margin-top:0}
   .ehead{padding:12px 14px 0;font-size:11px}.ebar{height:44px;padding:0 14px;font-size:13px}
@@ -205,11 +207,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
         <div class="ebar"><span id="eleft">Scanning</span><span id="eright">0 flags to review</span></div>
       </div>
       <aside class="res">
-        <h3>Result</h3>
+        <div class="rcard"><h3>Result</h3>
         <div class="chk"><h4>Checks run</h4>
           <div class="ticks" id="ticks"></div>
-          <div class="crow"><span id="cn">0 / 14</span><span id="cf">0 flagged</span></div></div>
-        <div><h4>Check time per asset</h4>
+          <div class="crow"><span id="cn">0 / 14</span><span id="cf">0 flagged</span></div></div></div>
+        <div class="rcard"><h4>Check time per asset</h4>
           <div class="bars">
             <div class="bl"><span class="cls" title="Checked by hand"><b class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13V5.5a1.5 1.5 0 013 0V11m0-1V4.5a1.5 1.5 0 013 0V11m0-4.5a1.5 1.5 0 013 0V13m0-3.5a1.5 1.5 0 013 0V15a7 7 0 01-7 7h-1.5a7 7 0 01-5.6-2.8L4 15.6a1.6 1.6 0 012.4-2L8 15"/></svg></b><em>By hand</em></span><div class="br"><i class="g" id="barG"></i><span id="lblG"></span></div></div>
             <div class="bl"><span class="cls ai" title="AI assisted"><b class="ico"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 5.6L19.5 9.5l-5.6 1.9L12 17l-1.9-5.6L4.5 9.5l5.6-1.9z"/><path d="M19 15l.9 2.1L22 18l-2.1.9L19 21l-.9-2.1L16 18l2.1-.9z"/></svg></b><em>AI assisted</em></span><div class="br"><i class="o" id="barO"></i><span id="lblO"></span></div></div>
@@ -334,7 +336,7 @@ const ST = {
   changes: {label:'Changes',      step:3, c:'#FF6F5B'},
   approved:{label:'Approved',     step:4, c:'#E6EA9C'}
 };
-const STATUS = ['approved','needs','approved','approved','changes','POST','scanning','approved'];
+const STATUS = ['approved','needs','needs','approved','changes','POST','scanning','approved'];
 const FLAGN = {approved:0, needs:3, changes:5, scanning:0, queued:0};
 const TARGET = 5;
 const items = [];
