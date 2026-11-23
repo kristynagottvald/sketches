@@ -26,6 +26,21 @@
     window.focus = function () {};
   }
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* ---------- sound: off until the visitor switches it on with the toggle next to the Demo label ---------- */
+  const audio = { muted: true, ctxs: [], resume: null };
+  window.__demoAudio = audio;
+  if (!EMBED) {
+    const seen = new WeakSet();
+    ['AudioContext', 'webkitAudioContext'].forEach((k) => {
+      const Orig = window[k]; if (!Orig || seen.has(Orig.prototype)) return;
+      seen.add(Orig.prototype);
+      const origResume = Orig.prototype.resume;
+      audio.resume = (c) => origResume.call(c);
+      Orig.prototype.resume = function () { return audio.muted ? Promise.resolve() : origResume.apply(this, arguments); };
+      const Tracked = class extends Orig { constructor(...args) { super(...args); audio.ctxs.push(this); if (audio.muted) { try { this.suspend(); } catch (e) { /* ignore */ } } } };
+      window[k] = Tracked;
+    });
+  }
   const UI = 'data-demo-ui';
   const inUI = (el) => !!(el && el.closest && el.closest('[' + UI + '],.site-nav,.about-project,.contact-project'));
 
@@ -38,19 +53,19 @@
     if (!e.isTrusted) return;
     const tgt = e.target;
     const scrollish = e.type === 'wheel' || e.type.startsWith('touch');   // the tool never sees these, wherever they land, so it cannot cancel page scrolling
-    if (!scrollish && tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project')) return;   // nav, About and Contact keep working
+    if (!scrollish && tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-caption')) return;   // nav, About and Contact keep working
     e.stopImmediatePropagation();   // no preventDefault: the page still scrolls, links in the nav still work
   }, true));
   KEYS.forEach((t) => window.addEventListener(t, (e) => {
     if (!e.isTrusted) return;
     const tgt = e.target;
-    if (tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project')) return;
+    if (tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-caption')) return;
     e.stopImmediatePropagation();
     if (!SCROLL_KEYS.has(e.key) && e.key !== 'Tab') e.preventDefault();
   }, true));
 
   /* ---------- shield, cursor and caption ---------- */
-  let shield, cursor, caption, navH = 80;
+  let shield, cursor, caption, mute, frame, navH = 80;
   const SVG = '<svg width="20" height="22" viewBox="0 0 20 22" aria-hidden="true"><path d="M2 1.5v16l4.2-3.9 2.7 6.1 2.6-1.1-2.7-6H15z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg>';
   function build() {
     const css = document.createElement('style');
@@ -60,11 +75,19 @@
       .demo-cursor.on{opacity:1}
       .demo-cursor svg{display:block;transition:transform .12s ease-out;transform-origin:3px 2px}
       .demo-cursor.down svg{transform:scale(.82)}
-      .demo-caption{position:fixed;left:16px;bottom:16px;z-index:96;pointer-events:none;display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;background:rgba(24,23,22,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#e8e8e8;font:400 12px/1.3 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;transition:opacity .3s}
+      .demo-caption{position:fixed;left:16px;bottom:16px;max-width:calc(100vw - 32px);z-index:96;pointer-events:none;display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;background:rgba(24,23,22,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#e8e8e8;font:400 12px/1.3 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;transition:opacity .3s}
       .demo-caption, .demo-caption span{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:none!important}
       .demo-caption{background:rgba(24,23,22,.86)!important}
       .demo-caption i{width:6px;height:6px;border-radius:50%;background:#8fd694;flex:none}
+      .demo-mute{pointer-events:auto;flex:none;display:none;align-items:center;justify-content:center;width:28px;height:28px;margin:-6px -6px -6px 2px;padding:0;border:0;border-radius:6px;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;transition:background .2s}
+      .demo-mute:hover{background:rgba(255,255,255,.22)}
+      .demo-mute svg{display:block}
+      .demo-mute:focus-visible{outline:2px solid #d7ff3a;outline-offset:2px}
+      .demo-caption.has-sound .demo-mute{display:inline-flex}
       .site-nav .tools{display:none!important}
+      .demo-frame{position:absolute;left:0;right:0;top:80px;height:calc(100vh - 80px);overflow:hidden;pointer-events:none;z-index:91}
+      .demo-frame i{position:absolute;inset:0 8px 8px 8px;border-radius:8px;box-shadow:0 0 0 100vmax #181716}
+      html.embed .demo-frame{display:none!important}
       html.embed .demo-caption{display:none!important}
       @media (max-width:600px){.demo-caption{left:10px;bottom:10px;font-size:11px}}`;
     document.head.appendChild(css);
@@ -72,19 +95,40 @@
     cursor = document.createElement('div'); cursor.className = 'demo-cursor'; cursor.setAttribute(UI, ''); cursor.innerHTML = SVG;
     caption = document.createElement('div'); caption.className = 'demo-caption'; caption.setAttribute(UI, '');
     caption.innerHTML = '<i></i><span>Demo</span>';
-    document.body.append(shield, cursor, caption);
+    mute = document.createElement('button');
+    mute.type = 'button'; mute.className = 'demo-mute'; mute.setAttribute(UI, '');
+    mute.addEventListener('click', () => {
+      audio.muted = !audio.muted;
+      audio.ctxs.forEach((c) => { try { if (audio.muted) c.suspend(); else if (audio.resume) audio.resume(c); } catch (e) { /* ignore */ } });
+      if (!audio.muted && typeof window.userStartAudio === 'function') { try { window.userStartAudio(); } catch (e) { /* ignore */ } }
+      paintMute();
+    });
+    caption.appendChild(mute);
+    paintMute();
+    frame = document.createElement('div'); frame.className = 'demo-frame'; frame.setAttribute(UI, ''); frame.setAttribute('aria-hidden', 'true'); frame.innerHTML = '<i></i>';
+    document.body.append(frame, shield, cursor, caption);
     placeShield();
+  }
+  const ICON_OFF = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.6L12 18.5v-13L7.6 9.5z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>';
+  const ICON_ON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.6L12 18.5v-13L7.6 9.5z"/><path d="M15.5 9a4.2 4.2 0 010 6M18 6.5a8 8 0 010 11"/></svg>';
+  function paintMute() {
+    if (!mute) return;
+    mute.innerHTML = audio.muted ? ICON_OFF : ICON_ON;
+    mute.setAttribute('aria-label', audio.muted ? 'Sound is off. Turn sound on' : 'Sound is on. Turn sound off');
+    mute.setAttribute('aria-pressed', String(!audio.muted));
+    mute.title = audio.muted ? 'Sound off: click to turn on' : 'Sound on: click to turn off';
   }
   function placeShield() {
     const nav = document.querySelector('.site-nav');
     navH = nav ? Math.round(nav.getBoundingClientRect().bottom + scrollY) : 80;
     shield.style.top = Math.max(0, navH - Math.min(scrollY, navH)) + 'px';
+    frame.style.top = navH + 'px'; frame.style.height = Math.max(0, innerHeight - navH) + 'px';   // the tool sits inside a rounded, inset mask
   }
 
   /* ---------- the driver ---------- */
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
   const ease = (t) => (t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
-  let alive = true, onScreen = true;
+  let alive = true, onScreen = true, stepText = '', noteText = '';
   const onTop = () => scrollY < innerHeight * 0.45 && !document.hidden;
 
   const pos = { x: innerWidth * 0.5, y: innerHeight * 0.55 };
@@ -105,11 +149,11 @@
     const r = el.getBoundingClientRect();
     return { x: r.left + r.width * fx, y: r.top + r.height * fy, el };
   }
-  const elAt = (x, y) => (document.elementsFromPoint(x, y) || []).find((e) => !e.closest('[' + UI + ']') && !e.closest('.site-nav,.about-project,.contact-project')) || null;
+  const elAt = (x, y) => (document.elementsFromPoint(x, y) || []).find((e) => !e.closest('[' + UI + ']') && !e.closest('.site-nav,.about-project,.contact-project,.demo-caption')) || null;
 
-  function fire(el, type, x, y, buttons = 0) {
+  function fire(el, type, x, y, buttons = 0, button = 0) {
     if (!el) return;
-    const base = { bubbles: true, cancelable: true, composed: true, view: window, clientX: x, clientY: y, screenX: x, screenY: y, button: 0, buttons };
+    const base = { bubbles: true, cancelable: true, composed: true, view: window, clientX: x, clientY: y, screenX: x, screenY: y, button, buttons };
     try {
       if (type.startsWith('pointer')) el.dispatchEvent(new PointerEvent(type, { ...base, pointerId: 1, pointerType: 'mouse', isPrimary: true }));
       else el.dispatchEvent(new MouseEvent(type, base));
@@ -128,7 +172,9 @@
   const api = {
     wait: async (ms) => { const t0 = performance.now(); while (alive && performance.now() - t0 < ms) { await sleep(Math.min(60, ms)); if (!onTop()) await api.idle(); } },
     idle: async () => { while (alive && !onTop()) await sleep(250); },
-    say: (text) => { caption.lastChild.textContent = text ? 'Demo · ' + text : 'Demo'; },
+    // an optional note stays on the label after the step text (for example: sound is activated by interaction)
+    note: (text) => { noteText = text || ''; api.say(stepText); },
+    say: (text) => { stepText = text || ''; caption.querySelector('span').textContent = ['Demo', stepText, noteText].filter(Boolean).join(' · '); },
     /* move the cursor to a selector, element, [fx, fy] (fractions of the tool area) or {x, y} */
     move: async (t, ms = 800, fx = .5, fy = .5) => {
       const p = point(t, fx, fy); if (!p) return false;
@@ -159,6 +205,30 @@
       await api.wait(250);
       return true;
     },
+    /* right-click (flag, context actions): the cursor goes there, then presses with the right button */
+    rightClick: async (t, ms = 800, fx = .5, fy = .5) => {
+      if (!(await api.move(t, ms, fx, fy))) return false;
+      const el = elAt(pos.x, pos.y); cursor.classList.add('down');
+      fire(el, 'pointerdown', pos.x, pos.y, 2, 2); fire(el, 'mousedown', pos.x, pos.y, 2, 2);
+      await api.wait(110);
+      fire(el, 'contextmenu', pos.x, pos.y, 2, 2);
+      cursor.classList.remove('down');
+      fire(el, 'pointerup', pos.x, pos.y, 0, 2); fire(el, 'mouseup', pos.x, pos.y, 0, 2);
+      await api.wait(250);
+      return true;
+    },
+    /* scroll the wheel over a target (zoom effects): dy is the total, spread over `steps` events across `ms` */
+    wheel: async (t, dy, ms = 800, steps = 8) => {
+      if (t && !(await api.move(t, 700))) return false;
+      const el = elAt(pos.x, pos.y);
+      for (let i = 0; i < steps; i++) {
+        try { el.dispatchEvent(new WheelEvent('wheel', { bubbles: true, cancelable: true, composed: true, view: window, clientX: pos.x, clientY: pos.y, deltaY: dy / steps, deltaMode: 0 })); } catch (e) { /* ignore */ }
+        await api.wait(ms / steps);
+      }
+      return true;
+    },
+    /* page coordinates of a point given in the first canvas's own coordinates (what p5 sketches use) */
+    canvasPoint: (x, y) => { const c = document.querySelector('canvas'); if (!c) return null; const r = c.getBoundingClientRect(); return { x: r.left + x, y: r.top + y }; },
     /* press at a, drag to b (both targets), release: for canvases that listen to mousedown / mousemove / mouseup */
     drag: async (a, b, ms = 900) => {
       if (!(await api.move(a, 600))) return false;
@@ -217,6 +287,7 @@
     },
     byText: (sel, text) => [...document.querySelectorAll(sel)].find((e) => visible(e) && e.textContent.trim().toLowerCase().includes(String(text).toLowerCase())) || null,
     setValue: (t, v) => { const el = resolve(t); if (!el) return; el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); },
+    sound: () => caption.classList.add('has-sound'),   // show the sound toggle next to the label
     hide: () => cursor.classList.remove('on'),
     show: () => cursor.classList.add('on'),
     $: (s) => document.querySelector(s),

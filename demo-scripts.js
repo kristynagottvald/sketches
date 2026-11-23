@@ -29,10 +29,33 @@ D['ribbon-text'] = async (d) => {
   await d.slider(s[0], 50, 800); await d.slider(s[2], 55, 800);
 };
 
-/* Marketing Minesweeper: a few reveals */
+/* Marketing Minesweeper: plays a clean game. It reads the board, so it never clicks a mine, and starts a fresh board each time round. */
 D['marketing-mine'] = async (d) => {
-  d.say('Reveal squares');
-  for (const p of [[.5, .5], [.42, .46], [.58, .54], [.5, .38], [.5, .62]]) { await d.click(p, 900); await d.wait(900); }
+  if (typeof initGame !== 'function' || typeof gridElements === 'undefined') return;
+  initGame();                                                        // a fresh board every loop
+  await d.wait(500);
+  const all = () => gridElements.flat();
+  const nbrs = (c) => all().filter((n) => n !== c && Math.abs(n.x - c.x) <= 1 && Math.abs(n.y - c.y) <= 1);
+  const at = (c) => d.canvasPoint((c.x + 0.5) * s, (c.y + 0.5) * s);
+  const dist = (c) => Math.hypot(c.x - cols / 2, c.y - rows / 2);
+  d.say('Click a square to open an area');
+  const zero = all().filter((c) => !c.isMine && c.neighborCount === 0).sort((a, b) => dist(a) - dist(b))[0];
+  if (zero) { await d.click(at(zero), 900); await d.wait(1100); }
+  d.say('Numbers count the mines next to a square');
+  for (let i = 0; i < 3; i++) {
+    const next = all().filter((c) => !c.revealed && !c.isMine && nbrs(c).some((n) => n.revealed && n.neighborCount > 0))[0];
+    if (!next) break;
+    await d.click(at(next), 800); await d.wait(650);
+  }
+  d.say('Right-click to flag a mine');
+  const mines = all().filter((c) => c.isMine && !c.flagged && nbrs(c).some((n) => n.revealed)).slice(0, 2);
+  for (const m of mines) { await d.rightClick(at(m), 800); await d.wait(500); }
+  d.say('Keep clearing safe squares');
+  for (let i = 0; i < 3; i++) {
+    const next = all().filter((c) => !c.revealed && !c.isMine && nbrs(c).some((n) => n.revealed))[0];
+    if (!next) break;
+    await d.click(at(next), 700); await d.wait(550);
+  }
   await d.wait(1200);
 };
 
@@ -88,16 +111,31 @@ D['palette-compositions'] = async (d) => {
   for (const p of [[0.5, 0.5], [0.55, 0.45], [0.45, 0.55], [0.5, 0.5], [0.6, 0.5]]) { await d.click(p, 900); await d.wait(1100); }
 };
 
-/* Integratron: ring the bowls */
+/* Integratron: the dome cycles from day to night by itself; scrolling zooms, a click rings a sound bath bowl */
 D['integratron'] = async (d) => {
-  d.say('Ring the sound bath bowls');
-  for (const p of [[0.35, 0.6], [0.5, 0.66], [0.65, 0.6], [0.5, 0.5]]) { await d.click(p, 1000); await d.wait(1200); }
+  d.sound();
+  d.note('Sound is activated by interaction');
+  d.say('Scroll to zoom into the dome');
+  await d.wheel([0.5, 0.55], -900, 1500, 12); await d.wait(900);
+  d.say('Click to ring a sound bath bowl');
+  await d.click([0.5, 0.6], 900); await d.wait(1200);
+  d.say('Scroll back out');
+  await d.wheel(null, 1500, 1500, 12); await d.wait(900);
+  d.say('The dome cycles from day to night on its own');
+  await d.wait(2500);
 };
 
-/* Reprise Tiles: poke the tiles */
+/* Reprise Tiles: click the tiles' own controls (role chips, toggles, palette) */
 D['reprise-tiles'] = async (d) => {
-  d.say('Click the tiles');
-  for (const p of [[0.3, 0.35], [0.6, 0.3], [0.7, 0.65], [0.4, 0.7], [0.5, 0.5]]) { await d.click(p, 900); await d.wait(1100); }
+  if (typeof hits === 'undefined') return;
+  const pt = (id, fx = 0.5) => { const h = hits.find((x) => x.id === id); return h ? d.canvasPoint(h.x + h.w * fx, h.y + h.h / 2) : null; };
+  d.say('Click a role to change who the demo is for');
+  for (const id of ['role0', 'role1', 'role0']) { const p = pt(id); if (p) { await d.click(p, 900); await d.wait(900); } }
+  d.say('Flip a toggle');
+  for (const id of ['tog', 'tog', 'clock']) { const p = pt(id); if (p) { await d.click(p, 900); await d.wait(800); } }
+  d.say('Pick a palette colour');
+  const pal = pt('pal', 0.75); if (pal) { await d.click(pal, 900); await d.wait(1400); }
+  const pal0 = pt('pal', 0.2); if (pal0) { await d.click(pal0, 700); await d.wait(900); }
 };
 
 /* Banner Template Studio: format, layout, theme, copy, shuffle */
@@ -133,6 +171,8 @@ D['binary-grid'] = async (d) => {
 
 /* Temporary Notes: brush across the bars */
 D['sound-bars'] = async (d) => {
+  d.sound();
+  d.note('Sound is activated by interaction');
   d.say('Brush across the bars');
   await d.sweep([[0.1, 0.5], [0.45, 0.42], [0.8, 0.55], [0.55, 0.68], [0.2, 0.6], [0.7, 0.4]], 900);
 };
@@ -174,4 +214,14 @@ D['postmark-awards-motion'] = async (d) => {
   await d.slider('#speed', 1, 800);
   d.setValue(f, orig);
   await d.click(styles[0]); await d.wait(1200);
+};
+
+/* Brand Audit Engine plays its own timeline (library, audit, decision) with its own cursor, so this script only names the scene on screen */
+D['brand-audit-engine'] = async (d) => {
+  d.hide();   // the tool draws its own cursor
+  for (let i = 0; i < 160; i++) {
+    const t = typeof T !== 'undefined' ? T : 0;
+    d.say(t < 5400 ? 'Browse the library' : t < 16500 ? 'Run an audit' : 'Request changes');
+    await d.wait(200);
+  }
 };
