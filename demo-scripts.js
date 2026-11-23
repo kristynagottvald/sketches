@@ -3,13 +3,14 @@
 window.DEMOS = window.DEMOS || {};
 const D = window.DEMOS;
 
-/* Industry Swapper Plug-in: swap the industry, zoom, reset */
+/* Industry Swapper Plug-in: click through four industries, zoom, reset */
 D['direct-mail-engine'] = async (d) => {
-  const cards = d.$$('#industryList .industry-card');
-  d.say('Swap the industry');
-  await d.click(cards[2]); await d.wait(1400);
-  await d.click(cards[5]); await d.wait(1400);
-  await d.click(cards[1]); await d.wait(1400);
+  // the list is redrawn after each pick, so each card is looked up fresh
+  const pick = (text) => d.byText('#industryList .industry-card', text);
+  for (const [label, text] of [['Tech', 'Cloud Storage'], ['Retail', 'Apparel'], ['Automotive', 'Sales Event'], ['Health', 'Dental']]) {
+    d.say('Swap the industry: ' + label);
+    await d.click(pick(text), 900); await d.wait(1500);
+  }
   d.say('Zoom in to check the detail');
   await d.click('button[title="Zoom In"]'); await d.click('button[title="Zoom In"]'); await d.wait(1200);
   d.say('Back to the default piece');
