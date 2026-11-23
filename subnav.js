@@ -76,7 +76,6 @@
           <div class="ap-rows">
             <div class="ap-row"><h3>Type</h3><div>${esc(p.category || '')}</div></div>
             ${p.year ? `<div class="ap-row"><h3>Year</h3><div>${esc(p.year)}</div></div>` : ''}
-            <div class="ap-row"><h3>More</h3><div><a href="../#tools">All tools</a></div></div>
           </div></div>`;
     }
     // Contact + footer, same as the home page, with copy for a visitor who has just seen a tool
@@ -87,17 +86,30 @@
         <div class="cp-rows"><div class="cp-row"><h3>Contact</h3><div>
           <a href="mailto:kgottvald@gmail.com">Email</a>
           <a href="https://www.linkedin.com/in/kgottvald/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        </div></div></div></div>
-        <div class="cp-foot"><span>© Kristyna Gottvald</span><a href="#" id="cpTop">Back to top ↑</a></div>`;
-      ft.querySelector('#cpTop').addEventListener('click', (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+          <a href="https://kristynagottvald.github.io/" target="_blank" rel="noopener noreferrer">Portfolio</a>
+        </div></div></div></div>`;
     }
+    // All Tools: the same heading-left, two-column card list as the home page (the tool you are on is left out)
+    const tp = document.createElement('section');
+    tp.className = 'tools-project'; tp.id = 'allTools'; tp.setAttribute('aria-label', 'All Tools');
+    const ARROW = '<svg class="tp-arrow" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
+    tp.innerHTML = `<div class="tp-side"><h2>All Tools</h2></div><div class="tp-list">${list.filter((q, i) => i !== cur && !q.hidden).map((q) =>
+      `<article class="tp-card"><a href="../${esc(q.url || '#')}" aria-label="${esc(q.title)}"><div class="tp-media"><img src="../${esc(q.thumbnail)}" data-still="../${esc(q.thumbnail)}" data-preview="${q.preview ? '../' + esc(q.preview) : ''}" alt="" loading="lazy"></div><div class="tp-meta"><h3>${esc(q.title)}</h3><p>${esc(q.category || '')}</p>${ARROW}</div></a></article>`).join('')}</div>`;
+    const swap = (e, on) => { const a = e.target.closest('.tp-card a'); if (!a || (e.relatedTarget && a.contains(e.relatedTarget))) return; const im = a.querySelector('img'); if (im && im.dataset.preview) im.src = on ? im.dataset.preview : im.dataset.still; };
+    tp.addEventListener('mouseover', (e) => swap(e, true)); tp.addEventListener('mouseout', (e) => swap(e, false));
+    // the copyright footer closes the page
+    const cf = document.createElement('footer');
+    cf.className = 'foot-project';
+    cf.innerHTML = '<span>© Kristyna Gottvald</span><a href="#" id="cpTop">Back to top ↑</a>';
+    cf.querySelector('#cpTop').addEventListener('click', (e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
     // Both sections live in one wrapper on <html>, just below the first screen. Nothing here takes space from the tool's own layout,
     // so tools that stretch to the page height (flex or 100vh layouts) keep their full size.
-    if (sec || ft) {
+    {
       const wrap = document.createElement('div');
       wrap.id = 'toolAfter';
       if (sec) wrap.appendChild(sec);
       if (ft) wrap.appendChild(ft);
+      wrap.appendChild(tp); wrap.appendChild(cf);
       document.documentElement.appendChild(wrap);
       document.documentElement.classList.add('has-about');
       const place = () => { wrap.style.top = Math.max(window.innerHeight, Math.round(document.body.getBoundingClientRect().bottom + window.scrollY)) + 'px'; };
