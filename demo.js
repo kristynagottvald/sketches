@@ -230,6 +230,28 @@
       }
       return true;
     },
+    /* scroll the nearest scrolling panel around a control so the control (and what it changes) is on screen */
+    reveal: async (t, ms = 900, frac = 0.4) => {
+      const el = resolve(t); if (!el) return false;
+      let sc = el.parentElement;
+      while (sc && sc !== document.body && sc !== document.documentElement) {
+        const cs = getComputedStyle(sc);
+        if (/(auto|scroll)/.test(cs.overflowY) && sc.scrollHeight > sc.clientHeight + 2) break;
+        sc = sc.parentElement;
+      }
+      if (!sc || sc === document.body || sc === document.documentElement) return false;
+      const r = el.getBoundingClientRect(), sr = sc.getBoundingClientRect();
+      const to = Math.max(0, Math.min(sc.scrollHeight - sc.clientHeight, sc.scrollTop + (r.top - sr.top) - sc.clientHeight * frac + r.height / 2));
+      const from = sc.scrollTop, t0 = performance.now();
+      while (alive) {
+        if (!onTop()) await api.idle();
+        const k = Math.min(1, (performance.now() - t0) / ms);
+        sc.scrollTop = from + (to - from) * ease(k);
+        if (k >= 1) break;
+        await new Promise((rr) => requestAnimationFrame(rr));
+      }
+      return true;
+    },
     /* page coordinates of a point given in the first canvas's own coordinates (what p5 sketches use) */
     canvasPoint: (x, y) => { const c = document.querySelector('canvas'); if (!c) return null; const r = c.getBoundingClientRect(); return { x: r.left + x, y: r.top + y }; },
     /* press at a, drag to b (both targets), release: for canvases that listen to mousedown / mousemove / mouseup */
