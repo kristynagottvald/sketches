@@ -1,12 +1,12 @@
 <meta charset="utf-8">
-<script src="../demo.js?v=13"></script>
+<script src="../demo.js?v=15"></script>
 <script src="../demo-scripts.js?v=10"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kick Off Type Lab</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <script src="../favicon.js" defer></script>
-<link rel="stylesheet" href="../subnav.css?v=23">
+<link rel="stylesheet" href="../subnav.css?v=25">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chango&family=Inter:wght@400;500;600&display=swap">
 <style>
 /* Layout: live text stage on the left, a Figma-style type panel on the right (dark by design; stacks on phones). */
@@ -63,14 +63,7 @@ body{display:flex;flex-direction:column}
         <div class="hb-bar">
             <a class="logo" href="../" aria-label="Kristyna Gottvald, home">Krıstyna Gottvald</a>
             <span class="hb-label"><a href="../">All Tools</a><b>Kick Off Type Lab</b></span>
-            <button class="hb-toggle nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navMenu">
-                <span class="sr">Toggle menu</span>
-                <svg class="nav-ptr" width="15" height="15" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.2 6.4l8.4 3.3-3.6 1.4-1.4 3.6z" fill="currentColor"/></svg>
-            </button>
         </div>
-        <nav class="nav-menu" id="navMenu" aria-label="Main Navigation">
-            <div class="nav-projects" id="navProjects"></div>
-        </nav>
     </header>
 <div id="app">
   <div id="stage"><div id="hint">Type on the right. Click between letters to place the cursor.</div></div>
@@ -475,4 +468,4 @@ function bindUI(){
   document.fonts.ready.then(()=>redraw());
 }
 </script>
-<script src="../subnav.js?v=24"></script>
+<script src="../subnav.js?v=26"></script>
