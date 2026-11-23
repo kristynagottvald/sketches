@@ -53,19 +53,19 @@
     if (!e.isTrusted) return;
     const tgt = e.target;
     const scrollish = e.type === 'wheel' || e.type.startsWith('touch');   // the tool never sees these, wherever they land, so it cannot cancel page scrolling
-    if (!scrollish && tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-caption')) return;   // nav, About and Contact keep working
+    if (!scrollish && tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-dock')) return;   // nav, About and Contact keep working
     e.stopImmediatePropagation();   // no preventDefault: the page still scrolls, links in the nav still work
   }, true));
   KEYS.forEach((t) => window.addEventListener(t, (e) => {
     if (!e.isTrusted) return;
     const tgt = e.target;
-    if (tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-caption')) return;
+    if (tgt && tgt.closest && tgt.closest('.site-nav,.about-project,.contact-project,.demo-dock')) return;
     e.stopImmediatePropagation();
     if (!SCROLL_KEYS.has(e.key) && e.key !== 'Tab') e.preventDefault();
   }, true));
 
   /* ---------- shield, cursor and caption ---------- */
-  let shield, cursor, caption, mute, frame, navH = 80;
+  let shield, cursor, caption, mute, frame, dock, navH = 80;
   const SVG = '<svg width="20" height="22" viewBox="0 0 20 22" aria-hidden="true"><path d="M2 1.5v16l4.2-3.9 2.7 6.1 2.6-1.1-2.7-6H15z" fill="#fff" stroke="#111" stroke-width="1.3" stroke-linejoin="round"/></svg>';
   function build() {
     const css = document.createElement('style');
@@ -75,21 +75,22 @@
       .demo-cursor.on{opacity:1}
       .demo-cursor svg{display:block;transition:transform .12s ease-out;transform-origin:3px 2px}
       .demo-cursor.down svg{transform:scale(.82)}
-      .demo-caption{position:fixed;left:16px;bottom:16px;max-width:calc(100vw - 32px);z-index:96;pointer-events:none;display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;background:rgba(24,23,22,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#e8e8e8;font:400 12px/1.3 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;transition:opacity .3s}
+      .demo-dock{position:fixed;left:16px;bottom:16px;z-index:150;display:flex;flex-direction:column;align-items:flex-start;gap:8px;max-width:calc(100vw - 32px);pointer-events:none}
+      .demo-caption{max-width:100%;pointer-events:none;display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;background:rgba(24,23,22,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#e8e8e8;font:400 12px/1.3 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;transition:opacity .3s}
       .demo-caption, .demo-caption span{color:#fff!important;-webkit-text-fill-color:#fff!important;text-shadow:none!important}
       .demo-caption{background:rgba(24,23,22,.86)!important}
       .demo-caption i{width:6px;height:6px;border-radius:50%;background:#8fd694;flex:none}
-      .demo-mute{pointer-events:auto;flex:none;display:none;align-items:center;justify-content:center;width:28px;height:28px;margin:-6px -6px -6px 2px;padding:0;border:0;border-radius:6px;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;transition:background .2s}
-      .demo-mute:hover{background:rgba(255,255,255,.22)}
+      .demo-mute{pointer-events:auto;display:none;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border:0;border-radius:8px;background:rgba(24,23,22,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);color:#fff;cursor:pointer;transition:background .2s}
+      .demo-mute:hover{background:rgba(60,58,56,.92)}
       .demo-mute svg{display:block}
       .demo-mute:focus-visible{outline:2px solid #d7ff3a;outline-offset:2px}
-      .demo-caption.has-sound .demo-mute{display:inline-flex}
+      .demo-dock.has-sound .demo-mute{display:inline-flex}
       .site-nav .tools{display:none!important}
       .demo-frame{position:absolute;left:0;right:0;top:80px;height:calc(100vh - 80px);overflow:hidden;pointer-events:none;z-index:91}
       .demo-frame i{position:absolute;inset:0 8px 8px 8px;border-radius:8px;box-shadow:0 0 0 100vmax #181716}
       html.embed .demo-frame{display:none!important}
-      html.embed .demo-caption{display:none!important}
-      @media (max-width:600px){.demo-caption{left:10px;bottom:10px;font-size:11px}}`;
+      html.embed .demo-dock{display:none!important}
+      @media (max-width:600px){.demo-dock{left:10px;bottom:10px}.demo-caption{font-size:11px}}`;
     document.head.appendChild(css);
     shield = document.createElement('div'); shield.className = 'demo-shield'; shield.setAttribute(UI, ''); shield.setAttribute('aria-hidden', 'true');
     cursor = document.createElement('div'); cursor.className = 'demo-cursor'; cursor.setAttribute(UI, ''); cursor.innerHTML = SVG;
@@ -103,10 +104,11 @@
       if (!audio.muted && typeof window.userStartAudio === 'function') { try { window.userStartAudio(); } catch (e) { /* ignore */ } }
       paintMute();
     });
-    caption.appendChild(mute);
     paintMute();
     frame = document.createElement('div'); frame.className = 'demo-frame'; frame.setAttribute(UI, ''); frame.setAttribute('aria-hidden', 'true'); frame.innerHTML = '<i></i>';
-    document.body.append(frame, shield, cursor, caption);
+    dock = document.createElement('div'); dock.className = 'demo-dock'; dock.setAttribute(UI, '');
+    dock.append(mute, caption);   // the sound toggle sits above the label
+    document.body.append(frame, shield, cursor, dock);
     placeShield();
   }
   const ICON_OFF = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5v5h3.6L12 18.5v-13L7.6 9.5z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></svg>';
@@ -149,7 +151,7 @@
     const r = el.getBoundingClientRect();
     return { x: r.left + r.width * fx, y: r.top + r.height * fy, el };
   }
-  const elAt = (x, y) => (document.elementsFromPoint(x, y) || []).find((e) => !e.closest('[' + UI + ']') && !e.closest('.site-nav,.about-project,.contact-project,.demo-caption')) || null;
+  const elAt = (x, y) => (document.elementsFromPoint(x, y) || []).find((e) => !e.closest('[' + UI + ']') && !e.closest('.site-nav,.about-project,.contact-project,.demo-dock')) || null;
 
   function fire(el, type, x, y, buttons = 0, button = 0) {
     if (!el) return;
@@ -288,7 +290,7 @@
     },
     byText: (sel, text) => [...document.querySelectorAll(sel)].find((e) => visible(e) && e.textContent.trim().toLowerCase().includes(String(text).toLowerCase())) || null,
     setValue: (t, v) => { const el = resolve(t); if (!el) return; el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); },
-    sound: () => caption.classList.add('has-sound'),   // show the sound toggle next to the label
+    sound: () => dock.classList.add('has-sound'),   // show the sound toggle above the label
     hide: () => cursor.classList.remove('on'),
     show: () => cursor.classList.add('on'),
     $: (s) => document.querySelector(s),
