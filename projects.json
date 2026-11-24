@@ -19,23 +19,23 @@
     "cta": "Swap industries"
   },
   {
-    "id": "ribbon-text",
-    "title": "Postmark Awards",
-    "category": "Interactive Engine",
+    "id": "brand-audit-engine",
+    "title": "Brand Audit Engine",
+    "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "ribbon-text/thumbnail.jpg?v=6",
-    "url": "ribbon-text/",
-    "blurb": "Text that flows along noise-driven ribbons, with live controls and SVG export.",
-    "about": "Postmark Awards sets type flowing along a looping, noise-driven ribbon, built for awards and event graphics. Enter your own text in the control panel, one phrase per line, then adjust weight, spacing, thickness and wiggle. Choose Randomize Pattern for a new path and Download SVG to take the result into your design tools.",
+    "thumbnail": "brand-audit-engine/thumbnail.jpg?v=7",
+    "url": "brand-audit-engine/",
+    "blurb": "A brand review library where an audit scans each asset and flags it as approved, needs review or changes.",
+    "about": "Brand Audit Engine is an asset library that audits campaign creative against your brand rules. Watch each asset get scanned and flagged as approved, needs review or changes, see the time saved per asset, and use the filters and search to work through the library.",
+    "preview": "clips/brand-audit-engine.webp?v=6",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "ribbon-text/thumbnail.jpg",
-        "alt": "Postmark Awards"
+        "src": "brand-audit-engine/thumbnail.jpg",
+        "alt": "Brand Audit Engine"
       }
     ],
-    "preview": "clips/ribbon-text.webp?v=6",
-    "cta": "Edit the ribbons"
+    "cta": "Run an audit"
   },
   {
     "id": "marketing-mine",
@@ -343,22 +343,22 @@
     "cta": "Move the motifs"
   },
   {
-    "id": "brand-audit-engine",
-    "title": "Brand Audit Engine",
-    "category": "Interactive Tool",
+    "id": "ribbon-text",
+    "title": "Postmark Awards",
+    "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "brand-audit-engine/thumbnail.jpg?v=7",
-    "url": "brand-audit-engine/",
-    "blurb": "A brand review library where an audit scans each asset and flags it as approved, needs review or changes.",
-    "about": "Brand Audit Engine is an asset library that audits campaign creative against your brand rules. Watch each asset get scanned and flagged as approved, needs review or changes, see the time saved per asset, and use the filters and search to work through the library.",
-    "preview": "clips/brand-audit-engine.webp?v=6",
+    "thumbnail": "ribbon-text/thumbnail.jpg?v=6",
+    "url": "ribbon-text/",
+    "blurb": "Text that flows along noise-driven ribbons, with live controls and SVG export.",
+    "about": "Postmark Awards sets type flowing along a looping, noise-driven ribbon, built for awards and event graphics. Enter your own text in the control panel, one phrase per line, then adjust weight, spacing, thickness and wiggle. Choose Randomize Pattern for a new path and Download SVG to take the result into your design tools.",
     "caseStudyContent": [
       {
         "type": "image",
-        "src": "brand-audit-engine/thumbnail.jpg",
-        "alt": "Brand Audit Engine"
+        "src": "ribbon-text/thumbnail.jpg",
+        "alt": "Postmark Awards"
       }
     ],
-    "cta": "Run an audit"
+    "preview": "clips/ribbon-text.webp?v=6",
+    "cta": "Edit the ribbons"
   }
 ]
