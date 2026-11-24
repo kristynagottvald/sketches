@@ -35,11 +35,22 @@
       const el = document.createElement('div');
       el.className = 'slide';
       el.setAttribute('aria-hidden', 'true');
-      el.innerHTML = `<div class="slide-card"><img class="still" src="${esc(p.thumbnail)}" alt=""><iframe class="slide-frame" title="${esc(p.title)} demo" tabindex="-1" aria-hidden="true" loading="eager" allow="autoplay 'none'"></iframe></div>` +
-        `<div class="slide-cap"><h2>${esc(p.title)}<a class="slide-name" href="${esc(p.url)}" tabindex="-1"><span>${esc(p.category || '')}</span>${ARROW}</a></h2></div>`;
+      el.innerHTML = `<div class="slide-card"><img class="still" src="${esc(p.thumbnail)}" alt=""><iframe class="slide-frame" title="${esc(p.title)} demo" tabindex="-1" aria-hidden="true" loading="eager" allow="autoplay 'none'"></iframe></div>`;
       hero.appendChild(el);
       return el;
     });
+    // one tab that stays put over every slide; only the caption inside it changes
+    const tab = document.createElement('div');
+    tab.className = 'hero-tab';
+    const caps = projects.map((p) => {
+      const el = document.createElement('div');
+      el.className = 'slide-cap';
+      el.setAttribute('aria-hidden', 'true');
+      el.innerHTML = `<h2>${esc(p.title)}<a class="slide-name" href="${esc(p.url)}" tabindex="-1"><span>${esc(p.category || '')}</span>${ARROW}</a></h2>`;
+      tab.appendChild(el);
+      return el;
+    });
+    hero.appendChild(tab);
     const frames = slides.map((s) => s.querySelector('iframe'));
     const cards = slides.map((s) => s.querySelector('.slide-card'));
     const n = slides.length;
@@ -50,8 +61,8 @@
       f.style.transform = `translate(-50%, -50%) scale(${Math.max(w / VW, h / VH)})`;
     });
     // long titles shrink to stay on one line inside the fixed-size tab
-    const fitTitles = () => slides.forEach((sl) => {
-      const h = sl.querySelector('h2'), cap = sl.querySelector('.slide-cap'), cs = getComputedStyle(cap);
+    const fitTitles = () => caps.forEach((cap) => {
+      const h = cap.querySelector('h2'), cs = getComputedStyle(cap);
       h.style.fontSize = '';
       const avail = cap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
       if (avail > 0 && h.scrollWidth > avail) h.style.fontSize = (parseFloat(getComputedStyle(h).fontSize) * avail / h.scrollWidth) + 'px';
@@ -63,7 +74,9 @@
     const show = (i) => slides.forEach((s, k) => {
       s.classList.toggle('is-on', k === i);
       s.setAttribute('aria-hidden', String(k !== i));
-      s.querySelector('.slide-name').tabIndex = k === i ? 0 : -1;
+      caps[k].classList.toggle('is-on', k === i);
+      caps[k].setAttribute('aria-hidden', String(k !== i));
+      caps[k].querySelector('.slide-name').tabIndex = k === i ? 0 : -1;
     });
     if (reduced) { show(0); return; }   // reduced motion: just the still of the first tool
 
