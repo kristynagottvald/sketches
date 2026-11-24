@@ -152,6 +152,7 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .hero-tab { position: static; grid-row: 2; width: 100%; height: auto; border-radius: 0; }
   .hero-tab::before, .hero-tab::after { display: none; }
   .slide-cap { padding: 22px 14px 18px; }
+  .intro { padding-left: calc(var(--pad) + 14px); }   /* flush with the title and category in the tab above */
 }
 .nav-jump, .tagline { display: none; }
 @media (max-width: 760px) {
