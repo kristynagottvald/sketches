@@ -68,17 +68,14 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .slide-frame { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; max-width: none; border: 0; background: #000; transform-origin: center; pointer-events: none; opacity: 0; transition: opacity .4s linear; }
 .slide-frame.live { opacity: 1; }
 /* inset soft-black tab in the bottom-right corner, flush with the edges, carrying the type */
-.slide-cap { position: absolute; right: 0; bottom: 0; z-index: 1; width: min(48cqw, 670px); height: 200px; padding: 30px 30px 0 40px; align-content: center; display: grid; gap: 15px; background: var(--bg); border-top-left-radius: var(--R); }
+.slide-cap { position: absolute; right: 0; bottom: 0; z-index: 1; width: min(48cqw, 670px); height: 200px; padding: 30px 30px 0 40px; align-content: center; display: grid; gap: 8px; background: var(--bg); border-top-left-radius: var(--R); }
 .slide-cap::before, .slide-cap::after { content: ""; position: absolute; width: var(--R); height: var(--R); background: radial-gradient(circle at 0 0, transparent var(--R), var(--bg) calc(var(--R) + .5px)); pointer-events: none; }
 .slide-cap::before { right: 0; bottom: 100%; }   /* soft curve where the tab meets the right edge */
 .slide-cap::after { right: 100%; bottom: 0; }    /* and where it meets the bottom edge */
 /* title in white over the category in grey, both in Inter */
 .slide-cap h2 { font: 400 var(--fs-h2)/1.2 var(--sans); letter-spacing: -0.02em; white-space: nowrap; color: #fff; }
-.slide-name { display: block; color: var(--grey); }
-.slide-cta { justify-self: start; margin-top: 4px; display: inline-flex; align-items: center; gap: 10px; padding: 0 0 6px; border-bottom: 1px solid rgba(255,255,255,.45); color: #fff; transition: border-color .25s; }   /* thin underline, no button box */
-.slide-cta:hover { border-bottom-color: #fff; }
-.slide-cta svg { transition: transform .3s var(--ease); }
-.slide-cta:hover svg { transform: translate(2px, -2px); }
+.slide-name { display: block; width: fit-content; color: var(--grey); transition: color .2s; }   /* the category is the link to the tool */
+.slide-name:hover, .slide-name:focus-visible { color: #fff; }
 
 /* ---------- Intro: the other 30% of the first screen ---------- */
 .intro { display: flex; align-items: center; min-height: calc((100svh - var(--nav-h) - 8px) * .3); padding: 28px var(--pad) 28px calc(var(--pad) + var(--left)); }
@@ -151,7 +148,6 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .slide-cap { position: static; width: 100%; height: auto; max-width: none; padding: 22px 14px 18px; gap: 8px; border-radius: 0; }
   .slide-cap::before, .slide-cap::after { display: none; }
   .slide-cap h2 { font-size: min(32px, 7.4vw); }
-  .slide-cta { margin-top: 6px; }
 }
 .nav-jump, .tagline { display: none; }
 @media (max-width: 760px) {
