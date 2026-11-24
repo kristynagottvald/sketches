@@ -68,7 +68,7 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .slide-frame { position: absolute; left: 50%; top: 50%; width: 1280px; height: 720px; max-width: none; border: 0; background: #000; transform-origin: center; pointer-events: none; opacity: 0; transition: opacity .4s linear; }
 .slide-frame.live { opacity: 1; }
 /* inset soft-black tab in the bottom-right corner, flush with the edges, carrying the type */
-.slide-cap { position: absolute; right: 0; bottom: 0; z-index: 1; width: min(48cqw, 670px); height: 100px; padding: 0 30px 0 40px; align-content: center; display: grid; gap: 8px; background: var(--bg); border-top-left-radius: var(--R); }
+.slide-cap { position: absolute; right: 0; bottom: 0; z-index: 1; width: min(48cqw, 570px); height: 100px; padding: 0 30px 0 40px; align-content: center; display: grid; gap: 8px; background: var(--bg); border-top-left-radius: var(--R); }
 .slide-cap::before, .slide-cap::after { content: ""; position: absolute; width: var(--R); height: var(--R); background: radial-gradient(circle at 0 0, transparent var(--R), var(--bg) calc(var(--R) + .5px)); pointer-events: none; }
 .slide-cap::before { right: 0; bottom: 100%; }   /* soft curve where the tab meets the right edge */
 .slide-cap::after { right: 100%; bottom: 0; }    /* and where it meets the bottom edge */
@@ -81,7 +81,7 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 
 /* ---------- Intro: the other 30% of the first screen ---------- */
 .intro { display: flex; align-items: center; min-height: calc((100svh - var(--nav-h) - 8px) * .3); padding: 28px var(--pad) 28px calc(var(--pad) + var(--left)); }
-.intro p { max-width: 22em; font: 300 var(--fs-h2)/var(--lh-head) var(--cond); letter-spacing: var(--ls-head); text-wrap: pretty; }
+.intro p { max-width: 18em; font: 300 var(--fs-h2)/var(--lh-head) var(--cond); letter-spacing: var(--ls-head); text-wrap: pretty; }
 .intro p span { color: var(--grey); }
 
 /* ---------- All tools: heading left, 2-column grid right (same as Selected Work on the portfolio) ---------- */
