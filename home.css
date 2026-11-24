@@ -73,7 +73,7 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .slide-cap::before { right: 0; bottom: 100%; }   /* soft curve where the tab meets the right edge */
 .slide-cap::after { right: 100%; bottom: 0; }    /* and where it meets the bottom edge */
 /* title in white over the category in grey, both in Inter */
-.slide-cap h2 { font: 400 var(--fs-h2)/1.2 var(--sans); letter-spacing: -0.02em; white-space: nowrap; color: #fff; }
+.slide-cap h2 { font: 400 var(--fs-body)/1.25 var(--sans); white-space: nowrap; color: #fff; }   /* same size as the titles and categories in the tool list */
 .slide-name { display: flex; width: fit-content; align-items: center; gap: .3em; padding-bottom: 2px; border-bottom: 1px solid rgba(152,152,152,.5); color: var(--grey); transition: color .2s, border-color .2s; }   /* the category is the link to the tool: thin underline, arrow on the right */
 .slide-name svg { width: .45em; height: .45em; transition: transform .3s var(--ease); }
 .slide-name:hover, .slide-name:focus-visible { color: #fff; border-bottom-color: #fff; }
@@ -149,7 +149,6 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .slide-card { position: relative; inset: auto; width: 100%; aspect-ratio: 16 / 9; border-radius: var(--r-sm); overflow: hidden; }
   .slide-cap { position: static; width: 100%; height: auto; max-width: none; padding: 22px 14px 18px; gap: 8px; border-radius: 0; }
   .slide-cap::before, .slide-cap::after { display: none; }
-  .slide-cap h2 { font-size: min(32px, 7.4vw); }
 }
 .nav-jump, .tagline { display: none; }
 @media (max-width: 760px) {
