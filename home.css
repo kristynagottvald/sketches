@@ -74,8 +74,10 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
 .slide-cap::after { right: 100%; bottom: 0; }    /* and where it meets the bottom edge */
 /* title in white over the category in grey, both in Inter */
 .slide-cap h2 { font: 400 var(--fs-h2)/1.2 var(--sans); letter-spacing: -0.02em; white-space: nowrap; color: #fff; }
-.slide-name { display: block; width: fit-content; color: var(--grey); transition: color .2s; }   /* the category is the link to the tool */
-.slide-name:hover, .slide-name:focus-visible { color: #fff; }
+.slide-name { display: flex; width: fit-content; align-items: center; gap: .3em; padding-bottom: 2px; border-bottom: 1px solid rgba(152,152,152,.5); color: var(--grey); transition: color .2s, border-color .2s; }   /* the category is the link to the tool: thin underline, arrow on the right */
+.slide-name svg { width: .45em; height: .45em; transition: transform .3s var(--ease); }
+.slide-name:hover, .slide-name:focus-visible { color: #fff; border-bottom-color: #fff; }
+.slide-name:hover svg { transform: translate(2px, -2px); }
 
 /* ---------- Intro: the other 30% of the first screen ---------- */
 .intro { display: flex; align-items: center; min-height: calc((100svh - var(--nav-h) - 8px) * .3); padding: 28px var(--pad) 28px calc(var(--pad) + var(--left)); }

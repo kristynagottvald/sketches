@@ -5,6 +5,7 @@
   const esc = (s) =>
     String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ARROW = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
   const CARD_ARROW = '<svg class="card-arrow" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2.3 7.7l5.1-5.1M2.3 2.1h5.5v5.5" fill="none" stroke="currentColor"/></svg>';
 
   const hero = $('#hero');
@@ -35,7 +36,7 @@
       el.className = 'slide';
       el.setAttribute('aria-hidden', 'true');
       el.innerHTML = `<div class="slide-card"><img class="still" src="${esc(p.thumbnail)}" alt=""><iframe class="slide-frame" title="${esc(p.title)} demo" tabindex="-1" aria-hidden="true" loading="eager" allow="autoplay 'none'"></iframe></div>` +
-        `<div class="slide-cap"><h2>${esc(p.title)}<a class="slide-name" href="${esc(p.url)}" tabindex="-1">${esc(p.category || '')}</a></h2></div>`;
+        `<div class="slide-cap"><h2>${esc(p.title)}<a class="slide-name" href="${esc(p.url)}" tabindex="-1"><span>${esc(p.category || '')}</span>${ARROW}</a></h2></div>`;
       hero.appendChild(el);
       return el;
     });
