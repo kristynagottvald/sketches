@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <script src="../demo.js?v=20"></script>
-<script src="../demo-scripts.js?v=21"></script>
+<script src="../demo-scripts.js?v=22"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Brand Guidelines Mini Site • Kristyna Gottvald</title>
 <meta name="description" content="A brand guidelines mini site for Thread with framework, voice, logo, type, colour, photography, badges and motion.">
@@ -244,6 +244,9 @@ a{color:inherit}
 .swr.sm{height:clamp(100px,12vw,160px)}
 .swr button{flex:1;min-width:0;border:0;border-right:1.5px solid var(--fg);cursor:pointer;text-align:left;padding:14px 16px;display:flex;flex-direction:column;justify-content:space-between;transition:flex .6s var(--ease);position:relative;border-radius:0}
 .swr button:last-child{border-right:0}
+.swr button .cp{position:absolute;top:14px;right:16px;max-width:calc(100% - 32px);box-sizing:border-box;padding:12px 14px;background:inherit;color:inherit;border:1.5px solid currentColor;font:700 11px/1 var(--sans);font-style:normal;letter-spacing:.16em;text-transform:uppercase;opacity:0;transform:translateY(-8px);transition:opacity .25s,transform .25s var(--ease);pointer-events:none}
+.swr button .cp.on{opacity:1;transform:none}
+@media (max-width:600px){.swr button .cp{top:10px;right:10px;max-width:calc(100% - 20px);padding:8px 9px;font-size:10px;line-height:1.3;letter-spacing:.1em}}
 .swr button:hover,.swr button:focus-visible{flex:2.2}
 .swr button b{font:400 clamp(24px,3vw,44px)/1 var(--serif);letter-spacing:-.0174em}
 .swr button span{font:700 10.5px/1.5 var(--sans);letter-spacing:.14em;text-transform:uppercase}
@@ -476,7 +479,7 @@ footer.end .row a{text-decoration:none}
   <i class="hl v"></i><i class="hl h top"></i><i class="hl h bot"></i>
   <div class="wrap"><div class="in">
     <span class="tag">03 · Logo</span>
-    <h2 class="display"><span class="slide">One swash, one wordmark.</span></h2>
+    <h2 class="display"><span class="slide">One swash,<br>one wordmark.</span></h2>
     <p class="lede">The Thread logo is a calligraphic swash T joined to a serif wordmark. It lives bottom left, next to the Attentive logo, and always in the ink colour of its page. Resize it, and watch the minimum.</p>
     <div class="demo">
       <div class="stage"><canvas id="lgCv" role="img" aria-label="The Thread logo with its clear space drawn around it"></canvas></div>
@@ -536,7 +539,7 @@ footer.end .row a{text-decoration:none}
   <i class="hl v"></i><i class="hl h top"></i><i class="hl h bot"></i>
   <div class="wrap"><div class="in">
     <span class="tag">05 · Color</span>
-    <h2 class="display"><span class="slide">Yellow, ink, and a little cream.</span></h2>
+    <h2 class="display"><span class="slide">Yellow, ink,<br>and a little cream.</span></h2>
     <p class="lede">Three colours make every post: Yellow, Ink and Cream. One is the ground, one is the type. Click a swatch to copy its hex.</p>
     <div class="group"><span class="sub">Core colors</span>
       <div class="swr" id="swCore"></div></div>
@@ -608,7 +611,7 @@ footer.end .row a{text-decoration:none}
   <i class="hl v"></i><i class="hl h top"></i><i class="hl h bot"></i>
   <div class="wrap"><div class="in">
     <span class="tag">08 · Motion</span>
-    <h2 class="display"><span class="slide">Written on, then lifted off.</span></h2>
+    <h2 class="display"><span class="slide">Written on,<br>then lifted off.</span></h2>
     <p class="lede">Motion is a pen. Calligraphy loops write themselves on, hold, and un-write from the tail, each stroke 0.55 seconds behind the last. Hairlines do the same. Everything repeats every 8 seconds, so a clip loops with no jump. Pick a style: Loops, or Tilts, where lines fanned out of the bottom edge either redraw themselves or tilt one after another. Drag the playhead.</p>
     <div class="demo">
       <div class="stage"><canvas id="moCv" role="img" aria-label="Animated calligraphy loops around the Thread logo"></canvas></div>
@@ -1364,7 +1367,9 @@ function lum(h) { const c = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)
 const contrast = (a, b) => { const x = lum(a), y = lum(b); return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05); };
 const swHtml = (k) => { const c = COL[k]; return '<button style="background:' + c[1] + ';color:' + textOn(c[1]) + '" data-hex="' + c[1] + '" aria-label="Copy ' + c[0] + ' ' + c[1] + '"><b>' + c[0] + '</b><span>' + c[1].toUpperCase() + '<small>' + c[2] + '</small></span></button>'; };
 $('#swCore').innerHTML = ['yellow', 'ink', 'cream'].map(swHtml).join(''); $('#swSup').innerHTML = ['paper'].map(swHtml).join('');
-document.addEventListener('click', (e) => { const b = e.target.closest('[data-hex]'); if (!b) return; const h = b.dataset.hex.toUpperCase(); try { navigator.clipboard.writeText(h).then(() => toast('Copied ' + h), () => toast(h)); } catch (err) { toast(h); } });
+// a colour swatch shows its "Copied" note inside itself, in the top right corner; other hex buttons use the page toast
+const swNote = (b, m) => { let n = b.querySelector('.cp'); if (!n) { n = document.createElement('i'); n.className = 'cp'; n.setAttribute('role', 'status'); b.appendChild(n); } n.textContent = m; n.classList.add('on'); clearTimeout(n.t); n.t = setTimeout(() => n.classList.remove('on'), 1700); };
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-hex]'); if (!b) return; const h = b.dataset.hex.toUpperCase(); const say = b.closest('.swr') ? (m) => swNote(b, m) : toast; if (!e.isTrusted) { say('Copied ' + h); return; }   /* the walkthrough demo's clicks cannot use the clipboard: show the note only */ try { navigator.clipboard.writeText(h).then(() => say('Copied ' + h), () => say(h)); } catch (err) { say(h); } });
 const PK = Object.keys(COL), SHIPS = ['ink|yellow', 'yellow|ink', 'ink|cream'];
 let pSel = ['ink', 'yellow'];
 function drawPairs() {
