@@ -266,44 +266,6 @@
     "cta": "Explore the concept"
   },
   {
-    "id": "integratron",
-    "title": "Integratron",
-    "category": "Hero Prototype",
-    "year": 2026,
-    "thumbnail": "integratron/thumbnail.jpg?v=6",
-    "url": "integratron/",
-    "blurb": "A 3D hero concept for a campaign page: a desert dome cycling from day to night, with live hero copy and a background-loop export.",
-    "about": "Integratron is a quick-turnaround hero concept that shows what a 3D visual can do at the top of a campaign web page. A desert dome drifts from day to night, inspired by sound bath bowls: click to ring a bowl and scroll to zoom, with each scroll adding a higher tone. Turn your sound on. Switch on Hero preview to see it as a campaign web page hero: edit the headline, subhead and button, set the alignment and text colour, then export a 16:9 MP4 to use as the hero background loop.",
-    "preview": "clips/integratron.webp?v=6",
-    "caseStudyContent": [
-      {
-        "type": "image",
-        "src": "integratron/thumbnail.jpg",
-        "alt": "Integratron"
-      }
-    ],
-    "cta": "Prototype a hero"
-  },
-  {
-    "id": "sound-bars",
-    "title": "Temporary Notes",
-    "category": "Hero Prototype",
-    "year": 2026,
-    "thumbnail": "sound-bars/thumbnail.jpg?v=6",
-    "url": "sound-bars/",
-    "blurb": "An interactive hero concept: drifting bars visitors play like an instrument, with live hero copy and a background-loop export.",
-    "about": "Temporary Notes is a quick-turnaround hero concept for an interactive web component. Drifting bars play like an instrument: click once to start the sound, then brush across the bars to trigger notes that fade into a rising echo, with height on screen opening or closing the filter. Switch on Hero preview to see it as a campaign web page hero: edit the headline, subhead and button, set the alignment and text colour, then export a 16:9 MP4 to use as the hero background loop.",
-    "preview": "clips/sound-bars.webp?v=6",
-    "caseStudyContent": [
-      {
-        "type": "image",
-        "src": "sound-bars/thumbnail.jpg",
-        "alt": "Temporary Notes"
-      }
-    ],
-    "cta": "Prototype a hero"
-  },
-  {
     "id": "prompt-machine",
     "hidden": true,
     "title": "Metacognitive Prompt Helper",
