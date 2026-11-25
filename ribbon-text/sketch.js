@@ -246,6 +246,7 @@ function drawArtwork() {
     let stepSize = 8; 
     let maxSteps = 8000; // Safeguard limit
     let hasEntered = false;
+    let winding = 0, straight = 0;   // how far the path has turned one way, and steps left of a forced straight run
 
     for (let i = 0; i < maxSteps; i++) {
       rawPts.push({ x: x, y: y });
@@ -274,7 +275,15 @@ function drawArtwork() {
       let noiseVal = noise(i * frequency, r * 100);
       let turn = map(noiseVal, 0, 1, -1, 1);
       
-      angle += turn * (amplitude * 0.0025);
+      // Cap the turn so a curl is never tighter than the ribbon is wide: tighter spirals fold the letters onto each other
+      // and stop a ribbon circling the same ring again: after a full circle one way it runs straight for a moment, so it never laps the same ring
+      let maxTurn = stepSize / (thickness * 1.3);
+      let dA = constrain(turn * (amplitude * 0.0025), -maxTurn, maxTurn);
+      if (straight > 0) { straight--; dA = 0; }
+      else if (abs(winding + dA) > PI * 2) { straight = ceil(thickness * 1.5 / stepSize); winding = 0; dA = 0; }
+      else if (Math.sign(dA) !== Math.sign(winding)) winding *= 0.9;   // turning back the other way unwinds
+      winding += dA;
+      angle += dA;
 
       x += cos(angle) * stepSize;
       y += sin(angle) * stepSize;

@@ -21,9 +21,9 @@ D['direct-mail-engine'] = async (d) => {
 D['ribbon-text'] = async (d) => {
   const s = d.$$('input[type=range]');
   d.say('Bend the ribbon');
-  await d.slider(s[0], 120, 1100); await d.wait(600);
+  await d.slider(s[0], 90, 1100); await d.wait(600);
   d.say('Thicken the ribbons');
-  await d.slider(s[2], 80, 1100); await d.wait(600);
+  await d.slider(s[2], 68, 1100); await d.wait(600);
   d.say('Randomise the pattern');
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);

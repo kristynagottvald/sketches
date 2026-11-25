@@ -352,10 +352,6 @@ function draw() {
       isHidden = true;
     }
 
-    if (el.type === 'block' && el.isDiagonal) {
-      isHidden = false; 
-    }
-
     if (touchesRevealedMine) {
       isHidden = true;
     }

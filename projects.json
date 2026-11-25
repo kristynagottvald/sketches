@@ -137,7 +137,7 @@
     "title": "Postmark Awards",
     "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "ribbon-text/thumbnail.jpg?v=6",
+    "thumbnail": "ribbon-text/thumbnail.jpg?v=7",
     "url": "ribbon-text/",
     "blurb": "Text that flows along noise-driven ribbons, with live controls and SVG export.",
     "about": "Postmark Awards sets type flowing along a looping, noise-driven ribbon, built for awards and event graphics. Enter your own text in the control panel, one phrase per line, then adjust weight, spacing, thickness and wiggle. Choose Randomize Pattern for a new path and Download SVG to take the result into your design tools.",
@@ -148,7 +148,7 @@
         "alt": "Postmark Awards"
       }
     ],
-    "preview": "clips/ribbon-text.webp?v=6",
+    "preview": "clips/ribbon-text.webp?v=7",
     "cta": "Edit the ribbons"
   },
   {
@@ -175,7 +175,7 @@
     "title": "Palette Compositions",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "palette-compositions/thumbnail.jpg?v=6",
+    "thumbnail": "palette-compositions/thumbnail.jpg?v=7",
     "url": "palette-compositions/",
     "blurb": "Randomise the palette, the background or the layout of line, grid and stripe compositions, then export SVG or PNG.",
     "about": "Palette Compositions builds layouts from lines, grids and stripes with contrast rules that keep every colour pairing legible. Use the panel on the right to randomise the colours only, the background only or the whole layout, then export the composition as an SVG or PNG. Click the canvas for a new layout.",
@@ -186,7 +186,7 @@
         "alt": "Palette Compositions"
       }
     ],
-    "preview": "clips/palette-compositions.webp?v=6",
+    "preview": "clips/palette-compositions.webp?v=7",
     "cta": "Compose a layout"
   },
   {
@@ -194,11 +194,11 @@
     "title": "Mail Stack",
     "category": "Motion Component",
     "year": 2026,
-    "thumbnail": "mail-stack/thumbnail.jpg?v=3",
+    "thumbnail": "mail-stack/thumbnail.jpg?v=4",
     "url": "mail-stack/",
     "blurb": "A ribbon of postcards flows along a curve; reshape the path and export it as an MP4 or GIF.",
     "about": "Mail Stack is a ribbon of postcards that flows along a curve and floats gently as it goes. Hover a card to reveal its heatmap. Open Controls to change the curve spread, float intensity, stack density and point density, or choose Randomize Curve Shape for a new path. Use the Export panel to set the length, choose MP4 or GIF and a 1:1 or 16:9 ratio, and record a loop ready for social, decks or the web.",
-    "preview": "clips/mail-stack.webp?v=2",
+    "preview": "clips/mail-stack.webp?v=3",
     "caseStudyContent": [
       {
         "type": "image",
@@ -213,11 +213,11 @@
     "title": "Brand Colors",
     "category": "Motion Component",
     "year": 2026,
-    "thumbnail": "motion-character/thumbnail.jpg?v=4",
+    "thumbnail": "motion-character/thumbnail.jpg?v=5",
     "url": "motion-character/",
     "blurb": "Four colour panels wipe in and out in a staggered, eased sequence, exportable as MP4 or GIF.",
     "about": "Brand Colors is four brand colour panels wiping in and out in a staggered, eased sequence. It runs on a loop, so watch how the timing and easing give flat colour a sense of character. Use the Export panel to set the length, choose MP4 or GIF and a 1:1 or 16:9 ratio, and record a loop ready for social, decks or the web.",
-    "preview": "clips/motion-character.webp?v=2",
+    "preview": "clips/motion-character.webp?v=3",
     "caseStudyContent": [
       {
         "type": "image",
@@ -232,11 +232,11 @@
     "title": "No-Code Binary Motif",
     "category": "Motion Component",
     "year": 2026,
-    "thumbnail": "binary-grid/thumbnail.jpg?v=6",
+    "thumbnail": "binary-grid/thumbnail.jpg?v=7",
     "url": "binary-grid/",
     "blurb": "A diagonal wave flips a grid of 0s and 1s into colour; record it as an MP4 or GIF.",
     "about": "No-Code Binary Motif is a grid of 0s and 1s that turns into colour as a diagonal wave sweeps across it. Move your mouse left and right to steer the wave, and watch the numbers flip into colour blocks behind it. Use the Export panel to set the length, choose MP4 or GIF and a 1:1 or 16:9 ratio, and record a loop ready for social, decks or the web.",
-    "preview": "clips/binary-grid.webp?v=6",
+    "preview": "clips/binary-grid.webp?v=7",
     "caseStudyContent": [
       {
         "type": "image",
@@ -249,7 +249,7 @@
   {
     "id": "reprise-tiles",
     "title": "Reprise Tiles",
-    "category": "Concept Tool",
+    "category": "Rapid Concept Tool",
     "year": 2026,
     "thumbnail": "reprise-tiles/thumbnail.jpg?v=8",
     "url": "reprise-tiles/",
@@ -290,7 +290,7 @@
     "title": "Marketing Minesweeper",
     "category": "Experiment",
     "year": 2026,
-    "thumbnail": "marketing-mine/thumbnail.jpg?v=6",
+    "thumbnail": "marketing-mine/thumbnail.jpg?v=7",
     "url": "marketing-mine/",
     "blurb": "A minesweeper where every mine reveals a direct mail marketing tip.",
     "about": "Marketing Minesweeper is minesweeper rebuilt as a direct mail lesson, where every mine you uncover reveals a marketing tip. Click a square to reveal it. Right-click, or press and hold on a touch screen, to flag a suspected mine. Clear the board to win. It is an experiment in extending a brand system into play, turning campaign know-how into something people want to click through.",
@@ -301,7 +301,7 @@
         "alt": "Marketing Minesweeper"
       }
     ],
-    "preview": "clips/marketing-mine.webp?v=6",
+    "preview": "clips/marketing-mine.webp?v=7",
     "cta": "Play the game"
   }
 ]
