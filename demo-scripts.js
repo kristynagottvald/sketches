@@ -273,6 +273,12 @@ D['postmark-awards-motion'] = async (d) => {
   await d.slider('#speed', 1.7, 1000); await d.wait(1600);
   await d.slider('#speed', 1, 800);
   d.setValue(f, orig);
+  d.say('Pick a format: 1:1 or 9:16');
+  await d.click('#ratio button[data-r="1:1"]', 800); await d.wait(1300);
+  await d.click('#ratio button[data-r="9:16"]', 700); await d.wait(1300);
+  d.say('Export it as an MP4');
+  await d.click('#mp4', 800); await d.wait(2200);
+  await d.click('#ratio button[data-r="16:9"]', 700);
   await d.click(styles[0]); await d.wait(1200);
 };
 
