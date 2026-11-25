@@ -269,7 +269,7 @@ D['postmark-awards-motion'] = async (d) => {
   for (const b of [styles[1], styles[2], styles[3]]) { await d.click(b); await d.wait(2200); }
   d.say('Edit the text');
   const f = d.$('#fields input[type=text]'), orig = f ? f.value : '';
-  await d.type(f, 'MAILPIECE', 80); await d.wait(1600);
+  await d.type(f, 'mailpiece', 80); await d.wait(1600);
   d.say('Speed it up');
   await d.slider('#speed', 1.7, 1000); await d.wait(1600);
   await d.slider('#speed', 1, 800);
