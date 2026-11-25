@@ -107,6 +107,7 @@ html.embed .site-nav, html.embed .about-project, html.embed .contact-project { d
   .tp-list { grid-template-columns: 1fr 1fr; }
   .tp-card:nth-child(2) { border-top: 0; }
   .tp-card:nth-child(even) { border-left: 1px solid var(--line); }
+  .tp-list:has(> .tp-card:last-child:nth-child(odd))::after { content: ""; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }   /* closes the grid when the count is odd */
   .tp-card a { padding: 12px 12px 16px; }
   .tp-list:hover .tp-card a { opacity: .35; }
   .tp-list .tp-card a:hover { opacity: 1; }

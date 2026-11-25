@@ -21,9 +21,9 @@ D['direct-mail-engine'] = async (d) => {
 D['ribbon-text'] = async (d) => {
   const s = d.$$('input[type=range]');
   d.say('Bend the ribbon');
-  await d.slider(s[0], 120, 1100); await d.wait(600);
+  await d.slider(s[0], 90, 1100); await d.wait(600);
   d.say('Thicken the ribbons');
-  await d.slider(s[2], 80, 1100); await d.wait(600);
+  await d.slider(s[2], 68, 1100); await d.wait(600);
   d.say('Randomise the pattern');
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);
@@ -149,7 +149,7 @@ D['palette-compositions'] = async (d) => {
 
 /* Shared export steps for the motion components (export-kit.js): a short length, a format and ratio, then the recording preview.
    Demo clicks are untrusted, so the kit only previews the recording and never downloads. Ends back on MP4, 16:9, 6 s. */
-async function exportDemo(d, fmt, ratio) {
+async function exportDemo(d, fmt, ratio, during) {
   const box = d.$$('.xk').find((e) => e.querySelector('input[type=range]') && e.getClientRects().length); if (!box) return;   // folded away on phones
   const seg = (t) => [...box.querySelectorAll('.xk-seg button')].find((b) => b.textContent === t) || null;
   const len = box.querySelector('input[type=range]');
@@ -160,7 +160,8 @@ async function exportDemo(d, fmt, ratio) {
   await d.click(seg(ratio), 700); await d.wait(300);
   d.say('Record a ' + ratio + ' ' + fmt + ' loop');
   await d.click(box.querySelector('.xk-btn'), 800);
-  await d.wait(3900);
+  if (during) { await d.wait(150); await during(); }   // e.g. the cursor plays the piece while it records
+  await d.wait(during ? 700 : 3900);
   await d.click(seg('MP4'), 600); await d.click(seg('16:9'), 600);
   await d.slider(len, 6, 600);
 }
@@ -214,7 +215,13 @@ D['hero-banner-engine'] = async (d) => {
 D['binary-grid'] = async (d) => {
   d.say('Move the mouse to flip the grid');
   await d.sweep([[0.15, 0.3], [0.5, 0.65], [0.85, 0.35], [0.6, 0.8], [0.25, 0.7], [0.5, 0.45]], 1100);
-  await exportDemo(d, 'GIF', '1:1');
+  // while it records, the cursor sweeps the framed canvas, so the wave in the export follows the cursor
+  await exportDemo(d, 'GIF', '1:1', async () => {
+    const c = d.$('canvas'); if (!c) return;
+    const r = c.getBoundingClientRect(), at = (fx, fy) => ({ x: r.left + r.width * fx, y: r.top + r.height * fy });
+    d.say('Move the cursor: the wave is what gets recorded');
+    for (const [fx, fy] of [[0.05, 0.5], [0.7, 0.4], [0.3, 0.6], [0.95, 0.5]]) await d.move(at(fx, fy), 1050);
+  });
 };
 
 /* Mail Stack: reshape the ribbon of postcards, then export it */
