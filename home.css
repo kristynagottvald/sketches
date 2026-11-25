@@ -106,6 +106,8 @@ h1, h2, h3, p { margin: 0; font-weight: inherit; }
   .work-list { grid-template-columns: 1fr 1fr; }
   .work-list .card:nth-child(2) { border-top: 0; }
   .work-list .card:nth-child(even) { border-left: 1px solid var(--line); }
+  /* an odd number of tools leaves the last right-hand cell empty: draw its lines so the grid stays closed */
+  .work-list:has(> .card:last-child:nth-child(odd))::after { content: ""; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
   .work-list .card a { padding: 12px 12px 16px; }
   .work-list:hover .card a { opacity: .35; }
   .work-list .card a:hover { opacity: 1; }
