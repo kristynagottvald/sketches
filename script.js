@@ -20,7 +20,7 @@
       console.error(err);
       return;
     }
-    renderHero();
+    renderHero(heroOrder(projects));
     renderGrid();
   }
 
@@ -29,7 +29,11 @@
   const DEMO_MS = 2500;          // how long each tool's demo shows
   const VW = 1280, VH = 720;     // the size each tool is laid out at inside its frame, scaled to fill the hero
 
-  function renderHero() {
+  const HERO_FIRST = 'direct-mail-engine';   // the slideshow opens on Industry Swapper; the rest follow the All Tools order
+
+  const heroOrder = (list) => { const first = list.find((p) => p.id === HERO_FIRST); return first ? [first, ...list.filter((p) => p !== first)] : list; };
+
+  function renderHero(projects) {   // the slideshow's own order (see heroOrder); the grid keeps the projects.json order
     if (!projects.length) return;
     const slides = projects.map((p) => {
       const el = document.createElement('div');
