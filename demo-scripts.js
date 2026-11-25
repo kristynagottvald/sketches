@@ -74,8 +74,7 @@ D['thread-brand-guidelines'] = async (d) => {
   d.say('Colour: pick an approved pairing');
   await d.click('a.tile[data-sec="color"]', 900); await d.wait(1500);
   await d.reveal('#pgrid', 900);
-  const pairs = d.$$('#pgrid button');
-  for (const i of [2, 6, 10]) { if (pairs[i]) { await d.click(pairs[i], 700); await d.wait(700); } }
+  await d.click('#pgrid button[data-fg="yellow"][data-bg="ink"]', 800); await d.wait(1400);   // yellow type on the ink ground
   d.say('Colour: click a swatch to copy its hex');
   await d.reveal('#swCore', 800, 0.5);
   const sw = d.$('#swCore button'); if (sw) { await d.click(sw, 800); await d.wait(1200); }

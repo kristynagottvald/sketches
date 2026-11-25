@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <script src="../demo.js?v=20"></script>
-<script src="../demo-scripts.js?v=21"></script>
+<script src="../demo-scripts.js?v=22"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Brand Guidelines Mini Site • Kristyna Gottvald</title>
 <meta name="description" content="A brand guidelines mini site for Thread with framework, voice, logo, type, colour, photography, badges and motion.">
@@ -1369,7 +1369,7 @@ const swHtml = (k) => { const c = COL[k]; return '<button style="background:' + 
 $('#swCore').innerHTML = ['yellow', 'ink', 'cream'].map(swHtml).join(''); $('#swSup').innerHTML = ['paper'].map(swHtml).join('');
 // a colour swatch shows its "Copied" note inside itself, in the top right corner; other hex buttons use the page toast
 const swNote = (b, m) => { let n = b.querySelector('.cp'); if (!n) { n = document.createElement('i'); n.className = 'cp'; n.setAttribute('role', 'status'); b.appendChild(n); } n.textContent = m; n.classList.add('on'); clearTimeout(n.t); n.t = setTimeout(() => n.classList.remove('on'), 1700); };
-document.addEventListener('click', (e) => { const b = e.target.closest('[data-hex]'); if (!b) return; const h = b.dataset.hex.toUpperCase(); const say = b.closest('.swr') ? (m) => swNote(b, m) : toast; try { navigator.clipboard.writeText(h).then(() => say('Copied ' + h), () => say(h)); } catch (err) { say(h); } });
+document.addEventListener('click', (e) => { const b = e.target.closest('[data-hex]'); if (!b) return; const h = b.dataset.hex.toUpperCase(); const say = b.closest('.swr') ? (m) => swNote(b, m) : toast; if (!e.isTrusted) { say('Copied ' + h); return; }   /* the walkthrough demo's clicks cannot use the clipboard: show the note only */ try { navigator.clipboard.writeText(h).then(() => say('Copied ' + h), () => say(h)); } catch (err) { say(h); } });
 const PK = Object.keys(COL), SHIPS = ['ink|yellow', 'yellow|ink', 'ink|cream'];
 let pSel = ['ink', 'yellow'];
 function drawPairs() {
