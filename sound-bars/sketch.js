@@ -24,7 +24,10 @@ function setup() {
     createNewBar(i);
   }
 
-  ExportKit.motion({ name: 'temporary-notes' });   // MP4 / GIF export panel
+  // hero prototype: campaign copy over the interactive bars, plus a background-loop export
+  const ui = ExportKit.panel(null, 'Hero');
+  ExportKit.hero({ mount: ui, headline: 'Every note is temporary', sub: 'An interactive hero concept: visitors play the page as they move across it.', cta: 'Listen in' });
+  ExportKit.motion({ mount: ui, name: 'temporary-notes-hero' });
 }
 
 // Browsers keep audio locked until the first click or key press

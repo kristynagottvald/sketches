@@ -32,7 +32,10 @@ function setup() {
     });
   }
 
-  ExportKit.motion({ name: 'integratron' });   // MP4 / GIF export panel
+  // hero prototype: campaign copy over the live 3D scene, plus a background-loop export
+  const ui = ExportKit.panel(null, 'Hero');
+  ExportKit.hero({ mount: ui, headline: 'Tune in to the desert', sub: 'A 3D hero concept: the dome drifts from day to night behind your launch message.', cta: 'Book a session' });
+  ExportKit.motion({ mount: ui, name: 'integratron-hero' });
 }
 
 function draw() {

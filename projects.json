@@ -249,12 +249,12 @@
   {
     "id": "reprise-tiles",
     "title": "Reprise Tiles",
-    "category": "Interactive Tool",
+    "category": "Concept Tool",
     "year": 2026,
     "thumbnail": "reprise-tiles/thumbnail.jpg?v=8",
     "url": "reprise-tiles/",
-    "blurb": "A tile layout of Reprise product details: permissions, prompts, type specimens and palette cards you can click.",
-    "about": "Reprise Tiles is a bento-style tile layout of Reprise product details, including edit permissions, prompt typing, type specimens and a stacking palette. Click the tiles to interact with them: change who can edit the demo, flip through the type specimen, shuffle the palette cards, flip the toggle and share the demo.",
+    "blurb": "Turns static brand guidelines into a scannable tile layout, to test a design system and get stakeholders on board early.",
+    "about": "Reprise Tiles takes static brand guidelines and builds them into a quick, scannable bento layout, so a team can test a design system in the conceptual stage, before anyone starts on major in-depth pieces. It gives stakeholders a high-level view of the brand in use: type specimens, palette, product UI details and interaction all on one screen. Click the tiles to try them: change who can edit the demo, flip through the type specimen, shuffle the palette cards, flip the toggle and share the demo.",
     "preview": "clips/reprise-tiles.webp?v=8",
     "caseStudyContent": [
       {
@@ -263,17 +263,17 @@
         "alt": "Reprise Tiles"
       }
     ],
-    "cta": "Explore the tiles"
+    "cta": "Explore the concept"
   },
   {
     "id": "integratron",
     "title": "Integratron",
-    "category": "Motion Component",
+    "category": "Hero Prototype",
     "year": 2026,
     "thumbnail": "integratron/thumbnail.jpg?v=6",
     "url": "integratron/",
-    "blurb": "A 3D desert dome cycling from day to night, exportable as an MP4 or GIF loop.",
-    "about": "Integratron is a 3D desert dome that drifts from day to night, inspired by sound bath bowls. Click to ring a bowl and scroll to zoom the camera in and out, with each scroll adding a higher bowl tone. Turn your sound on. Use the Export panel to set the length, choose MP4 or GIF and a 1:1 or 16:9 ratio, and record a loop ready for social, decks or the web.",
+    "blurb": "A 3D hero concept for a campaign page: a desert dome cycling from day to night, with live hero copy and a background-loop export.",
+    "about": "Integratron is a quick-turnaround hero concept that shows what a 3D visual can do at the top of a campaign web page. A desert dome drifts from day to night, inspired by sound bath bowls: click to ring a bowl and scroll to zoom, with each scroll adding a higher tone. Turn your sound on. Switch on Hero preview to see it as a campaign web page hero: edit the headline, subhead and button, set the alignment and text colour, then export a 16:9 MP4 to use as the hero background loop.",
     "preview": "clips/integratron.webp?v=6",
     "caseStudyContent": [
       {
@@ -282,17 +282,17 @@
         "alt": "Integratron"
       }
     ],
-    "cta": "Enter the dome"
+    "cta": "Prototype a hero"
   },
   {
     "id": "sound-bars",
     "title": "Temporary Notes",
-    "category": "Motion Component",
+    "category": "Hero Prototype",
     "year": 2026,
     "thumbnail": "sound-bars/thumbnail.jpg?v=6",
     "url": "sound-bars/",
-    "blurb": "Brush across drifting bars to play notes, and record the motion as an MP4 or GIF.",
-    "about": "Temporary Notes is a field of drifting bars you can play like an instrument. Click once to start the sound, then brush your mouse across the bars to trigger notes. Each bar fades out into a rising echo, and moving higher or lower on the screen opens or closes the filter. Use the Export panel to set the length, choose MP4 or GIF and a 1:1 or 16:9 ratio, and record a loop ready for social, decks or the web.",
+    "blurb": "An interactive hero concept: drifting bars visitors play like an instrument, with live hero copy and a background-loop export.",
+    "about": "Temporary Notes is a quick-turnaround hero concept for an interactive web component. Drifting bars play like an instrument: click once to start the sound, then brush across the bars to trigger notes that fade into a rising echo, with height on screen opening or closing the filter. Switch on Hero preview to see it as a campaign web page hero: edit the headline, subhead and button, set the alignment and text colour, then export a 16:9 MP4 to use as the hero background loop.",
     "preview": "clips/sound-bars.webp?v=6",
     "caseStudyContent": [
       {
@@ -301,7 +301,7 @@
         "alt": "Temporary Notes"
       }
     ],
-    "cta": "Play the notes"
+    "cta": "Prototype a hero"
   },
   {
     "id": "prompt-machine",

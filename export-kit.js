@@ -260,5 +260,63 @@
   }
   if (window.p5 && p5.prototype.registerMethod) p5.prototype.registerMethod('post', onPost);
 
-  window.ExportKit = { size, panel, motion, start, seg, isRecording: () => !!rec };
+  /* ---------- hero prototype: campaign copy laid over the live visual, to judge it as a web page hero ----------
+     The copy is page markup, not canvas, so exports stay a clean background loop for the real hero. */
+  const heroCss = el('style');
+  heroCss.textContent = `
+    .xk-hero{position:absolute;left:0;right:0;z-index:5;pointer-events:none;display:none;flex-direction:column;justify-content:center;
+      align-items:flex-start;gap:18px;padding:0 7vw;box-sizing:border-box;color:#fff;font-family:'Barlow Semi Condensed',system-ui,sans-serif}
+    .xk-hero.on{display:flex}
+    .xk-hero.center{align-items:center;text-align:center}
+    .xk-hero.dark{color:#141414}
+    .xk-hero h2{margin:0;max-width:13em;font-weight:400;font-size:clamp(34px,6vw,84px);line-height:.98;letter-spacing:-.01em;text-shadow:0 2px 24px rgba(0,0,0,.25)}
+    .xk-hero p{margin:0;max-width:30em;font-size:clamp(15px,1.5vw,20px);line-height:1.4;opacity:.9}
+    .xk-hero.dark h2{text-shadow:0 2px 24px rgba(255,255,255,.3)}
+    .xk-hero span{display:inline-block;padding:12px 22px;border-radius:999px;background:#fff;color:#141414;font:600 15px system-ui,sans-serif}
+    .xk-hero.dark span{background:#141414;color:#fff}
+    .xk-hero .xk-nav{position:absolute;left:7vw;top:22px;display:flex;gap:28px;font:500 13px system-ui,sans-serif;letter-spacing:.06em;opacity:.85}
+    .xk-hero .xk-nav b{font-weight:700;margin-right:12px}
+    .xk-hero .xk-nav i{font-style:normal}
+    @media (min-width:700px){.xk-hero{padding-right:300px}.xk-hero.center{padding-left:calc(7vw + 150px);padding-right:calc(7vw + 150px)}}
+    .xk input[type=text]{width:100%;box-sizing:border-box;padding:7px 8px;border:1px solid rgba(127,127,127,.45);border-radius:6px;background:#fff;color:#1a1a1a;font:13px system-ui,sans-serif}`;
+  document.head.appendChild(heroCss);
+
+  function hero(opts = {}) {
+    const mount = opts.mount;
+    const copy = { headline: opts.headline || 'Your campaign headline', sub: opts.sub || 'One line of supporting copy for the launch.', cta: opts.cta || 'Get started' };
+    const layer = el('div', { className: 'xk-hero' }, `<div class="xk-nav"><b>BRAND</b><i>Product</i><i>Pricing</i><i>Contact</i></div><h2></h2><p></p><span></span>`);
+    const [h, p, b] = [layer.querySelector('h2'), layer.querySelector('p'), layer.querySelector('span')];
+    const paintCopy = () => { h.textContent = copy.headline; p.textContent = copy.sub; b.textContent = copy.cta; };
+    paintCopy();
+    document.body.appendChild(layer);
+    const place = () => {
+      const c = canvasEl(); if (!c) return;
+      const r = c.getBoundingClientRect();
+      Object.assign(layer.style, { top: (r.top + scrollY) + 'px', height: r.height + 'px' });
+      layer.style.display = rec ? 'none' : '';   // hidden while recording: the export is the background only
+    };
+    const box = el('section', { className: 'xk' });
+    box.innerHTML = `<div class="xk-row"><span class="xk-h">Hero preview</span></div>`;
+    const onOff = seg(['Off', 'On'], 'Off', (v) => { layer.classList.toggle('on', v === 'On'); place(); });
+    box.firstChild.appendChild(onOff);
+    [['headline', 'Headline'], ['sub', 'Subhead'], ['cta', 'Button']].forEach(([k, label]) => {
+      const i = el('input', { type: 'text', value: copy[k] });
+      i.setAttribute('aria-label', label); i.dataset.hero = k;
+      i.addEventListener('input', () => { copy[k] = i.value; paintCopy(); });
+      box.appendChild(i);
+    });
+    const alignRow = el('div', { className: 'xk-row' }, '<span>Align</span>');
+    alignRow.appendChild(seg(['Left', 'Center'], 'Left', (v) => layer.classList.toggle('center', v === 'Center')));
+    const toneRow = el('div', { className: 'xk-row' }, '<span>Text</span>');
+    toneRow.appendChild(seg(['Light', 'Dark'], opts.dark ? 'Dark' : 'Light', (v) => layer.classList.toggle('dark', v === 'Dark')));
+    if (opts.dark) layer.classList.add('dark');
+    box.append(alignRow, toneRow);
+    (mount || panel(null, 'Hero')).prepend(box);
+    window.addEventListener('resize', place); window.addEventListener('scroll', place, { passive: true });
+    setInterval(place, 300);   // follows the canvas in and out of the export frame
+    place();
+    return box;
+  }
+
+  window.ExportKit = { size, panel, motion, hero, start, seg, isRecording: () => !!rec };
 })();

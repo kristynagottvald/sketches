@@ -150,7 +150,7 @@ D['palette-compositions'] = async (d) => {
 /* Shared export steps for the motion components (export-kit.js): a short length, a format and ratio, then the recording preview.
    Demo clicks are untrusted, so the kit only previews the recording and never downloads. Ends back on MP4, 16:9, 6 s. */
 async function exportDemo(d, fmt, ratio) {
-  const box = d.$$('.xk').find((e) => e.querySelector('.xk-seg') && e.getClientRects().length); if (!box) return;   // folded away on phones
+  const box = d.$$('.xk').find((e) => e.querySelector('input[type=range]') && e.getClientRects().length); if (!box) return;   // folded away on phones
   const seg = (t) => [...box.querySelectorAll('.xk-seg button')].find((b) => b.textContent === t) || null;
   const len = box.querySelector('input[type=range]');
   d.say('Set the export length');
@@ -165,6 +165,29 @@ async function exportDemo(d, fmt, ratio) {
   await d.slider(len, 6, 600);
 }
 
+/* Hero prototypes (export-kit.js hero): show the campaign copy over the visual, edit it, then put it back */
+const heroSeg = (d, t) => d.$$('.xk-seg button').find((b) => b.textContent === t && b.getClientRects().length) || null;
+async function heroOn(d) {
+  if (!heroSeg(d, 'On')) return;
+  d.say('Preview it as a web page hero');
+  await d.click(heroSeg(d, 'On'), 700); await d.wait(900);
+}
+async function heroCopy(d, text) {
+  const h = d.$('input[data-hero=headline]'); if (!h || !h.getClientRects().length) return;
+  h.dataset.was = h.dataset.was || h.value;
+  d.say('Write the campaign headline');
+  await d.type(h, text, 60); await d.wait(700);
+  d.say('Centre the hero copy');
+  await d.click(heroSeg(d, 'Center'), 700); await d.wait(1200);
+}
+async function heroOff(d) {
+  const h = d.$('input[data-hero=headline]');
+  if (h && h.dataset.was) { h.value = h.dataset.was; h.dispatchEvent(new Event('input', { bubbles: true })); }
+  if (heroSeg(d, 'Left')) await d.click(heroSeg(d, 'Left'), 500);
+  if (heroSeg(d, 'Off')) await d.click(heroSeg(d, 'Off'), 600);
+  await d.wait(500);
+}
+
 /* Brand Colors: the panels wipe on their own; export a square loop */
 D['motion-character'] = async (d) => {
   d.say('Four brand colours wipe in and out');
@@ -176,15 +199,15 @@ D['motion-character'] = async (d) => {
 D['integratron'] = async (d) => {
   d.sound();
   d.note('Sound is activated by interaction');
+  await heroOn(d);
   d.say('Scroll to zoom into the dome');
   await d.wheel([0.5, 0.55], -900, 1500, 12); await d.wait(900);
   d.say('Click to ring a sound bath bowl');
-  await d.click([0.5, 0.6], 900); await d.wait(1200);
-  d.say('Scroll back out');
-  await d.wheel(null, 1500, 1500, 12); await d.wait(900);
-  d.say('The dome cycles from day to night on its own');
-  await d.wait(2500);
+  await d.click([0.5, 0.6], 900); await d.wait(1000);
+  await d.wheel(null, 1500, 1200, 12); await d.wait(600);
+  await heroCopy(d, 'Find your frequency');
   await exportDemo(d, 'MP4', '16:9');
+  await heroOff(d);
 };
 
 /* Reprise Tiles: click the tiles' own controls (role chips, toggles, palette) */
@@ -236,9 +259,12 @@ D['binary-grid'] = async (d) => {
 D['sound-bars'] = async (d) => {
   d.sound();
   d.note('Sound is activated by interaction');
+  await heroOn(d);
   d.say('Brush across the bars');
-  await d.sweep([[0.1, 0.5], [0.45, 0.42], [0.8, 0.55], [0.55, 0.68], [0.2, 0.6], [0.7, 0.4]], 900);
-  await exportDemo(d, 'GIF', '16:9');
+  await d.sweep([[0.1, 0.5], [0.45, 0.42], [0.8, 0.55], [0.55, 0.68], [0.2, 0.6]], 900);
+  await heroCopy(d, 'Play the launch');
+  await exportDemo(d, 'MP4', '16:9');
+  await heroOff(d);
 };
 
 /* Mail Stack: reshape the ribbon of postcards, then export it */
