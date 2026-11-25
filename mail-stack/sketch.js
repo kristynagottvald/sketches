@@ -82,6 +82,9 @@ function setup() {
   randomizeBtn.style('cursor', 'pointer');
   randomizeBtn.mousePressed(randomizeCurveShape);
 
+  // Export the ribbon as an MP4 or GIF loop
+  ExportKit.motion({ mount: uiContainer.elt, name: 'mail-stack', accent: '#9DD437', accentText: '#1a1a1a' });
+
   // On phones the controls sit in a sheet at the bottom, opened from a button
   panelBtn = createButton('Controls').parent(document.body);
   panelBtn.style('position', 'fixed').style('right', '12px').style('bottom', '12px').style('z-index', '11')
@@ -123,7 +126,7 @@ function draw() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight - NAV_H);
+  resizeCanvas(...ExportKit.size());
   layoutPanel();
 }
 
