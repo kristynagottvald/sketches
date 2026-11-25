@@ -31,6 +31,8 @@ function setup() {
       tiltZ: random(-0.15, 0.15) // Adds the slight lean seen in the image
     });
   }
+
+  ExportKit.motion({ name: 'integratron' });   // MP4 / GIF export panel
 }
 
 function draw() {
@@ -528,6 +530,6 @@ function drawBaseWindow(angle, currentGlass, glowCol) {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight - NAV_H);
+  resizeCanvas(...ExportKit.size());
   perspective(fovy, width / height, 10, 60000);
 }

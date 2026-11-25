@@ -37,6 +37,8 @@ function setup() {
   
   loadOverlays();
   updateGridDimensions();
+
+  ExportKit.motion({ name: 'binary-motif' });   // MP4 / GIF export panel
 }
 
 function updateGridDimensions() {
@@ -182,6 +184,6 @@ function draw() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight - NAV_H);
+  resizeCanvas(...ExportKit.size());
   updateGridDimensions();
 }

@@ -10,6 +10,8 @@ function setup() {
     color('#c2d9f2'),
     color('#0e3e26') 
   ];
+
+  ExportKit.motion({ name: 'brand-colors' });   // MP4 / GIF export panel
 }
 
 function draw() {
@@ -50,5 +52,5 @@ function easeInOutQuint(x) {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight - NAV_H);
+  resizeCanvas(...ExportKit.size());
 }

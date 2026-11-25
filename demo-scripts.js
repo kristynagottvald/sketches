@@ -127,10 +127,49 @@ D['kickoff-type-lab'] = async (d) => {
   await d.wait(600);
 };
 
-/* Palette Compositions: click to cycle */
+/* Palette Compositions: colour only, background only, new layout, then export */
 D['palette-compositions'] = async (d) => {
-  d.say('Click to cycle palettes and layouts');
-  for (const p of [[0.5, 0.5], [0.55, 0.45], [0.45, 0.55], [0.5, 0.5], [0.6, 0.5]]) { await d.click(p, 900); await d.wait(1100); }
+  const btn = (t) => d.byText('.xk-panel button', t);
+  if (!btn('colour only')) {   // phones: the panel is folded away, so click the canvas for new layouts as before
+    d.say('Click for a new palette and layout');
+    for (const p of [[0.5, 0.5], [0.55, 0.45], [0.45, 0.55], [0.6, 0.5]]) { await d.click(p, 900); await d.wait(1100); }
+    return;
+  }
+  d.say('Randomise the colours, keep the layout');
+  await d.click(btn('colour only'), 900); await d.wait(1000);
+  await d.click(btn('colour only'), 700); await d.wait(1000);
+  d.say('Change the background only');
+  await d.click(btn('background only'), 900); await d.wait(1100);
+  d.say('Or start a new layout');
+  await d.click(btn('new layout'), 900); await d.wait(1000);
+  d.say('Export as SVG or PNG');
+  await d.click(btn('svg'), 900); await d.wait(900);
+  await d.click(btn('png'), 700); await d.wait(1200);
+};
+
+/* Shared export steps for the motion components (export-kit.js): a short length, a format and ratio, then the recording preview.
+   Demo clicks are untrusted, so the kit only previews the recording and never downloads. Ends back on MP4, 16:9, 6 s. */
+async function exportDemo(d, fmt, ratio) {
+  const box = d.$$('.xk').find((e) => e.querySelector('.xk-seg') && e.getClientRects().length); if (!box) return;   // folded away on phones
+  const seg = (t) => [...box.querySelectorAll('.xk-seg button')].find((b) => b.textContent === t) || null;
+  const len = box.querySelector('input[type=range]');
+  d.say('Set the export length');
+  await d.slider(len, 3, 900);
+  d.say('Pick ' + fmt + ' and a ' + ratio + ' frame');
+  await d.click(seg(fmt), 800); await d.wait(300);
+  await d.click(seg(ratio), 700); await d.wait(300);
+  d.say('Record a ' + ratio + ' ' + fmt + ' loop');
+  await d.click(box.querySelector('.xk-btn'), 800);
+  await d.wait(3900);
+  await d.click(seg('MP4'), 600); await d.click(seg('16:9'), 600);
+  await d.slider(len, 6, 600);
+}
+
+/* Brand Colors: the panels wipe on their own; export a square loop */
+D['motion-character'] = async (d) => {
+  d.say('Four brand colours wipe in and out');
+  await d.wait(2200);
+  await exportDemo(d, 'MP4', '1:1');
 };
 
 /* Integratron: the dome cycles from day to night by itself; scrolling zooms, a click rings a sound bath bowl */
@@ -145,6 +184,7 @@ D['integratron'] = async (d) => {
   await d.wheel(null, 1500, 1500, 12); await d.wait(900);
   d.say('The dome cycles from day to night on its own');
   await d.wait(2500);
+  await exportDemo(d, 'MP4', '16:9');
 };
 
 /* Reprise Tiles: click the tiles' own controls (role chips, toggles, palette) */
@@ -189,6 +229,7 @@ D['hero-banner-engine'] = async (d) => {
 D['binary-grid'] = async (d) => {
   d.say('Move the mouse to flip the grid');
   await d.sweep([[0.15, 0.3], [0.5, 0.65], [0.85, 0.35], [0.6, 0.8], [0.25, 0.7], [0.5, 0.45]], 1100);
+  await exportDemo(d, 'GIF', '1:1');
 };
 
 /* Temporary Notes: brush across the bars */
@@ -197,9 +238,10 @@ D['sound-bars'] = async (d) => {
   d.note('Sound is activated by interaction');
   d.say('Brush across the bars');
   await d.sweep([[0.1, 0.5], [0.45, 0.42], [0.8, 0.55], [0.55, 0.68], [0.2, 0.6], [0.7, 0.4]], 900);
+  await exportDemo(d, 'GIF', '16:9');
 };
 
-/* Mail Stack: reshape the ribbon of postcards */
+/* Mail Stack: reshape the ribbon of postcards, then export it */
 D['mail-stack'] = async (d) => {
   const s = d.$$('input[type=range]');
   d.say('Hover a postcard');
@@ -209,6 +251,7 @@ D['mail-stack'] = async (d) => {
   await d.wait(600);
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);
   if (s[0]) await d.slider(s[0], 100, 900);
+  await exportDemo(d, 'MP4', '16:9');
 };
 
 /* Brand Motion System: pick a motif, randomise the palette, move the word (click it, move, click to drop), switch motif again */

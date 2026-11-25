@@ -23,6 +23,8 @@ function setup() {
   for (let i = 0; i < numRects; i++) {
     createNewBar(i);
   }
+
+  ExportKit.motion({ name: 'temporary-notes' });   // MP4 / GIF export panel
 }
 
 // Browsers keep audio locked until the first click or key press
@@ -227,5 +229,8 @@ function collideRectCircle(rx, ry, rw, rh, cx, cy, cd) {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight - NAV_H);
+  const w0 = width, h0 = height;
+  resizeCanvas(...ExportKit.size());
+  // spread the bars over the new frame (an export ratio or a resized window) so it never has an empty band
+  for (const r of rects) { r.anchorX *= width / w0; r.anchorY *= height / h0; }
 }
