@@ -1,7 +1,7 @@
 let palette;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight - NAV_H);
+  createCanvas(...ExportKit.size());
   noStroke();
   
   palette = [

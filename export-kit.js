@@ -14,6 +14,8 @@
   const GIF_SIZES = { '1:1': [540, 540], '16:9': [800, 450] };
   const MP4_FPS = 30, GIF_FPS = 15;
   const navH = () => (typeof NAV_H !== 'undefined' ? NAV_H : 0);
+  const DOCK = 300;   // width of the docked right-hand panel on screens wider than a phone
+  const dockW = () => (window.innerWidth >= 700 ? DOCK : 0);
 
   const HOLD_MS = 2600;    // how long a demo preview stays on the finished recording frame before it fades out
   let rec = null;          // the recording in progress
@@ -23,8 +25,8 @@
   const css = document.createElement('style');
   css.textContent = `
     /* the white panel look shared by every tool: white card, hairline border, grey controls, black pressed state */
-    .xk-panel{position:absolute;right:20px;width:260px;z-index:10;padding:20px;border-radius:14px;font:400 13px/1.35 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
-      color:#111;background:#fff;border:1px solid #e6e6e6;box-shadow:0 8px 28px rgba(0,0,0,.12);box-sizing:border-box;-webkit-font-smoothing:antialiased}
+    .xk-panel{position:fixed;right:0;bottom:0;width:300px;z-index:10;padding:20px;border-radius:0;overflow-y:auto;font:400 13px/1.35 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+      color:#111;background:#fff;border:0;border-left:1px solid #e6e6e6;box-shadow:none;box-sizing:border-box;-webkit-font-smoothing:antialiased}
     .xk-panel > b{display:block;margin-bottom:14px;font-size:13px;font-weight:600}
     .xk-toggle{display:none;position:fixed;right:12px;bottom:12px;z-index:11;padding:10px 16px;border-radius:999px;border:0;
       background:#fff;color:#111;font:500 13px "Inter",system-ui,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.25)}
@@ -67,7 +69,7 @@
   /* ---------- a right-hand panel for tools that do not have one (with a toggle on phones) ---------- */
   function panel(title, toggleLabel = 'Controls') {
     const p = el('div', { className: 'xk-panel' }, title ? `<b>${title}</b>` : '');
-    p.style.top = (navH() + 20) + 'px';
+    p.style.top = navH() + 'px';
     const t = el('button', { type: 'button', className: 'xk-toggle', textContent: toggleLabel });
     t.addEventListener('click', () => { const open = p.classList.toggle('open'); t.textContent = open ? 'Close' : toggleLabel; });
     document.body.append(p, t);
@@ -124,13 +126,14 @@
 
   function size() {
     if (rec) return rec.size.slice();
-    return [window.innerWidth, window.innerHeight - navH()];
+    return [window.innerWidth - dockW(), window.innerHeight - navH()];
   }
 
   function frameCanvas() {
     const c = canvasEl(); if (!c || !rec) return;
     const [W, H] = rec.size;
-    const top = navH(), sw = window.innerWidth, sh = window.innerHeight - top;
+    const top = navH(), sw = window.innerWidth - dockW(), sh = window.innerHeight - top;
+    if (rec.back) rec.back.style.right = dockW() + 'px';
     const k = Math.min(sw / W, sh / H) * 0.88;
     const w = Math.round(W * k), h = Math.round(H * k);
     const x = Math.round((sw - w) / 2), y = Math.round(top + (sh - h) / 2);
@@ -272,5 +275,5 @@
   }
   if (window.p5 && p5.prototype.registerMethod) p5.prototype.registerMethod('post', onPost);
 
-  window.ExportKit = { size, panel, motion, start, seg, isRecording: () => !!rec };
+  window.ExportKit = { size, dockW, panel, motion, start, seg, isRecording: () => !!rec };
 })();

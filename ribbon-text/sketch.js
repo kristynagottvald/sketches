@@ -23,7 +23,7 @@ let weightSelect;
 let panelBtn, panelOpen = false;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight - NAV_H);
+  createCanvas(windowWidth - (windowWidth >= 700 ? 300 : 0), windowHeight - NAV_H);
   textAlign(CENTER, CENTER);
   
   ribbonSeed = floor(random(1000000)); // Initial unique layout seed
@@ -33,7 +33,7 @@ function setup() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight - NAV_H);
+  resizeCanvas(windowWidth - (windowWidth >= 700 ? 300 : 0), windowHeight - NAV_H);
   layoutPanel();
   drawArtwork();
 }
@@ -42,9 +42,8 @@ function windowResized() {
 function layoutPanel() {
   const phone = windowWidth < 700;
   if (!phone) {
-    uiPanel.style('position', 'absolute').style('display', 'block').style('left', 'auto').style('bottom', 'auto')
-      .style('width', '250px').style('max-height', 'none').style('overflow', 'visible');
-    uiPanel.position(windowWidth - 290, NAV_H + 20);
+    uiPanel.style('position', 'fixed').style('display', 'block').style('left', 'auto').style('right', '0px').style('bottom', '0px')
+      .style('top', NAV_H + 'px').style('width', '300px').style('max-height', 'none').style('overflow', 'auto');
     panelBtn.hide();
     return;
   }
@@ -55,9 +54,7 @@ function layoutPanel() {
 
 function buildUIPanel() {
   uiPanel = createDiv('');
-  uiPanel.addClass('wp');   // white panel, see ../panel-white.css
-  uiPanel.position(windowWidth - 290, NAV_H + 20);
-  uiPanel.style('width', '250px');
+  uiPanel.addClass('wp'); uiPanel.addClass('wp-dock');   // white docked panel, see ../panel-white.css
   uiPanel.style('padding', '20px');
   uiPanel.style('z-index', '10');
 

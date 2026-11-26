@@ -4,11 +4,11 @@
     "title": "Banner Template Studio",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "hero-banner-engine/thumbnail.jpg?v=3",
+    "thumbnail": "hero-banner-engine/thumbnail.jpg?v=13",
     "url": "hero-banner-engine/",
     "blurb": "Pick a format, edit the copy and style, and preview a banner template live.",
     "about": "Banner Template Studio is an AI-built banner creator that helps teams outside Brand Design produce visuals faster. Typography, grid, and layout rules stay locked into the template, so everyone moves quickly while design keeps control of quality.",
-    "preview": "clips/hero-banner-engine.webp?v=3",
+    "preview": "clips/hero-banner-engine.webp?v=13",
     "caseStudyContent": [
       {
         "type": "image",
@@ -23,7 +23,7 @@
     "title": "Industry Swapper Plug-in",
     "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "direct-mail-engine/thumbnail.jpg?v=6",
+    "thumbnail": "direct-mail-engine/thumbnail.jpg?v=16",
     "url": "direct-mail-engine/",
     "blurb": "A real-time customizable direct mail mock-up generator across industries.",
     "about": "Industry Swapper Plug-in is a direct mail mock-up generator that re-skins one postcard template for any industry in real time. Pick a variant from the Mock Library on the right to swap the copy, colours and imagery, use the zoom controls to inspect the details, and choose Reset Default to return to the starting piece.",
@@ -34,7 +34,7 @@
         "alt": "Industry Swapper Plug-in"
       }
     ],
-    "preview": "clips/direct-mail-engine.webp?v=6",
+    "preview": "clips/direct-mail-engine.webp?v=16",
     "cta": "Swap industries"
   },
   {
@@ -42,11 +42,11 @@
     "title": "Brand Audit Engine",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "brand-audit-engine/thumbnail.jpg?v=7",
+    "thumbnail": "brand-audit-engine/thumbnail.jpg?v=17",
     "url": "brand-audit-engine/",
     "blurb": "A brand review library where an audit scans each asset and flags it as approved, needs review or changes.",
     "about": "Brand Audit Engine is an asset library that audits campaign creative against your brand rules. Watch each asset get scanned and flagged as approved, needs review or changes, see the time saved per asset, and use the filters and search to work through the library.",
-    "preview": "clips/brand-audit-engine.webp?v=6",
+    "preview": "clips/brand-audit-engine.webp?v=16",
     "caseStudyContent": [
       {
         "type": "image",
@@ -80,7 +80,7 @@
     "title": "Pattern Generator",
     "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "pattern-generator/thumbnail.jpg?v=4",
+    "thumbnail": "pattern-generator/thumbnail.jpg?v=14",
     "url": "pattern-generator/",
     "blurb": "An ASCII pattern engine for brand backgrounds, with seven motifs, movable objects and live brand colours.",
     "about": "Pattern Generator is an ASCII pattern engine that turns rows of code, tickers and contract text into animated brand backgrounds. The animations are packaged as a generator so designers without motion skills can still make motion, with control over motif, direction, speed, density and colour.",
@@ -91,7 +91,7 @@
         "alt": "Pattern Generator"
       }
     ],
-    "preview": "clips/pattern-generator.webp?v=4",
+    "preview": "clips/pattern-generator.webp?v=14",
     "cta": "Make a pattern"
   },
   {
@@ -99,7 +99,7 @@
     "title": "Brand Motion System",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "brand-motion/thumbnail.jpg?v=3",
+    "thumbnail": "brand-motion/thumbnail.jpg?v=13",
     "url": "brand-motion/",
     "blurb": "Pick a motion motif, set the brand palette and type, and drag the pieces around the frame.",
     "about": "Brand Motion System is a way of building brand motion from a few rules. Pick a motion motif such as Grow, Orbit, Stack or Macro, set the brand palette and type, and press Randomize for a new combination. Drag the pieces around the frame to compose your own layout.",
@@ -110,7 +110,7 @@
         "alt": "Brand Motion System"
       }
     ],
-    "preview": "clips/brand-motion.webp?v=3",
+    "preview": "clips/brand-motion.webp?v=13",
     "cta": "Move the motifs"
   },
   {
@@ -118,11 +118,11 @@
     "title": "Postmark Award Motion Styles",
     "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "postmark-awards-motion/thumbnail.png?v=2",
+    "thumbnail": "postmark-awards-motion/thumbnail.png?v=12",
     "url": "postmark-awards-motion/",
     "blurb": "One motion engine, four award banner styles, with live text, playback and PNG export.",
     "about": "Postmark Award Motion Styles is one motion engine that plays four award banner styles. Pick a style, type your own text, set the playback speed, then replay, pause or save a PNG of the frame you like.",
-    "preview": "clips/postmark-awards-motion.webp?v=2",
+    "preview": "clips/postmark-awards-motion.webp?v=12",
     "caseStudyContent": [
       {
         "type": "image",
@@ -137,7 +137,7 @@
     "title": "Postmark Awards",
     "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "ribbon-text/thumbnail.jpg?v=7",
+    "thumbnail": "ribbon-text/thumbnail.jpg?v=17",
     "url": "ribbon-text/",
     "blurb": "Text that flows along noise-driven ribbons, with live controls and SVG export.",
     "about": "Postmark Awards sets type flowing along a looping, noise-driven ribbon, built for awards and event graphics. Enter your own text in the control panel, one phrase per line, then adjust weight, spacing, thickness and wiggle. Choose Randomize Pattern for a new path and Download SVG to take the result into your design tools.",
@@ -148,7 +148,7 @@
         "alt": "Postmark Awards"
       }
     ],
-    "preview": "clips/ribbon-text.webp?v=7",
+    "preview": "clips/ribbon-text.webp?v=17",
     "cta": "Edit the ribbons"
   },
   {
@@ -156,7 +156,7 @@
     "title": "Kick Off Type Lab",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "kickoff-type-lab/thumbnail.jpg?v=7",
+    "thumbnail": "kickoff-type-lab/thumbnail.jpg?v=17",
     "url": "kickoff-type-lab/",
     "blurb": "A type tool for groovy, gooey, western lettering, with live spacing, warp and SVG export.",
     "about": "Kick Off Type Lab is a lettering tool for groovy, gooey western type. Type straight onto the canvas and click between letters to place the cursor. Use the panel to change the font, spacing, gooeyness, warp, stretch and shadow, switch on Animate warp to set it moving, then copy or download the result as an SVG.",
@@ -167,7 +167,7 @@
         "alt": "Kick Off Type Lab"
       }
     ],
-    "preview": "clips/kickoff-type-lab.webp?v=7",
+    "preview": "clips/kickoff-type-lab.webp?v=17",
     "cta": "Set some type"
   },
   {
@@ -175,7 +175,7 @@
     "title": "Palette Compositions",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "palette-compositions/thumbnail.jpg?v=7",
+    "thumbnail": "palette-compositions/thumbnail.jpg?v=17",
     "url": "palette-compositions/",
     "blurb": "Randomise the palette, the background or the layout of line, grid and stripe compositions, then export SVG or PNG.",
     "about": "Palette Compositions builds layouts from lines, grids and stripes with contrast rules that keep every colour pairing legible. Use the panel on the right to randomise the colours only, the background only or the whole layout, then export the composition as an SVG or PNG. Click the canvas for a new layout.",
@@ -186,7 +186,7 @@
         "alt": "Palette Compositions"
       }
     ],
-    "preview": "clips/palette-compositions.webp?v=7",
+    "preview": "clips/palette-compositions.webp?v=17",
     "cta": "Compose a layout"
   },
   {
@@ -194,11 +194,11 @@
     "title": "Mail Stack",
     "category": "Motion Component",
     "year": 2026,
-    "thumbnail": "mail-stack/thumbnail.jpg?v=4",
+    "thumbnail": "mail-stack/thumbnail.jpg?v=14",
     "url": "mail-stack/",
     "blurb": "A ribbon of postcards flows along a curve; reshape the path and export it as an MP4 or GIF.",
     "about": "Mail Stack is a ribbon of postcards that flows along a curve and floats gently as it goes. Hover a card to reveal its heatmap. Open Controls to change the curve spread, float intensity, stack density and point density, or choose Randomize Curve Shape for a new path. Use the Export panel to set the length, choose MP4 or GIF and a 1:1 or 16:9 ratio, and record a loop ready for social, decks or the web.",
-    "preview": "clips/mail-stack.webp?v=3",
+    "preview": "clips/mail-stack.webp?v=13",
     "caseStudyContent": [
       {
         "type": "image",
@@ -213,11 +213,11 @@
     "title": "Brand Colors",
     "category": "Motion Component",
     "year": 2026,
-    "thumbnail": "motion-character/thumbnail.jpg?v=5",
+    "thumbnail": "motion-character/thumbnail.jpg?v=15",
     "url": "motion-character/",
     "blurb": "Four colour panels wipe in and out in a staggered, eased sequence, exportable as MP4 or GIF.",
     "about": "Brand Colors is four brand colour panels wiping in and out in a staggered, eased sequence. It runs on a loop, so watch how the timing and easing give flat colour a sense of character. Use the Export panel to set the length, choose MP4 or GIF and a 1:1 or 16:9 ratio, and record a loop ready for social, decks or the web.",
-    "preview": "clips/motion-character.webp?v=3",
+    "preview": "clips/motion-character.webp?v=13",
     "caseStudyContent": [
       {
         "type": "image",
@@ -232,11 +232,11 @@
     "title": "No-Code Binary Motif",
     "category": "Motion Component",
     "year": 2026,
-    "thumbnail": "binary-grid/thumbnail.jpg?v=7",
+    "thumbnail": "binary-grid/thumbnail.jpg?v=17",
     "url": "binary-grid/",
     "blurb": "A diagonal wave flips a grid of 0s and 1s into colour; record it as an MP4 or GIF.",
     "about": "No-Code Binary Motif is a grid of 0s and 1s that turns into colour as a diagonal wave sweeps across it. Move your mouse left and right to steer the wave, and watch the numbers flip into colour blocks behind it. Use the Export panel to set the length, choose MP4 or GIF and a 1:1 or 16:9 ratio, and record a loop ready for social, decks or the web.",
-    "preview": "clips/binary-grid.webp?v=7",
+    "preview": "clips/binary-grid.webp?v=17",
     "caseStudyContent": [
       {
         "type": "image",
@@ -284,24 +284,5 @@
       }
     ],
     "cta": "Rewrite a prompt"
-  },
-  {
-    "id": "marketing-mine",
-    "title": "Marketing Minesweeper",
-    "category": "Experiment",
-    "year": 2026,
-    "thumbnail": "marketing-mine/thumbnail.jpg?v=7",
-    "url": "marketing-mine/",
-    "blurb": "A minesweeper where every mine reveals a direct mail marketing tip.",
-    "about": "Marketing Minesweeper is minesweeper rebuilt as a direct mail lesson, where every mine you uncover reveals a marketing tip. Click a square to reveal it. Right-click, or press and hold on a touch screen, to flag a suspected mine. Clear the board to win. It is an experiment in extending a brand system into play, turning campaign know-how into something people want to click through.",
-    "caseStudyContent": [
-      {
-        "type": "image",
-        "src": "marketing-mine/thumbnail.jpg",
-        "alt": "Marketing Minesweeper"
-      }
-    ],
-    "preview": "clips/marketing-mine.webp?v=7",
-    "cta": "Play the game"
   }
 ]
