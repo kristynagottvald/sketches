@@ -239,7 +239,14 @@ D['mail-stack'] = async (d) => {
   await d.wait(600);
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);
   if (s[0]) await d.slider(s[0], 100, 900);
-  await exportDemo(d, 'MP4', '16:9');
+  // record a 1:1 loop while the cursor drifts slowly across the framed square, so each postcard it passes is hovered in the recording
+  await exportDemo(d, 'MP4', '1:1', async () => {
+    const c = d.$('canvas'); if (!c) return;
+    const r = c.getBoundingClientRect(), at = (fx, fy) => ({ x: r.left + r.width * fx, y: r.top + r.height * fy });
+    d.say('The cursor glides across: every postcard it passes is recorded');
+    await d.move(at(0.1, 0.5), 700);
+    await d.move(at(0.9, 0.5), 4300);
+  });
 };
 
 /* Brand Motion System: pick a motif, randomise the palette, move the word (click it, move, click to drop), switch motif again */
