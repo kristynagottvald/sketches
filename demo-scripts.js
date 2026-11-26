@@ -305,7 +305,7 @@ D['brand-motion'] = async (d) => {
 D['postmark-awards-motion'] = async (d) => {
   const styles = d.$$('#styles button');
   d.say('Switch the style');
-  for (const b of [styles[1], styles[2], styles[3]]) { await d.click(b); await d.wait(2200); }
+  for (const b of [styles[1], styles[2]]) { await d.click(b); await d.wait(2200); }   // Growth, then Ticker (Personalize is left out of the demo); the rest of the demo stays on Ticker
   d.say('Edit the text');
   const f = d.$('#fields input[type=text]'), orig = f ? f.value : '';
   await d.type(f, 'mailpiece', 80); await d.wait(1600);

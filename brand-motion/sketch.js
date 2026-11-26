@@ -156,18 +156,20 @@ function draw() {
 
   // Sidebar Panel Background
   noStroke();
-  fill(0, 50);
+  fill('#ffffff');   // the white panel look shared with the other tools
   rect(UIX, 0, PANEL_W, height + 10);
+  fill('#e6e6e6');
+  rect(UIX, 0, 1, height + 10);
 
   // Header in Sidebar
-  fill(COLORS.white);
+  fill('#111111');
   textSize(22);
   textStyle(BOLD);
   textAlign(LEFT, TOP);
   text("grubclub", UIX + 25, 22);
 
-  fill(COLORS.robinsEgg);
-  textSize(14);
+  fill('#777777');
+  textSize(13);
   text("MOTION SYSTEM", UIX + 25, 56);
 
   // Canvas Viewport Frame Coordinates
@@ -620,9 +622,9 @@ function createUI() {
   paletteBox.style('width', '180px');
   paletteBox.style('padding', '6px 6px 4px');
   paletteBox.style('box-sizing', 'border-box');
-  paletteBox.style('border', '1px solid #8CE39B');
-  paletteBox.style('border-radius', '4px');
-  paletteBox.style('background', 'rgba(255,255,255,0.05)');
+  paletteBox.style('border', '0');
+  paletteBox.style('border-radius', '8px');
+  paletteBox.style('background', '#f3f3f3');
   paletteBox.style('display', 'flex');
   paletteBox.style('gap', '4px');
   paletteBox.style('min-height', '48px');
@@ -630,7 +632,7 @@ function createUI() {
   paletteBox.style('align-content', 'flex-start');
 
   paletteMenu = document.createElement('div');
-  paletteMenu.style.cssText = 'position:fixed;z-index:20;display:none;background:#0E3251;border:1px solid #8CE39B;border-radius:6px;padding:4px;font:600 11px Poppins,sans-serif;max-height:70vh;overflow:auto;';
+  paletteMenu.style.cssText = 'position:fixed;z-index:20;display:none;background:#fff;color:#111;border:1px solid #e6e6e6;box-shadow:0 8px 28px rgba(0,0,0,.14);border-radius:10px;padding:4px;font:500 11px Poppins,sans-serif;max-height:70vh;overflow:auto;';
   document.body.appendChild(paletteMenu);
   document.addEventListener('mousedown', e => {
     if (!paletteMenu.contains(e.target) && !paletteBox.elt.contains(e.target)) closePaletteMenu();
@@ -759,10 +761,10 @@ function renderPalette() {
     let sw = document.createElement('div');
     sw.title = slotRole(i) + ': ' + name + ' (click to change, drag to swap)';
     sw.draggable = true;
-    sw.style.cssText = 'position:relative;width:28px;height:28px;border-radius:6px;cursor:grab;box-sizing:border-box;border:1px solid rgba(255,255,255,0.5);background:' + ALL_COLORS[name] + ';';
+    sw.style.cssText = 'position:relative;width:28px;height:28px;border-radius:6px;cursor:grab;box-sizing:border-box;border:1px solid rgba(0,0,0,0.15);background:' + ALL_COLORS[name] + ';';
     sw.addEventListener('click', () => openPaletteMenu(sw, i));
     sw.addEventListener('dragstart', e => { dragSlot = i; e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', String(i)); closePaletteMenu(); });
-    sw.addEventListener('dragover', e => { e.preventDefault(); sw.style.outline = '2px solid #EEFB71'; });
+    sw.addEventListener('dragover', e => { e.preventDefault(); sw.style.outline = '2px solid #111'; });
     sw.addEventListener('dragleave', () => { sw.style.outline = ''; });
     sw.addEventListener('drop', e => {
       e.preventDefault();
@@ -780,14 +782,14 @@ function renderPalette() {
       let x = document.createElement('div');
       x.textContent = '×';
       x.title = 'Remove';
-      x.style.cssText = 'position:absolute;top:-6px;right:-6px;width:13px;height:13px;border-radius:50%;background:#0E3251;color:#fff;border:1px solid #8CE39B;font:700 10px/11px Poppins,sans-serif;text-align:center;cursor:pointer;';
+      x.style.cssText = 'position:absolute;top:-6px;right:-6px;width:13px;height:13px;border-radius:50%;background:#111;color:#fff;border:1px solid #fff;font:700 10px/11px Poppins,sans-serif;text-align:center;cursor:pointer;';
       x.addEventListener('click', e => { e.stopPropagation(); paletteSlots.splice(i, 1); closePaletteMenu(); renderPalette(); });
       sw.appendChild(x);
     }
 
     let lbl = document.createElement('div');
     lbl.textContent = slotRole(i);
-    lbl.style.cssText = 'font:600 6px Poppins,sans-serif;letter-spacing:0.2px;white-space:nowrap;color:#8CE39B;';
+    lbl.style.cssText = 'font:600 6px Poppins,sans-serif;letter-spacing:0.2px;white-space:nowrap;color:#777;';
     cell.appendChild(sw);
     cell.appendChild(lbl);
     box.appendChild(cell);
@@ -797,7 +799,7 @@ function renderPalette() {
     let add = document.createElement('div');
     add.textContent = '+';
     add.title = 'Add colour';
-    add.style.cssText = 'width:28px;height:28px;border-radius:6px;box-sizing:border-box;border:1px dashed #8CE39B;color:#8CE39B;font:600 16px/26px Poppins,sans-serif;text-align:center;cursor:pointer;';
+    add.style.cssText = 'width:28px;height:28px;border-radius:6px;box-sizing:border-box;border:1px dashed #bbb;color:#777;font:600 16px/26px Poppins,sans-serif;text-align:center;cursor:pointer;';
     add.addEventListener('click', () => openPaletteMenu(add, -1));
     box.appendChild(add);
   }
@@ -851,20 +853,20 @@ function makeWrapper(y, h) {
   w.style('width', '290px');
   w.style('height', h + 'px');
   w.style('box-sizing', 'border-box');
-  w.style('border', '1px solid rgba(140, 227, 155, 0.35)');
+  w.style('border', '1px solid #e6e6e6');
   w.style('border-radius', '14px');
-  w.style('background', 'rgba(255, 255, 255, 0.04)');
+  w.style('background', '#ffffff');
   return w;
 }
 
 function createControlLabel(txt, x, y) {
   let lbl = createSpan(txt);
   lbl.position(UIX + x, y);
-  lbl.style('color', '#8CE39B');
+  lbl.style('color', '#777');
   lbl.style('font-family', 'Poppins, sans-serif');
   lbl.style('font-size', '10px');
-  lbl.style('font-weight', '600');
-  lbl.style('letter-spacing', '0.5px');
+  lbl.style('font-weight', '500');
+  lbl.style('letter-spacing', '0.2px');
   return lbl;
 }
 
@@ -879,11 +881,11 @@ function styleButton(btn, isActive) {
   btn.style('padding-left', '12px');
 
   if (isActive) {
-    btn.style('background-color', COLORS.kiwi);
-    btn.style('color', COLORS.navy);
+    btn.style('background-color', '#111111');
+    btn.style('color', '#ffffff');
   } else {
-    btn.style('background-color', 'rgba(255, 255, 255, 0.08)');
-    btn.style('color', COLORS.robinsEgg);
+    btn.style('background-color', '#f3f3f3');
+    btn.style('color', '#111111');
   }
 }
 
@@ -892,18 +894,19 @@ function styleInput(inp) {
   inp.style('font-size', '12px');
   inp.style('padding', '3px 8px');
   inp.style('border-radius', '4px');
-  inp.style('border', '1px solid #8CE39B');
-  inp.style('background', '#0E3251');
-  inp.style('color', '#FFFFFF');
+  inp.style('border', '0');
+  inp.style('background', '#f3f3f3');
+  inp.style('color', '#111111');
+  inp.style('border-radius', '8px');
 }
 
 function styleSelect(sel) {
   sel.style('font-family', 'Poppins, sans-serif');
   sel.style('font-size', '11px');
   sel.style('font-weight', '600');
-  sel.style('background-color', '#0E3251');
-  sel.style('color', '#EEFB71');
-  sel.style('border', '1px solid #8CE39B');
+  sel.style('background-color', '#f3f3f3');
+  sel.style('color', '#111111');
+  sel.style('border', '0');
   sel.style('border-radius', '4px');
   sel.style('cursor', 'pointer');
 }
@@ -912,8 +915,8 @@ function styleRandButton(btn) {
   btn.style('font-family', 'Poppins, sans-serif');
   btn.style('font-size', '10px');
   btn.style('font-weight', '700');
-  btn.style('background-color', COLORS.matcha);
-  btn.style('color', COLORS.navy);
+  btn.style('background-color', '#111111');
+  btn.style('color', '#ffffff');
   btn.style('border', 'none');
   btn.style('border-radius', '4px');
   btn.style('cursor', 'pointer');

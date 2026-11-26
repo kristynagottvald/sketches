@@ -55,37 +55,28 @@ function layoutPanel() {
 
 function buildUIPanel() {
   uiPanel = createDiv('');
+  uiPanel.addClass('wp');   // white panel, see ../panel-white.css
   uiPanel.position(windowWidth - 290, NAV_H + 20);
-  uiPanel.style('font-family', 'sans-serif');
   uiPanel.style('width', '250px');
   uiPanel.style('padding', '20px');
-  uiPanel.style('background', 'rgba(255, 255, 255, 0.92)');
-  uiPanel.style('backdrop-filter', 'blur(8px)');
-  uiPanel.style('border-radius', '12px');
-  uiPanel.style('border', '1px solid rgba(0,0,0,0.1)');
-  uiPanel.style('box-shadow', '0 8px 32px rgba(0,0,0,0.15)');
   uiPanel.style('z-index', '10');
 
-  createDiv('<b>🎀 Ribbon Controls</b>').parent(uiPanel).style('margin-bottom', '15px');
+  createDiv('<b>Ribbon Controls</b>').parent(uiPanel).style('margin-bottom', '15px');
 
   // 1. Text Input Area (Multi-line)
   createDiv('Ribbon Text (One per line):').parent(uiPanel);
   textInputArea = createElement('textarea', 'POSTMARK AWARDS');
   textInputArea.parent(uiPanel);
-  textInputArea.style('width', '90%');
   textInputArea.style('height', '50px');
   textInputArea.style('margin-top', '5px');
-  textInputArea.style('margin-bottom', '10px');
+  textInputArea.style('margin-bottom', '14px');
   textInputArea.style('resize', 'vertical');
-  textInputArea.style('font-family', 'sans-serif');
-  textInputArea.style('padding', '5px');
   textInputArea.input(drawArtwork);
 
   // 2. Font Weight / Style Dropdown
   createDiv('Font Weight:').parent(uiPanel);
   weightSelect = createSelect().parent(uiPanel);
   weightSelect.style('width', '100%');
-  weightSelect.style('padding', '5px');
   weightSelect.style('margin-top', '5px');
   weightSelect.style('margin-bottom', '15px');
   weightSelect.option('Normal (Arial)');
@@ -119,26 +110,19 @@ function buildUIPanel() {
   spacingSlider.input(drawArtwork);
 
   // 7. Randomize Button
-  let randBtn = createButton('🎲 Randomize Pattern').parent(uiPanel);
+  let randBtn = createButton('Randomize Pattern').parent(uiPanel);
   randBtn.style('margin-top', '20px');
   randBtn.style('width', '100%');
   randBtn.style('padding', '10px');
   randBtn.style('cursor', 'pointer');
-  randBtn.style('border-radius', '6px');
-  randBtn.style('border', '1px solid #ccc');
-  randBtn.style('background', '#f5f5f5');
-  randBtn.style('font-weight', 'bold');
   randBtn.mousePressed(randomizePattern);
 
   // 8. Export SVG Button
-  let expBtn = createButton('💾 Download SVG').parent(uiPanel);
+  let expBtn = createButton('Download SVG').parent(uiPanel);
+  expBtn.addClass('pri');
   expBtn.style('margin-top', '10px');
   expBtn.style('width', '100%');
   expBtn.style('padding', '10px');
-  expBtn.style('background', PALETTE[0]);
-  expBtn.style('color', 'white');
-  expBtn.style('border', 'none');
-  expBtn.style('border-radius', '6px');
   expBtn.style('cursor', 'pointer');
   expBtn.style('font-weight', 'bold');
   expBtn.mousePressed(exportSVG);

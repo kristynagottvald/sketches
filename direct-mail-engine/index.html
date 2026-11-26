@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 <script src="../demo.js?v=24"></script>
-<script src="../demo-scripts.js?v=30"></script>
+<script src="../demo-scripts.js?v=31"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Industry Swapper Plug-in • Kristyna Gottvald</title>
     <meta name="description" content="A real-time customizable direct mail mock-up generator across industries.">
@@ -130,6 +130,30 @@
         .zoom-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: #F1F5F9; color: #334155; font-weight: 600; transition: background 0.2s; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 14px; }
         .zoom-btn:hover { background: #E2E8F0; }
         .zoom-label { width: auto; padding: 0 12px; font-size: 12px; }
+
+        /* White panel look shared with the other tools (HOB Studio): neutral greys, black selected state */
+        .sidebar { background: #fff; box-shadow: none; border-left: 1px solid #e6e6e6; font-family: 'Inter', sans-serif; }
+        .sidebar-header { border-bottom: 1px solid #ececec; }
+        .sidebar-title { font-size: 13px; font-weight: 600; color: #111; }
+        .sidebar-title svg { color: #111; }
+        .sidebar-search { border-bottom: 1px solid #ececec; }
+        .search-icon { color: #999; }
+        .search-input { background: #f3f3f3; border: 0; border-radius: 8px; font-size: 12px; font-weight: 500; color: #111; }
+        .search-input:focus { outline: 2px solid #3d4ee0; outline-offset: 2px; }
+        .sidebar-list::-webkit-scrollbar-track { background: transparent; }
+        .sidebar-list::-webkit-scrollbar-thumb { background: #e0e0e0; }
+        .industry-card { border: 1px solid #e6e6e6; border-radius: 10px; background: #fff; }
+        .industry-card:hover { border-color: #e6e6e6; background-color: #f3f3f3; }
+        .industry-card.active { border-color: #111; background-color: #fff; box-shadow: 0 0 0 1px #111; }
+        .card-cat { font-size: 13px; font-weight: 600; color: #111; }
+        .card-var { font-size: 11px; color: #777; }
+        .active-icon { color: #111; }
+        .sidebar-footer { border-top: 1px solid #ececec; background: #fff; }
+        .reset-btn { background: #f3f3f3; border: 0; border-radius: 8px; color: #111; font-size: 12px; font-weight: 500; padding: 10px 8px; }
+        .reset-btn:hover { background: #e8e8e8; }
+        .zoom-panel { border: 1px solid #e6e6e6; box-shadow: 0 4px 16px rgba(0,0,0,0.1); border-radius: 10px; }
+        .zoom-btn { background: #f3f3f3; color: #111; font-weight: 500; }
+        .zoom-btn:hover { background: #e8e8e8; }
     </style>
 </head>
 <body>
