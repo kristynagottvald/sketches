@@ -160,7 +160,10 @@ async function exportDemo(d, fmt, ratio, during) {
   d.say('Record a ' + ratio + ' ' + fmt + ' loop');
   await d.click(box.querySelector('.xk-btn'), 800);
   if (during) { await d.wait(150); await during(); }   // e.g. the cursor plays the piece while it records
-  await d.wait(during ? 700 : 3900);
+  await d.wait(700);
+  // let the recording finish and hold on its preview for a few beats before it fades out
+  for (let i = 0; i < 60 && window.ExportKit && ExportKit.isRecording(); i++) await d.wait(200);
+  await d.wait(400);
   await d.click(seg('MP4'), 600); await d.click(seg('16:9'), 600);
   await d.slider(len, 6, 600);
 }
@@ -300,7 +303,7 @@ D['postmark-awards-motion'] = async (d) => {
   await d.click('#ratio button[data-r="1:1"]', 800); await d.wait(1300);
   await d.click('#ratio button[data-r="9:16"]', 700); await d.wait(1300);
   d.say('Export it as an MP4');
-  await d.click('#mp4', 800); await d.wait(2200);
+  await d.click('#mp4', 800); await d.wait(3800);   // the dry run shows its progress, then holds on 'Exported' for a few beats
   await d.click('#ratio button[data-r="16:9"]', 700);
   await d.click(styles[0]); await d.wait(1200);
 };
