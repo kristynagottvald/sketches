@@ -137,7 +137,7 @@
     "title": "Postmark Awards",
     "category": "Interactive Engine",
     "year": 2026,
-    "thumbnail": "ribbon-text/thumbnail.jpg?v=17",
+    "thumbnail": "ribbon-text/thumbnail.jpg?v=18",
     "url": "ribbon-text/",
     "blurb": "Text that flows along noise-driven ribbons, with live controls and SVG export.",
     "about": "Postmark Awards sets type flowing along a looping, noise-driven ribbon, built for awards and event graphics. Enter your own text in the control panel, one phrase per line, then adjust weight, spacing, thickness and wiggle. Choose Randomize Pattern for a new path and Download SVG to take the result into your design tools.",
@@ -148,7 +148,7 @@
         "alt": "Postmark Awards"
       }
     ],
-    "preview": "clips/ribbon-text.webp?v=17",
+    "preview": "clips/ribbon-text.webp?v=18",
     "cta": "Edit the ribbons"
   },
   {
