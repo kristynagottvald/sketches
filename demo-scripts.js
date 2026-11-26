@@ -190,16 +190,21 @@ D['hero-banner-engine'] = async (d) => {
   const was = (k) => d.$('.seg[data-key="' + k + '"] button[aria-pressed="true"]');
   const layout = was('layout'), aspect = was('aspect'), anchor = was('anchor');
   const h = d.$('#heading'), hv = h ? h.value : '';
+  const eb = d.$('#eyebrow'), ev = eb ? eb.value : '';
   d.say('Pick a format');
   await d.click('.seg[data-key="aspect"] button[data-v="16x9"]'); await d.wait(1200);
   d.say('Change the layout');
   await d.click('.seg[data-key="layout"] button[data-v="around"]'); await d.wait(1300);
   await d.click('.seg[data-key="layout"] button[data-v="band"]'); await d.wait(1300);
+  d.say('Or go vertical');
+  await d.click('.seg[data-key="aspect"] button[data-v="9x16"]'); await d.wait(1500);
+  await d.click('.seg[data-key="aspect"] button[data-v="16x9"]'); await d.wait(1000);
   d.say('Try a theme');
   const th = d.$$('#themes > *');
   await d.click(th[2]); await d.wait(1200);   // Lavender
   d.say('Edit the copy');
-  await d.type('#heading', 'Build it once.', 80); await d.wait(1000);
+  await d.type('#heading', 'Build it once.', 80);
+  d.setValue('#eyebrow', "Lob's No-Code Design Suite"); await d.wait(1000);
   d.say('Shuffle the visuals');
   await d.click('#shuffle'); await d.wait(1200);
   if (aspect) await d.click(aspect);
@@ -207,6 +212,7 @@ D['hero-banner-engine'] = async (d) => {
   if (anchor) await d.click(anchor);
   if (th[0]) await d.click(th[0]);
   d.setValue('#heading', hv);
+  d.setValue('#eyebrow', ev);
   await d.wait(600);
 };
 
@@ -233,7 +239,14 @@ D['mail-stack'] = async (d) => {
   await d.wait(600);
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);
   if (s[0]) await d.slider(s[0], 100, 900);
-  await exportDemo(d, 'MP4', '16:9');
+  // record a 1:1 loop while the cursor drifts slowly across the framed square, so each postcard it passes is hovered in the recording
+  await exportDemo(d, 'MP4', '1:1', async () => {
+    const c = d.$('canvas'); if (!c) return;
+    const r = c.getBoundingClientRect(), at = (fx, fy) => ({ x: r.left + r.width * fx, y: r.top + r.height * fy });
+    d.say('The cursor glides across: every postcard it passes is recorded');
+    await d.move(at(0.1, 0.5), 700);
+    await d.move(at(0.9, 0.5), 4300);
+  });
 };
 
 /* Brand Motion System: pick a motif, randomise the palette, move the word (click it, move, click to drop), switch motif again */

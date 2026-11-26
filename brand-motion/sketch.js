@@ -107,7 +107,9 @@ function setup() {
   fontLink.rel = 'stylesheet';
   document.head.appendChild(fontLink);
 
+  // make sure every Poppins weight is loaded before the canvas text relies on it
   textFont('Poppins');
+  ['400','600','700','800'].forEach(w => document.fonts && document.fonts.load(w + ' 16px Poppins').catch(() => {}));
   createUI();
 
   // Keep the controls inside <main> so they sit below the site header with the canvas
@@ -987,7 +989,8 @@ function windowResized() {
   // slide the panel's controls along with its right-hand edge
   const next = windowWidth - PANEL_W, dx = next - UIX;
   if (dx) {
-    document.querySelectorAll('body > *').forEach((el) => {
+    // the controls live inside <main> (moved there in setup), the palette menu stays in <body>
+    document.querySelectorAll('main > *, body > *').forEach((el) => {
       if (el.tagName === 'CANVAS' || el.tagName === 'MAIN' || el.tagName === 'HEADER' || el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el.hasAttribute('data-demo-ui')) return;
       if (el.style.position === 'absolute' && el.style.left) el.style.left = (parseFloat(el.style.left) + dx) + 'px';
     });
