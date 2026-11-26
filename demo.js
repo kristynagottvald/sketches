@@ -342,6 +342,19 @@
     });
   }
 
+  /* A demo is only a walkthrough: whatever the tool does, no file may ever be saved. Swallow any programmatic click on a download link. */
+  function blockDownloads() {
+    const click = HTMLAnchorElement.prototype.click;
+    HTMLAnchorElement.prototype.click = function () {
+      if (alive && this.hasAttribute('download')) return;
+      return click.apply(this, arguments);
+    };
+    addEventListener('click', (e) => {
+      const a = e.target && e.target.closest && e.target.closest('a[download]');
+      if (alive && a && !e.isTrusted) e.preventDefault();
+    }, true);
+  }
+
   function start() {
     build();
     [300, 1200, 3000, 6000].forEach((ms) => setTimeout(unfix, ms));
@@ -355,6 +368,7 @@
     const id = (location.pathname.replace(/\/index\.html$/, '').match(/([^/]+)\/?$/) || [])[1];
     const script = window.DEMOS && window.DEMOS[id];
     if (!script) { cursor.remove(); if (EMBED) parent.postMessage({ demo: 'ready' }, '*'); return; }
+    blockDownloads();
     if (EMBED) {
       let go = false;
       const begin = () => { if (!go) { go = true; run(script); } };
