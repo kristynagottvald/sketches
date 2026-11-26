@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<script src="../demo.js?v=21"></script>
-<script src="../demo-scripts.js?v=27"></script>
+<script src="../demo.js?v=24"></script>
+<script src="../demo-scripts.js?v=29"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Banner Template Studio • Kristyna Gottvald</title>
 <meta name="description" content="Pick a format, edit the copy and style, and preview a banner template live.">
@@ -92,6 +92,8 @@ canvas{display:block;image-rendering:auto;background:#000}
   .meta{left:12px;right:12px;bottom:8px;font-size:11px}
   .panel{border-left:0;overflow:visible;padding:16px 16px calc(40px + env(safe-area-inset-bottom))}
 }
+.xstat{font-size:12px;line-height:1.4;opacity:.75;min-height:1.4em;margin-top:6px}
+.xstat i{display:block;height:3px;margin-top:6px;background:currentColor;opacity:.9;width:0;transition:width .15s}
 </style>
 </head>
 <body>
@@ -193,13 +195,14 @@ canvas{display:block;image-rendering:auto;background:#000}
       <summary>Export</summary>
       <div class="fields">
         <div><span class="lbl">File type</span>
-          <div class="seg" data-key="fmt"><button data-v="png">PNG</button><button data-v="jpg">JPG</button><button data-v="webp">WebP</button></div></div>
+          <div class="seg" data-key="fmt"><button data-v="png">PNG</button><button data-v="jpg">JPG</button><button data-v="webp">WebP</button><button data-v="mp4">MP4</button></div></div>
         <div><span class="lbl">Size</span>
           <div class="seg" data-key="size"><button data-v="social">Social 1×</button><button data-v="retina">Retina 2×</button><button data-v="email">Email 600w</button></div></div>
         <div class="btns">
           <button class="btn primary" id="dl">Download <span id="dlLabel"></span></button>
           <button class="btn" id="dlAll">Download all 3 ratios</button>
         </div>
+        <div class="xstat" id="xstat" role="status" aria-live="polite"></div>
       </div>
     </details>
   </aside>
@@ -226,9 +229,9 @@ canvas{display:block;image-rendering:auto;background:#000}
 const UNIT = 60;
 const MARGIN = 2 * UNIT;
 const ASPECTS = {
-  '1x1':  {w:1080, h:1080, textW:11*UNIT, wx:.5, bias:.36},
-  '16x9': {w:1920, h:1080, textW:16*UNIT, wx:.7, safeTop:4*UNIT, bias:.38, clear:{x:6.5*UNIT,y:7.5*UNIT}},
-  '9x16': {w:1080, h:1920, textW:13*UNIT, wx:.3, safeTop:6*UNIT, bias:.5, eyebrowK:1.4}
+  '1x1':  {w:1080, h:1080, textW:13*UNIT, wx:.5, bias:.17},
+  '16x9': {w:1920, h:1080, textW:16*UNIT, wx:.7, safeTop:4*UNIT, bias:.38, hK:1.15, clear:{x:6.5*UNIT,y:7.5*UNIT}},
+  '9x16': {w:1080, h:1920, textW:13*UNIT, wx:.3, safeTop:6*UNIT, bias:.11, eyebrowK:1.4, big:true}
 };
 const C = {navy:'#15153A', indigo:'#3F30F2', ink:'#1B1670', magenta:'#E85DF4', lime:'#E6EA9C', lav:'#A18BFF', coral:'#FF6F5B', white:'#FFFFFF', deepnavy:'#262680'};
 const THEMES = {
@@ -238,6 +241,9 @@ const THEMES = {
 };
 const FONT = '"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif';
 const SERIF = 'Georgia,"Times New Roman",serif';
+/* motion timeline (ms): hold, tiles fly off in a stagger, the Aa tiles beneath type, then flip to the real tiles */
+const T_HOLD=1500, T_EXIT_SPREAD=3200, T_EXIT_DUR=2400, T_FLIP_START=7100, T_FLIP_STAGGER=200, T_FLIP_DUR=950, T_CYCLE=12400;
+const easeIO=t=>{t=Math.min(1,Math.max(0,t));return -(Math.cos(Math.PI*t)-1)/2};
 const BAYER = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
 
 const DEFAULTS = {
@@ -283,7 +289,7 @@ function build(S){
   const rng=mulberry32((+S.seed||1)*7919+13);
 
   /* ---- type (all sizes in grid units => identical in every format) ---- */
-  const hs=1.6*UNIT*ts, es=.38*UNIT*ts*(A.eyebrowK||1), ss=.58*UNIT*ts, wmS=.8*UNIT;
+  const hs=1.6*UNIT*ts*(A.hK||1), es=.38*UNIT*ts*(A.eyebrowK||1), ss=.58*UNIT*ts, wmS=.8*UNIT;
   const hLH=hs*1.08, sLH=ss*1.35, gapE=.6*UNIT*ts, gapS=.5*UNIT*ts;
   const maxW=A.textW;
   mctx.font=`300 ${hs}px ${FONT}`;
@@ -382,12 +388,16 @@ function build(S){
       p=dn*Math.max(Math.exp(-de/k), .7*Math.exp(-dt/(.04+.12*sp)))*(1+j*.5);
       if(p<.05)p=0;
     }
+    if(A.big){   // tall format: copy sits high; tiles start a clear gap below it, thin near the copy and thicken toward the bottom edge
+      const y0f=textRect.y1+3.5*UNIT+(1-x)*6*UNIT, tf=py+j*UNIT*1.2;   // the stair climbs to the right: the cluster starts higher on the right edge
+      p=tf<y0f?0:dn*(.12+.58*smooth(y0f,H-2*UNIT,tf));
+    }
     field[idx(c,r)]=Math.min(1,Math.max(0,p));
   }
 
   /* ---- place blocks ---- */
   const v=+S.variety;
-  const SIZES=[[1,1,1],[2,1,.5*v],[1,2,.5*v],[2,2,(M<=60?1.6:.8)*v],[1,4,(M<=60?.25:0)*v],[3,3,(M<=40?.8:0)*v]].filter(s=>s[2]>0);
+  const SIZES=A.big?[[1,1,.12],[2,1,.35*v],[1,2,.35*v],[2,2,3*v],[3,3,2*v],[4,4,.7*v],[3,2,.4*v],[2,3,.4*v]]:[[1,1,1],[2,1,.5*v],[1,2,.5*v],[2,2,(M<=60?1.6:.8)*v],[1,4,(M<=60?.25:0)*v],[3,3,(M<=40?.8:0)*v]].filter(s=>s[2]>0);
   const order=[...Array(cols*rows).keys()];
   for(let i=order.length-1;i>0;i--){const k=Math.floor(rng()*(i+1));[order[i],order[k]]=[order[k],order[i]]}
   const blocks=[]; let lastColor=null;
@@ -438,7 +448,21 @@ function build(S){
       b.dir=DIRS[Math.floor(rng()*DIRS.length)]; b.top=rng()<.2?.19:0;
     }
   }
-  return {W,H,M,cols,rows,blocks,texts,wm,logoTile,textRect,theme:th,S,margin:MARGIN,forb,
+  /* ---- motion: ~25% of layouts (picked by seed) animate their glyph tiles ---- */
+  const glyphs=blocks.filter(b=>b.type==='glyph');
+  const motion=glyphs.length>0 && (((Math.imul(+S.seed||1,2654435761)>>>14)&3)===0);
+  if(motion){
+    const mr=mulberry32((+S.seed||1)*31+7), order=glyphs.map((_,i)=>i);
+    for(let i=order.length-1;i>0;i--){const j=Math.floor(mr()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
+    glyphs.forEach((b,k)=>{
+      const a=mr()*Math.PI*2, serif=mr()<.5, bgs=th.tiles.filter(c=>c!==b.fill);
+      const abg=bgs[k%bgs.length], inks=[C.indigo,C.lime].filter(c=>contrast(c,abg)>=2);
+      b.mo={dx:Math.cos(a),dy:Math.sin(a),rot:(mr()-.5)*.22,delay:mr()*T_EXIT_SPREAD,order:order[k],
+        types:k%2===1, tgt:serif?'Gg':'Aa',
+        a:{fill:abg,fg:inks[0]||C.indigo,glyph:'Aa',serif,fs:serif?.72:.82}};
+    });
+  }
+  return {W,H,M,cols,rows,blocks,texts,wm,logoTile,textRect,theme:th,S,margin:MARGIN,forb,motion,
           logoText:S.logoText||''};
 }
 
@@ -482,8 +506,50 @@ function drawSelector(ctx,x,y,w,h,sc){
   for(const [hx,hy] of [[x,y],[x+w,y],[x,y+h],[x+w,y+h]]){ctx.fillRect(hx-n/2,hy-n/2,n,n);ctx.strokeRect(hx-n/2,hy-n/2,n,n)}
   ctx.restore();
 }
+function drawFace(ctx,f,x,y,s,sc,sel){
+  ctx.fillStyle=f.fill; fillR(ctx,x,y,s,s,sc);
+  drawGlyph(ctx,f,x,y,s,sc);
+  if(f.caret){   // blinking text caret after the typed letters
+    ctx.save();ctx.scale(sc,sc);ctx.beginPath();ctx.rect(x,y,s,s);ctx.clip();
+    ctx.font='italic normal '+s*f.fs+'px '+SERIF; if(!f.serif)ctx.font='normal bold '+s*f.fs+'px Arial,Helvetica,sans-serif';
+    const w=ctx.measureText(f.glyph).width, capH=s*f.fs*.72, base=y+s*.5+s*f.fs*.35;
+    ctx.fillStyle=f.fg; ctx.fillRect(x+s/2+w/2+6,base-capH,5,capH); ctx.restore();
+  }
+  if(sel)drawSelector(ctx,x,y,s,s,sc);
+}
+function drawMotion(ctx,m,sc,t){
+  const {M,theme}=m, gl=m.blocks.filter(b=>b.type==='glyph'), travel=Math.hypot(m.W,m.H);
+  for(const b of gl){
+    const o=b.mo, x=b.c*M, y=b.r*M, s=b.w*M;
+    const real={fill:b.fill,fg:b.fg,glyph:b.glyph,serif:b.serif,fs:b.fs};
+    // face under the flying tile: "Aa" that types out a new letter pair, then flips to the real tile
+    const a=Object.assign({},o.a), u=t-(T_HOLD+o.delay+T_EXIT_DUR*.7);
+    if(o.types){
+      const seq=['Aa','A','','',o.tgt[0],o.tgt], step=150;
+      if(u>=0&&t<T_FLIP_START){a.glyph=seq[Math.min(Math.floor(u/step),seq.length-1)]; a.caret=u<seq.length*step+700&&Math.floor(t/260)%2===0}
+      else if(t>=T_FLIP_START)a.glyph=o.tgt;
+    }
+    const p=easeIO((t-T_FLIP_START-o.order*T_FLIP_STAGGER)/T_FLIP_DUR);
+    if(p<=0)drawFace(ctx,a,x,y,s,sc,false);
+    else if(p>=1)drawFace(ctx,real,x,y,s,sc,true);
+    else{
+      ctx.fillStyle=theme.bg; fillR(ctx,x,y,s,s,sc);
+      const k=Math.max(Math.abs(1-2*p),.001), cy=(y+s/2)*sc;
+      ctx.save(); ctx.translate(0,cy); ctx.scale(1,k); ctx.translate(0,-cy);
+      drawFace(ctx,p<.5?a:real,x,y,s,sc,p>=.5);
+      ctx.fillStyle='rgba(0,0,0,'+(.31*(1-k)).toFixed(3)+')'; fillR(ctx,x,y,s,s,sc);
+      ctx.restore();
+    }
+    const off=easeIO((t-T_HOLD-o.delay)/T_EXIT_DUR);
+    if(off<1){   // the real tile, selected, drifts off along its own vector
+      const px=x+o.dx*travel*off, py=y+o.dy*travel*off, cx=(px+s/2)*sc, cy2=(py+s/2)*sc;
+      ctx.save(); ctx.translate(cx,cy2); ctx.rotate(o.rot*off); ctx.translate(-cx,-cy2);
+      drawFace(ctx,real,px,py,s,sc,true); ctx.restore();
+    }
+  }
+}
 function draw(ctx,m,sc,opts={}){
-  const {W,H,M,theme}=m;
+  const {W,H,M,theme}=m, anim=m.motion&&opts.t!=null;
   ctx.setTransform(1,0,0,1,0,0);
   ctx.fillStyle=theme.bg; ctx.fillRect(0,0,Math.ceil(W*sc),Math.ceil(H*sc));
 
@@ -491,9 +557,10 @@ function draw(ctx,m,sc,opts={}){
     const x=b.c*M,y=b.r*M,w=b.w*M,h=b.h*M;
     ctx.fillStyle=b.fill; fillR(ctx,x,y,w,h,sc);
     if(b.type==='dither')drawDither(ctx,b,x,y,w,h,sc);
-    else if(b.type==='glyph')drawGlyph(ctx,b,x,y,w,sc);
+    else if(b.type==='glyph'&&!anim)drawGlyph(ctx,b,x,y,w,sc);
   }
-  for(const b of m.blocks)if(b.type==='glyph')drawSelector(ctx,b.c*M,b.r*M,b.w*M,b.h*M,sc);
+  if(anim)drawMotion(ctx,m,sc,opts.t%T_CYCLE);
+  else for(const b of m.blocks)if(b.type==='glyph')drawSelector(ctx,b.c*M,b.r*M,b.w*M,b.h*M,sc);
   if(m.logoTile){
     const L=m.logoTile,x=L.c*M,y=L.r*M,w=L.w*M;
     ctx.fillStyle=theme.logoTile; fillR(ctx,x,y,w,w,sc);
@@ -556,9 +623,10 @@ function syncUI(){
   if(document.activeElement!==$('#seed'))$('#seed').value=state.seed;
   const d=outDims(state.aspect);
   $('#dlLabel').textContent=`${d.w} × ${d.h} ${state.fmt.toUpperCase()}`;
+  if(!exporting)$('#xstat').textContent=state.fmt==='mp4'?(build(state).motion?'MP4 records the full 12.4 s motion loop.':'This layout is still, so the MP4 is a 3 s hold. Shuffle (R) for one of the layouts that moves.'):'';
 }
-function outScale(W){return state.size==='retina'?2:state.size==='email'?600/W:1}
-function outDims(aspect){const A=ASPECTS[aspect],s=outScale(A.w);return{w:Math.round(A.w*s),h:Math.round(A.h*s),s}}
+function outScale(W){return state.size==='email'?600/W:state.fmt==='mp4'?1:state.size==='retina'?2:1}   // video stays at 1x: 2x would exceed what H.264 encoders accept
+function outDims(aspect){const A=ASPECTS[aspect],s=outScale(A.w),ev=n=>state.fmt==='mp4'?Math.round(n/2)*2:Math.round(n);return{w:ev(A.w*s),h:ev(A.h*s),s}}
 
 document.addEventListener('click',e=>{
   const btn=e.target.closest('.seg button,.swatches button'); if(!btn)return;
@@ -579,7 +647,8 @@ document.addEventListener('keydown',e=>{
 });
 
 /* ---------- preview ---------- */
-let raf=0;
+let raf=0, animRaf=0;
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(renderPreview)}
 function renderPreview(){
   const m=build(state);
@@ -588,10 +657,12 @@ function renderPreview(){
   cv.style.width=m.W*cs+'px'; cv.style.height=m.H*cs+'px';
   const pv=Math.min(1,cs*(window.devicePixelRatio||1));
   cv.width=Math.round(m.W*pv); cv.height=Math.round(m.H*pv);
-  draw(cctx,m,pv,{grid:state.grid});
+  cancelAnimationFrame(animRaf);
+  if(m.motion&&!REDUCED){const t0=performance.now(); const tick=now=>{draw(cctx,m,pv,{grid:state.grid,t:now-t0});animRaf=requestAnimationFrame(tick)}; animRaf=requestAnimationFrame(tick)}
+  else draw(cctx,m,pv,{grid:state.grid});
   const d=outDims(state.aspect);
   $('#metaDims').textContent=`${state.aspect.replace('x',':')} · export ${d.w} × ${d.h}`;
-  $('#metaGrid').textContent=`${m.W/UNIT}×${m.H/UNIT} units · ${m.cols}×${m.rows} cells · ${m.blocks.length} tiles`;
+  $('#metaGrid').textContent=`${m.W/UNIT}×${m.H/UNIT} units · ${m.cols}×${m.rows} cells · ${m.blocks.length} tiles${m.motion?' · ▶ motion':''}`;
 }
 new ResizeObserver(schedule).observe(inner);
 window.addEventListener('resize',schedule);
@@ -602,7 +673,48 @@ function renderFull(aspect){
   const c=document.createElement('canvas'); c.width=Math.round(m.W*s); c.height=Math.round(m.H*s);
   draw(c.getContext('2d'),m,s,{grid:false}); return c;
 }
-function download(aspect){
+/* ---------- MP4 export (WebCodecs + mp4-muxer): the motion loop, or a 3 s hold for a still layout ---------- */
+const FPS=30; let exporting=false;
+const loadScript=src=>new Promise((ok,no)=>{const e=document.createElement('script');e.src=src;e.onload=ok;e.onerror=()=>no(new Error('Could not load the MP4 encoder'));document.head.appendChild(e)});
+function xprog(k,text){const x=$('#xstat');x.innerHTML=text+'<i style="width:'+Math.round(k*100)+'%"></i>'}
+async function encoderFor(w,h){
+  if(typeof VideoEncoder==='undefined')throw new Error('MP4 export needs a recent Chrome, Edge, Safari or Firefox');
+  if(!window.Mp4Muxer)await loadScript('https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.min.js');
+  for(const [mux,codec] of [['avc','avc1.640028'],['avc','avc1.4d0028'],['vp9','vp09.00.40.08']]){
+    const cfg={codec,width:w,height:h,bitrate:10e6,framerate:FPS};
+    try{if((await VideoEncoder.isConfigSupported(cfg)).supported)return{mux,cfg}}catch(e){/* try the next codec */}
+  }
+  throw new Error('This browser cannot encode MP4 video');
+}
+async function exportMP4(aspect,dry){
+  const st=Object.assign({},state,{aspect}), m=build(st), d=outDims(aspect), name=`hero-${aspect}-s${state.seed}-${d.w}x${d.h}.mp4`;
+  const total=Math.round((m.motion?T_CYCLE:3000)/1000*FPS);
+  exporting=true; $('#dl').disabled=$('#dlAll').disabled=true;
+  try{
+    if(dry){for(let i=0;i<=20;i++){xprog(i/20,'Rendering '+aspect.replace('x',':')+' MP4…');await new Promise(r=>setTimeout(r,60))}xprog(1,'Exported '+name);return}   // demo clicks show progress only
+    xprog(0,'Preparing…');
+    const {mux,cfg}=await encoderFor(d.w,d.h);
+    const muxer=new Mp4Muxer.Muxer({target:new Mp4Muxer.ArrayBufferTarget(),video:{codec:mux,width:d.w,height:d.h,frameRate:FPS},fastStart:'in-memory'});
+    let failed=null;
+    const enc=new VideoEncoder({output:(c,meta)=>muxer.addVideoChunk(c,meta),error:e=>{failed=e}}); enc.configure(cfg);
+    const c=document.createElement('canvas'); c.width=d.w; c.height=d.h; const cx=c.getContext('2d');
+    for(let i=0;i<total;i++){
+      if(failed)throw failed;
+      draw(cx,m,d.w/m.W,{grid:false,t:i*1000/FPS});
+      const f=new VideoFrame(c,{timestamp:Math.round(i*1e6/FPS),duration:Math.round(1e6/FPS)});
+      enc.encode(f,{keyFrame:i%(FPS*2)===0}); f.close();
+      if(enc.encodeQueueSize>6||i%10===0){xprog(i/total,`Rendering ${aspect.replace('x',':')} MP4… ${Math.round(i/total*100)}%`);await new Promise(r=>setTimeout(r,0))}
+    }
+    await enc.flush(); if(failed)throw failed; enc.close(); muxer.finalize();
+    const blob=new Blob([muxer.target.buffer],{type:'video/mp4'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    xprog(1,`Saved ${name} (${(blob.size/1048576).toFixed(1)} MB)`);
+  }catch(err){xprog(0,'Export failed: '+err.message)}
+  finally{exporting=false; $('#dl').disabled=$('#dlAll').disabled=false}
+}
+function download(aspect,dry){
+  if(state.fmt==='mp4')return exportMP4(aspect,dry);
   return new Promise(res=>{
     const c=renderFull(aspect), type={png:'image/png',jpg:'image/jpeg',webp:'image/webp'}[state.fmt];
     c.toBlob(b=>{
@@ -612,8 +724,8 @@ function download(aspect){
     },type,.92);
   });
 }
-$('#dl').addEventListener('click',()=>download(state.aspect));
-$('#dlAll').addEventListener('click',async()=>{for(const a of Object.keys(ASPECTS)){await download(a);await new Promise(r=>setTimeout(r,400))}});
+$('#dl').addEventListener('click',e=>download(state.aspect,!e.isTrusted));
+$('#dlAll').addEventListener('click',async e=>{const dry=!e.isTrusted;for(const a of Object.keys(ASPECTS)){await download(a,dry);await new Promise(r=>setTimeout(r,400))}});
 
 /* ---------- boot (wait for fonts so text metrics are right) ---------- */
 syncUI(); schedule();

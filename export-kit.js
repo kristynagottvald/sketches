@@ -15,6 +15,7 @@
   const MP4_FPS = 30, GIF_FPS = 15;
   const navH = () => (typeof NAV_H !== 'undefined' ? NAV_H : 0);
 
+  const HOLD_MS = 2600;    // how long a demo preview stays on the finished recording frame before it fades out
   let rec = null;          // the recording in progress
   let saved = null;        // canvas style to restore afterwards
 
@@ -225,6 +226,7 @@
     r.badge.remove(); r.hold.remove();
     const c = canvasEl(); if (c) c.style.cssText = saved || '';
     relayout();
+    if (c && !r.encoder && !err) { c.style.opacity = '0'; void c.offsetWidth; c.style.transition = 'opacity .5s'; c.style.opacity = '1'; setTimeout(() => { c.style.transition = ''; c.style.opacity = ''; }, 600); }   // fade back to the normal view
     if (err) { if (r.encoder) r.encoder.cancel(); r.ui.busy(false); r.ui.progress(0, 'Export failed: ' + err.message); r.reject(err); return; }
     if (!r.encoder) { r.ui.progress(1, 'Preview done'); setTimeout(() => { r.ui.busy(false); r.ui.progress(0, ''); }, 900); r.resolve(null); return; }
     try {
@@ -242,7 +244,7 @@
   /* called after every p5 draw: sample the canvas at the export frame rate, in real time. When the sketch draws slower than
      the export frame rate, the last drawn frame is repeated, so the file always runs for the length that was asked for. */
   function onPost() {
-    const r = rec; if (!r || r.done) return;
+    const r = rec; if (!r || r.done || r.held) return;
     const now = performance.now();
     if (r.t0 === null) r.t0 = now;
     const t = (now - r.t0) / 1000;
@@ -255,7 +257,13 @@
         for (; r.n < upTo; r.n++) if (r.encoder) r.encoder.add(r.cap, r.n);
       } catch (e) { finish(e); return; }
     }
-    if (r.n >= total) { finish(); return; }
+    if (r.n >= total) {
+      if (r.encoder) { finish(); return; }
+      // a demo preview: stay on the framed recording for a few beats, then fade it out
+      r.held = true; r.ui.progress(1, 'Preview done');
+      setTimeout(() => { const c = canvasEl(); if (c) { c.style.transition = 'opacity .45s'; c.style.opacity = '0'; } r.badge.style.transition = 'opacity .45s'; r.badge.style.opacity = '0'; setTimeout(() => finish(), 480); }, HOLD_MS);
+      return;
+    }
     r.ui.progress(t / r.seconds, `Recording ${t.toFixed(1)} / ${r.seconds} s`);
   }
   if (window.p5 && p5.prototype.registerMethod) p5.prototype.registerMethod('post', onPost);

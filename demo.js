@@ -71,9 +71,9 @@
     const css = document.createElement('style');
     css.textContent = `
       .demo-shield{position:fixed;left:0;right:0;bottom:0;top:80px;z-index:90;background:transparent;touch-action:pan-y pinch-zoom;cursor:default;-webkit-user-select:none;user-select:none}
-      .demo-cursor{position:fixed;left:0;top:0;z-index:95;width:20px;height:22px;pointer-events:none;opacity:0;transition:opacity .35s linear;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45));will-change:transform}
+      .demo-cursor{position:absolute;left:0;top:0;z-index:95;width:20px;height:22px;pointer-events:none;opacity:0;transition:opacity .35s linear;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45));will-change:transform}
       .demo-cursor.on{opacity:1}
-      .demo-ripple{position:fixed;z-index:94;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2px solid rgba(255,255,255,.95);box-shadow:0 0 0 1px rgba(20,20,50,.4),inset 0 0 0 1px rgba(20,20,50,.4);pointer-events:none;opacity:0;transform:scale(.25);animation:demo-ripple .6s ease-out forwards}
+      .demo-ripple{position:absolute;z-index:94;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2px solid rgba(255,255,255,.95);box-shadow:0 0 0 1px rgba(20,20,50,.4),inset 0 0 0 1px rgba(20,20,50,.4);pointer-events:none;opacity:0;transform:scale(.25);animation:demo-ripple .6s ease-out forwards}
       @keyframes demo-ripple{0%{opacity:.9;transform:scale(.25)}100%{opacity:0;transform:scale(1)}}
       .demo-cursor svg{display:block;transition:transform .12s ease-out;transform-origin:3px 2px}
       .demo-cursor.down svg{transform:scale(.82)}
@@ -165,11 +165,14 @@
   }
 
   /* one subtle ring where the cursor clicks */
-  const ripple = (x, y) => { const r = document.createElement('div'); r.className = 'demo-ripple'; r.setAttribute(UI, ''); r.style.left = x + 'px'; r.style.top = y + 'px'; document.body.appendChild(r); setTimeout(() => r.remove(), 700); };
+  const ripple = (x, y) => { const r = document.createElement('div'); r.className = 'demo-ripple'; r.setAttribute(UI, ''); r.style.left = (x + scrollX) + 'px'; r.style.top = (y + scrollY) + 'px'; document.body.appendChild(r); setTimeout(() => r.remove(), 700); };
   let pressed = false;
+  // When the visitor scrolls the page the content moves under the cursor, so the cursor moves with it: keep its viewport position in step.
+  let lastSX = scrollX, lastSY = scrollY;
+  window.addEventListener('scroll', () => { pos.x -= scrollX - lastSX; pos.y -= scrollY - lastSY; lastSX = scrollX; lastSY = scrollY; }, { passive: true });
   function setCursor(x, y) {
     pos.x = x; pos.y = y;
-    cursor.style.transform = `translate(${x - 3}px,${y - 2}px)`;
+    cursor.style.transform = `translate(${x - 3 + scrollX}px,${y - 2 + scrollY}px)`;   // page coordinates: the cursor scrolls with the content it is pointing at
     const el = elAt(x, y);
     if (el) { fire(el, 'pointermove', x, y, pressed ? 1 : 0); fire(el, 'mousemove', x, y, pressed ? 1 : 0); }
     return el;
@@ -185,11 +188,23 @@
     move: async (t, ms = 800, fx = .5, fy = .5) => {
       const p = point(t, fx, fy); if (!p) return false;
       ms = Math.max(260, ms * 0.62);   // the cursor travels a touch quicker than the durations the scripts ask for
-      const x0 = pos.x, y0 = pos.y, t0 = performance.now();
+      const x0 = pos.x + scrollX, y0 = pos.y + scrollY, px = p.x + scrollX, py = p.y + scrollY, t0 = performance.now();   // page coordinates
       while (alive) {
         if (!onTop()) await api.idle();
         const k = Math.min(1, (performance.now() - t0) / ms), e = ease(k);
-        setCursor(x0 + (p.x - x0) * e, y0 + (p.y - y0) * e);
+        setCursor(x0 + (px - x0) * e - scrollX, y0 + (py - y0) * e - scrollY);
+        if (k >= 1) break;
+        await new Promise((r) => requestAnimationFrame(r));
+      }
+      return true;
+    },
+    /* glide along a path: fn(k) takes 0..1 and returns the viewport point to be at; it is read every frame, so scrolling can't throw it off */
+    follow: async (fn, ms = 2000) => {
+      const t0 = performance.now();
+      while (alive) {
+        if (!onTop()) await api.idle();
+        const k = Math.min(1, (performance.now() - t0) / ms), q = fn(k);
+        if (q) setCursor(q.x, q.y);
         if (k >= 1) break;
         await new Promise((r) => requestAnimationFrame(r));
       }
@@ -273,9 +288,9 @@
     /* animate a range input to a value, with the cursor riding the thumb */
     slider: async (t, value, ms = 900) => {
       const el = resolve(t); if (!el) return false;
-      const min = +el.min || 0, max = el.max === '' ? 100 : +el.max, r = el.getBoundingClientRect();
+      const min = +el.min || 0, max = el.max === '' ? 100 : +el.max;
       const frac = (v) => (v - min) / ((max - min) || 1);
-      const thumb = (v) => ({ x: r.left + 8 + (r.width - 16) * frac(v), y: r.top + r.height / 2 });
+      const thumb = (v) => { const r = el.getBoundingClientRect(); return { x: r.left + 8 + (r.width - 16) * frac(v), y: r.top + r.height / 2 }; };   // measured live, so a scroll can't leave the cursor off the thumb
       await api.move(thumb(+el.value), 600);
       const el0 = await api.press(80), v0 = +el.value, t0 = performance.now();
       while (alive) {

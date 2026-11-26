@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<script src="../demo.js?v=21"></script>
-<script src="../demo-scripts.js?v=27"></script>
+<script src="../demo.js?v=24"></script>
+<script src="../demo-scripts.js?v=29"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Postmark Award Motion Styles • Kristyna Gottvald</title>
 <meta name="description" content="One motion engine, four award banner styles, with live text, playback, 16:9, 1:1 and 9:16 formats, PNG and MP4 export.">
@@ -525,7 +525,7 @@ async function exportMP4(dry) {
   } finally {
     DPR = Math.min(2, window.devicePixelRatio || 1); version++;
     exporting = false; $mp4.disabled = false;
-    setTimeout(() => { if (!exporting) $xbar.classList.remove('on'); }, 1200);
+    setTimeout(() => { if (!exporting) $xbar.classList.remove('on'); }, dry ? 2600 : 1200);
   }
 }
 $mp4.addEventListener('click', (e) => { if (!$mp4.disabled) exportMP4(!e.isTrusted); });
