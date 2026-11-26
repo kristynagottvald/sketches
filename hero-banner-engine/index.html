@@ -92,6 +92,8 @@ canvas{display:block;image-rendering:auto;background:#000}
   .meta{left:12px;right:12px;bottom:8px;font-size:11px}
   .panel{border-left:0;overflow:visible;padding:16px 16px calc(40px + env(safe-area-inset-bottom))}
 }
+.xstat{font-size:12px;line-height:1.4;opacity:.75;min-height:1.4em;margin-top:6px}
+.xstat i{display:block;height:3px;margin-top:6px;background:currentColor;opacity:.9;width:0;transition:width .15s}
 </style>
 </head>
 <body>
@@ -193,13 +195,14 @@ canvas{display:block;image-rendering:auto;background:#000}
       <summary>Export</summary>
       <div class="fields">
         <div><span class="lbl">File type</span>
-          <div class="seg" data-key="fmt"><button data-v="png">PNG</button><button data-v="jpg">JPG</button><button data-v="webp">WebP</button></div></div>
+          <div class="seg" data-key="fmt"><button data-v="png">PNG</button><button data-v="jpg">JPG</button><button data-v="webp">WebP</button><button data-v="mp4">MP4</button></div></div>
         <div><span class="lbl">Size</span>
           <div class="seg" data-key="size"><button data-v="social">Social 1×</button><button data-v="retina">Retina 2×</button><button data-v="email">Email 600w</button></div></div>
         <div class="btns">
           <button class="btn primary" id="dl">Download <span id="dlLabel"></span></button>
           <button class="btn" id="dlAll">Download all 3 ratios</button>
         </div>
+        <div class="xstat" id="xstat" role="status" aria-live="polite"></div>
       </div>
     </details>
   </aside>
@@ -620,9 +623,10 @@ function syncUI(){
   if(document.activeElement!==$('#seed'))$('#seed').value=state.seed;
   const d=outDims(state.aspect);
   $('#dlLabel').textContent=`${d.w} × ${d.h} ${state.fmt.toUpperCase()}`;
+  if(!exporting)$('#xstat').textContent=state.fmt==='mp4'?(build(state).motion?'MP4 records the full 12.4 s motion loop.':'This layout is still, so the MP4 is a 3 s hold. Shuffle (R) for one of the layouts that moves.'):'';
 }
-function outScale(W){return state.size==='retina'?2:state.size==='email'?600/W:1}
-function outDims(aspect){const A=ASPECTS[aspect],s=outScale(A.w);return{w:Math.round(A.w*s),h:Math.round(A.h*s),s}}
+function outScale(W){return state.size==='email'?600/W:state.fmt==='mp4'?1:state.size==='retina'?2:1}   // video stays at 1x: 2x would exceed what H.264 encoders accept
+function outDims(aspect){const A=ASPECTS[aspect],s=outScale(A.w),ev=n=>state.fmt==='mp4'?Math.round(n/2)*2:Math.round(n);return{w:ev(A.w*s),h:ev(A.h*s),s}}
 
 document.addEventListener('click',e=>{
   const btn=e.target.closest('.seg button,.swatches button'); if(!btn)return;
@@ -669,7 +673,48 @@ function renderFull(aspect){
   const c=document.createElement('canvas'); c.width=Math.round(m.W*s); c.height=Math.round(m.H*s);
   draw(c.getContext('2d'),m,s,{grid:false}); return c;
 }
-function download(aspect){
+/* ---------- MP4 export (WebCodecs + mp4-muxer): the motion loop, or a 3 s hold for a still layout ---------- */
+const FPS=30; let exporting=false;
+const loadScript=src=>new Promise((ok,no)=>{const e=document.createElement('script');e.src=src;e.onload=ok;e.onerror=()=>no(new Error('Could not load the MP4 encoder'));document.head.appendChild(e)});
+function xprog(k,text){const x=$('#xstat');x.innerHTML=text+'<i style="width:'+Math.round(k*100)+'%"></i>'}
+async function encoderFor(w,h){
+  if(typeof VideoEncoder==='undefined')throw new Error('MP4 export needs a recent Chrome, Edge, Safari or Firefox');
+  if(!window.Mp4Muxer)await loadScript('https://cdn.jsdelivr.net/npm/mp4-muxer@5.1.3/build/mp4-muxer.min.js');
+  for(const [mux,codec] of [['avc','avc1.640028'],['avc','avc1.4d0028'],['vp9','vp09.00.40.08']]){
+    const cfg={codec,width:w,height:h,bitrate:10e6,framerate:FPS};
+    try{if((await VideoEncoder.isConfigSupported(cfg)).supported)return{mux,cfg}}catch(e){/* try the next codec */}
+  }
+  throw new Error('This browser cannot encode MP4 video');
+}
+async function exportMP4(aspect,dry){
+  const st=Object.assign({},state,{aspect}), m=build(st), d=outDims(aspect), name=`hero-${aspect}-s${state.seed}-${d.w}x${d.h}.mp4`;
+  const total=Math.round((m.motion?T_CYCLE:3000)/1000*FPS);
+  exporting=true; $('#dl').disabled=$('#dlAll').disabled=true;
+  try{
+    if(dry){for(let i=0;i<=20;i++){xprog(i/20,'Rendering '+aspect.replace('x',':')+' MP4…');await new Promise(r=>setTimeout(r,60))}xprog(1,'Exported '+name);return}   // demo clicks show progress only
+    xprog(0,'Preparing…');
+    const {mux,cfg}=await encoderFor(d.w,d.h);
+    const muxer=new Mp4Muxer.Muxer({target:new Mp4Muxer.ArrayBufferTarget(),video:{codec:mux,width:d.w,height:d.h,frameRate:FPS},fastStart:'in-memory'});
+    let failed=null;
+    const enc=new VideoEncoder({output:(c,meta)=>muxer.addVideoChunk(c,meta),error:e=>{failed=e}}); enc.configure(cfg);
+    const c=document.createElement('canvas'); c.width=d.w; c.height=d.h; const cx=c.getContext('2d');
+    for(let i=0;i<total;i++){
+      if(failed)throw failed;
+      draw(cx,m,d.w/m.W,{grid:false,t:i*1000/FPS});
+      const f=new VideoFrame(c,{timestamp:Math.round(i*1e6/FPS),duration:Math.round(1e6/FPS)});
+      enc.encode(f,{keyFrame:i%(FPS*2)===0}); f.close();
+      if(enc.encodeQueueSize>6||i%10===0){xprog(i/total,`Rendering ${aspect.replace('x',':')} MP4… ${Math.round(i/total*100)}%`);await new Promise(r=>setTimeout(r,0))}
+    }
+    await enc.flush(); if(failed)throw failed; enc.close(); muxer.finalize();
+    const blob=new Blob([muxer.target.buffer],{type:'video/mp4'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    xprog(1,`Saved ${name} (${(blob.size/1048576).toFixed(1)} MB)`);
+  }catch(err){xprog(0,'Export failed: '+err.message)}
+  finally{exporting=false; $('#dl').disabled=$('#dlAll').disabled=false}
+}
+function download(aspect,dry){
+  if(state.fmt==='mp4')return exportMP4(aspect,dry);
   return new Promise(res=>{
     const c=renderFull(aspect), type={png:'image/png',jpg:'image/jpeg',webp:'image/webp'}[state.fmt];
     c.toBlob(b=>{
@@ -679,8 +724,8 @@ function download(aspect){
     },type,.92);
   });
 }
-$('#dl').addEventListener('click',()=>download(state.aspect));
-$('#dlAll').addEventListener('click',async()=>{for(const a of Object.keys(ASPECTS)){await download(a);await new Promise(r=>setTimeout(r,400))}});
+$('#dl').addEventListener('click',e=>download(state.aspect,!e.isTrusted));
+$('#dlAll').addEventListener('click',async e=>{const dry=!e.isTrusted;for(const a of Object.keys(ASPECTS)){await download(a,dry);await new Promise(r=>setTimeout(r,400))}});
 
 /* ---------- boot (wait for fonts so text metrics are right) ---------- */
 syncUI(); schedule();
