@@ -240,13 +240,22 @@ D['mail-stack'] = async (d) => {
   await d.wait(600);
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);
   if (s[0]) await d.slider(s[0], 100, 900);
-  // record a 1:1 loop while the cursor drifts slowly across the framed square, so each postcard it passes is hovered in the recording
+  // record a 1:1 loop while the cursor follows the ribbon's curve, so each postcard it passes is hovered in the recording
   await exportDemo(d, 'MP4', '1:1', async () => {
     const c = d.$('canvas'); if (!c) return;
-    const r = c.getBoundingClientRect(), at = (fx, fy) => ({ x: r.left + r.width * fx, y: r.top + r.height * fy });
-    d.say('The cursor glides across: every postcard it passes is recorded');
-    await d.move(at(0.1, 0.5), 700);
-    await d.move(at(0.9, 0.5), 4300);
+    d.say('The cursor follows the curve of the stack');
+    // sample the ribbon's own spline (the sketch's `stack`) and keep the part that is on screen
+    const spread = () => (typeof curveSpreadSlider !== 'undefined' ? curveSpreadSlider.value() : 100) / 100;
+    const onCv = (q) => q.x > 70 && q.x < width - 70 && q.y > 70 && q.y < height - 70;
+    let lo = null, hi = null;
+    for (let i = 0; i <= 100; i++) { const q = stack.getSplinePos(i / 100, spread()); if (onCv(q)) { if (lo === null) lo = i / 100; hi = i / 100; } }
+    if (lo === null) return;
+    const along = (k) => {
+      const q = stack.getSplinePos(lo + (hi - lo) * k, spread()), r = c.getBoundingClientRect();
+      return { x: r.left + q.x * r.width / width, y: r.top + q.y * r.height / height };   // canvas px to the framed square on screen
+    };
+    await d.move(along(0), 600);
+    await d.follow(along, 2600);
   });
 };
 

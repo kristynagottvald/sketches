@@ -198,6 +198,18 @@
       }
       return true;
     },
+    /* glide along a path: fn(k) takes 0..1 and returns the viewport point to be at; it is read every frame, so scrolling can't throw it off */
+    follow: async (fn, ms = 2000) => {
+      const t0 = performance.now();
+      while (alive) {
+        if (!onTop()) await api.idle();
+        const k = Math.min(1, (performance.now() - t0) / ms), q = fn(k);
+        if (q) setCursor(q.x, q.y);
+        if (k >= 1) break;
+        await new Promise((r) => requestAnimationFrame(r));
+      }
+      return true;
+    },
     press: async (hold = 120) => {
       const el = elAt(pos.x, pos.y); pressed = true; cursor.classList.add('down'); ripple(pos.x, pos.y);
       fire(el, 'pointerdown', pos.x, pos.y, 1); fire(el, 'mousedown', pos.x, pos.y, 1);
