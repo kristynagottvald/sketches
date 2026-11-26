@@ -207,13 +207,14 @@ D['hero-banner-engine'] = async (d) => {
   d.setValue('#eyebrow', "Lob's No-Code Design Suite"); await d.wait(1000);
   d.say('Shuffle the visuals');
   await d.click('#shuffle'); await d.wait(1200);
+  await d.click('#shuffle'); await d.wait(2600);   // hold on the final banner for a beat before resetting and looping
   if (aspect) await d.click(aspect);
   if (layout) await d.click(layout);
   if (anchor) await d.click(anchor);
   if (th[0]) await d.click(th[0]);
   d.setValue('#heading', hv);
   d.setValue('#eyebrow', ev);
-  await d.wait(600);
+  await d.wait(1600);   // let the reset banner settle before the loop starts again
 };
 
 /* No-Code Binary Motif: the mouse flips the grid in a wave */
