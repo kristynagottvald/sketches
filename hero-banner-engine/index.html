@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <script src="../demo.js?v=24"></script>
-<script src="../demo-scripts.js?v=29"></script>
+<script src="../demo-scripts.js?v=30"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Banner Template Studio • Kristyna Gottvald</title>
 <meta name="description" content="Pick a format, edit the copy and style, and preview a banner template live.">
@@ -252,7 +252,7 @@ const DEFAULTS = {
   showSub:false, eyebrowPos:'above', marker:false, typeScale:1,
   layout:'stair', anchor:'middle', logo:'none', logoText:'Lob',
   theme:'indigo', module:60, density:.85, spread:.5, variety:.5, dither:.3, glyphs:true,
-  seed:2417, grid:false, fmt:'png', size:'social'
+  seed:2417, grid:false, fmt:'png', size:'social', motion:'auto'
 };
 const state = Object.assign({}, DEFAULTS);
 
@@ -450,7 +450,7 @@ function build(S){
   }
   /* ---- motion: ~25% of layouts (picked by seed) animate their glyph tiles ---- */
   const glyphs=blocks.filter(b=>b.type==='glyph');
-  const motion=glyphs.length>0 && (((Math.imul(+S.seed||1,2654435761)>>>14)&3)===0);
+  const motion=glyphs.length>0 && S.motion!=='off' && (S.motion==='on' || (((Math.imul(+S.seed||1,2654435761)>>>14)&3)===0));   // 'auto' is about 25% of seeds; the demo forces it on or off
   if(motion){
     const mr=mulberry32((+S.seed||1)*31+7), order=glyphs.map((_,i)=>i);
     for(let i=order.length-1;i>0;i--){const j=Math.floor(mr()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
@@ -691,7 +691,7 @@ async function exportMP4(aspect,dry){
   const total=Math.round((m.motion?T_CYCLE:3000)/1000*FPS);
   exporting=true; $('#dl').disabled=$('#dlAll').disabled=true;
   try{
-    if(dry){for(let i=0;i<=20;i++){xprog(i/20,'Rendering '+aspect.replace('x',':')+' MP4…');await new Promise(r=>setTimeout(r,60))}xprog(1,'Exported '+name);return}   // demo clicks show progress only
+    if(dry){const n=m.motion?80:20;for(let i=0;i<=n;i++){xprog(i/n,'Rendering '+aspect.replace('x',':')+' MP4…');await new Promise(r=>setTimeout(r,60))}xprog(1,'Exported '+name);return}   // demo clicks show progress only
     xprog(0,'Preparing…');
     const {mux,cfg}=await encoderFor(d.w,d.h);
     const muxer=new Mp4Muxer.Muxer({target:new Mp4Muxer.ArrayBufferTarget(),video:{codec:mux,width:d.w,height:d.h,frameRate:FPS},fastStart:'in-memory'});
