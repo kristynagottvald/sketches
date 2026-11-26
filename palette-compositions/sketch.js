@@ -54,7 +54,7 @@ let bgSlot = 0;           // which palette slot is the background
 const GRID = 40, STRIPE = 8, LINE_W = 2;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight - NAV_H);
+  createCanvas(...ExportKit.size());
   noLoop();
   newLayout();
   buildPanel();
@@ -218,7 +218,7 @@ function mousePressed(e) {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight - NAV_H);
+  resizeCanvas(...ExportKit.size());
   newLayout();
   redraw();
 }

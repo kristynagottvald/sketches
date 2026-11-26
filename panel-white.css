@@ -15,3 +15,12 @@
 .wp button.pri:hover{background:#2a2a2a}
 .wp button:focus-visible,.wp input:focus-visible,.wp select:focus-visible,.wp textarea:focus-visible{outline:2px solid #3d4ee0;outline-offset:2px}
 .wp .sec{padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid #ececec}
+.wp.wp-dock{position:fixed;right:0;bottom:0;width:300px;border-radius:0;border-width:0 0 0 1px;box-shadow:none;overflow-y:auto;z-index:10}
+@media (max-width:699px){.wp.wp-dock{left:12px;right:12px;width:auto;border-radius:14px;border-width:1px;box-shadow:0 8px 28px rgba(0,0,0,.12)}}
+/* the export kit's own controls keep their look inside a .wp panel */
+.wp .xk-btn{background:#111;color:#fff;padding:10px 8px}
+.wp .xk-btn:hover{background:#2a2a2a}
+.wp .xk-btn.ghost{background:#f3f3f3;color:#111}
+.wp .xk-seg button{padding:6px 10px;background:transparent}
+.wp .xk-seg button:hover{background:#e8e8e8}
+.wp .xk-seg button[aria-pressed=true]{background:#fff;color:#111}

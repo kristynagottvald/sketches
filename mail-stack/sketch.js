@@ -11,7 +11,7 @@ let baseWaypoints;
 let currentOffsets;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight - NAV_H);
+  createCanvas(...ExportKit.size());
   
   // Initialize base layout positions (percentages of width/height)
   baseWaypoints = [
@@ -33,7 +33,7 @@ function setup() {
   // --- UI Setup ---
   uiContainer = createDiv('');
   uiContainer.style('position', 'absolute').style('right', '20px').style('left', 'auto').style('top', (NAV_H + 20) + 'px');
-  uiContainer.addClass('wp');   // white panel, see ../panel-white.css
+  uiContainer.addClass('wp'); uiContainer.addClass('wp-dock');   // white docked panel, see ../panel-white.css
   uiContainer.style('z-index', '10');   // stays above the grey recording backdrop
   uiContainer.style('padding', '20px');
   uiContainer.style('max-width', '240px');
@@ -90,8 +90,8 @@ function setup() {
 
 function layoutPanel() {
   if (windowWidth >= 700) {
-    uiContainer.style('position', 'absolute').style('display', 'block').style('left', 'auto').style('right', '20px').style('bottom', 'auto')
-      .style('max-width', '240px').style('max-height', 'none').style('overflow', 'visible').style('top', (NAV_H + 20) + 'px');
+    uiContainer.style('position', 'fixed').style('display', 'block').style('left', 'auto').style('right', '0px').style('bottom', '0px')
+      .style('width', '300px').style('max-width', 'none').style('max-height', 'none').style('overflow', 'auto').style('top', NAV_H + 'px');
     panelBtn.hide();
     return;
   }

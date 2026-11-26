@@ -30,7 +30,7 @@ function loadOverlays() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight - NAV_H);
+  createCanvas(...ExportKit.size());
   textAlign(CENTER, CENTER);
   textStyle(NORMAL); 
   textFont('Arial'); 
