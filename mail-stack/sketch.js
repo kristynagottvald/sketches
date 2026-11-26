@@ -34,6 +34,7 @@ function setup() {
   uiContainer = createDiv('');
   uiContainer.style('position', 'absolute').style('right', '20px').style('left', 'auto').style('top', (NAV_H + 20) + 'px');
   uiContainer.addClass('wp');   // white panel, see ../panel-white.css
+  uiContainer.style('z-index', '10');   // stays above the grey recording backdrop
   uiContainer.style('padding', '20px');
   uiContainer.style('max-width', '240px');
   
