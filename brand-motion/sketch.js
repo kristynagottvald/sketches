@@ -150,7 +150,7 @@ function placeTextFarRight() {
 }
 
 function draw() {
-  background(COLORS.navy);
+  background('#efefef');   // grey preview panel behind the artboard
 
   // Advance master time based on Speed slider
   let speed = sliders.speed.value();
@@ -964,13 +964,13 @@ function updateSliderLabels() {
 }
 
 function drawFooterInfo(x, y, w) {
-  fill(COLORS.robinsEgg);
+  fill('#111111');
   textSize(11);
   textAlign(LEFT, TOP);
   textStyle(BOLD);
   text("GUIDELINE:", x, y);
 
-  fill(COLORS.matcha);
+  fill('#777777');
   textStyle(NORMAL);
   let guidelines = {
     'Grow':   "One circle that gently grows and shrinks.",

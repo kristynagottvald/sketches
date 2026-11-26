@@ -55,6 +55,7 @@
     .xk-bar i{display:block;height:100%;width:0;background:#111}
     .xk.busy .xk-bar{display:block}
     .xk-status{min-height:1em;font-size:12px;color:#777}
+    .xk-back{position:fixed;left:0;right:0;bottom:0;z-index:8;background:#efefef;pointer-events:none}
     .xk-rec{position:absolute;z-index:9;pointer-events:none;outline:1px solid rgba(255,255,255,.35)}
     .xk-rec span{position:absolute;left:10px;top:10px;padding:4px 8px;border-radius:4px;background:rgba(0,0,0,.6);color:#fff;
       font:600 11px system-ui,sans-serif;letter-spacing:.04em}
@@ -133,7 +134,7 @@
     const k = Math.min(sw / W, sh / H) * 0.88;
     const w = Math.round(W * k), h = Math.round(H * k);
     const x = Math.round((sw - w) / 2), y = Math.round(top + (sh - h) / 2);
-    Object.assign(c.style, { position: 'absolute', left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
+    Object.assign(c.style, { position: 'absolute', left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px', zIndex: 9 });
     Object.assign(rec.badge.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' });
   }
 
@@ -208,11 +209,12 @@
         const cap = el('canvas'); cap.width = cw; cap.height = ch;
         const badge = el('div', { className: 'xk-rec' }, `<span>REC ${ratio} · ${fmt.toUpperCase()}</span>`);
         document.body.appendChild(badge);
+        const back = el('div', { className: 'xk-back' }); back.style.top = navH() + 'px'; document.body.appendChild(back);   // grey panel behind the framed recording
         saved = c.style.cssText;
         const hold = el('div'); hold.style.height = c.getBoundingClientRect().height + 'px';   // keeps the page below in place
         c.before(hold);
         rec = { size: SIZES[ratio], fps: encoder ? encoder.fps : MP4_FPS, seconds, t0: null, n: 0, cap, ctx: cap.getContext('2d', { willReadFrequently: fmt === 'gif' }),
-          encoder, ui, badge, hold, resolve, reject, name: opts.name || 'motion', fmt, ratio, done: false };
+          encoder, ui, badge, back, hold, resolve, reject, name: opts.name || 'motion', fmt, ratio, done: false };
         relayout();
         frameCanvas();
         window.addEventListener('resize', frameCanvas);
@@ -225,7 +227,7 @@
     r.done = true;
     window.removeEventListener('resize', frameCanvas);
     rec = null;
-    r.badge.remove(); r.hold.remove();
+    r.badge.remove(); r.hold.remove(); r.back.remove();
     const c = canvasEl(); if (c) c.style.cssText = saved || '';
     relayout();
     if (c && !r.encoder && !err) { c.style.opacity = '0'; void c.offsetWidth; c.style.transition = 'opacity .5s'; c.style.opacity = '1'; setTimeout(() => { c.style.transition = ''; c.style.opacity = ''; }, 600); }   // fade back to the normal view
