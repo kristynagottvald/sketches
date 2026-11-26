@@ -987,7 +987,8 @@ function windowResized() {
   // slide the panel's controls along with its right-hand edge
   const next = windowWidth - PANEL_W, dx = next - UIX;
   if (dx) {
-    document.querySelectorAll('body > *').forEach((el) => {
+    // the controls live inside <main> (moved there in setup), the palette menu stays in <body>
+    document.querySelectorAll('main > *, body > *').forEach((el) => {
       if (el.tagName === 'CANVAS' || el.tagName === 'MAIN' || el.tagName === 'HEADER' || el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el.hasAttribute('data-demo-ui')) return;
       if (el.style.position === 'absolute' && el.style.left) el.style.left = (parseFloat(el.style.left) + dx) + 'px';
     });
