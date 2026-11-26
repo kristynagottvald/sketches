@@ -61,8 +61,16 @@ let paletteLowerTop = 0;
 let paletteBaseH = 48;
 const PALETTE_WRAP_H = 92;
 const PAD = 14;          // inner padding of the settings boxes
-const PANEL_W = 320;     // the controls panel is the right-hand 320px
-let UIX = 0;             // x of the panel's left edge: width - PANEL_W (set in setup and on resize)
+const PANEL_W = 320;     // the controls panel is 320px wide: docked on the right, or centred under the artboard on phones
+let UIX = 0;             // x of the panel's left edge (set by applyLayout)
+let OY = 0;              // phones: how far the panel (and its controls) sit below the top of the page, i.e. the artboard's height
+let PANEL_H = 820;       // phones: height of the stacked panel (measured from its lowest control)
+const isPhoneLayout = () => windowWidth < 760;
+// the artboard rectangle on the canvas: beside the docked panel on wide screens, filling the width above the panel on phones
+function vp() {
+  if (isPhoneLayout()) return { x: 12, y: 12, w: width - 24, h: OY - 50 };
+  return { x: 30, y: 20, w: width - 370, h: height - 100 };
+}
 const COL1 = 15 + PAD;   // left column x, inside the panel
 const COL2 = 165;        // right column x
 let paletteWrap;
@@ -98,7 +106,7 @@ let t = 0;
 
 function setup() {
   let cnv = createCanvas(windowWidth, windowHeight - HEADER_H);
-  UIX = windowWidth - PANEL_W;
+  UIX = windowWidth - PANEL_W;   // the controls are first built for the docked layout, then applyLayout moves them
   cnv.parent(document.querySelector('main'));
 
   // Dynamically load Google Font 'Poppins'
@@ -120,13 +128,14 @@ function setup() {
     .filter(el => el.style.position === 'absolute' && el !== paletteMenu)
     .forEach(el => main.appendChild(el));
 
+  applyLayout();
   placeTextFarRight();
 }
 
 // Pushes the text block to the far right of the viewport frame (right-aligned with a margin).
 // The text is drawn centered on textX, so textX = right edge - margin - half the text width.
 function placeTextFarRight() {
-  let vpW = width - 370;
+  let vpW = vp().w;
   let half = floor(vpW / 2);
 
   // Let POS X span the whole viewport
@@ -159,27 +168,30 @@ function draw() {
   // Sidebar Panel Background
   noStroke();
   fill('#ffffff');   // the white panel look shared with the other tools
-  rect(UIX, 0, PANEL_W, height + 10);
-  fill('#e6e6e6');
-  rect(UIX, 0, 1, height + 10);
+  if (isPhoneLayout()) {
+    rect(0, OY, width, PANEL_H + 10);
+    fill('#e6e6e6');
+    rect(0, OY, width, 1);
+  } else {
+    rect(UIX, 0, PANEL_W, height + 10);
+    fill('#e6e6e6');
+    rect(UIX, 0, 1, height + 10);
+  }
 
   // Header in Sidebar
   fill('#111111');
   textSize(15);
   textStyle(BOLD);
   textAlign(LEFT, TOP);
-  text("grubclub", UIX + 25, 24);
+  text("grubclub", UIX + 25, OY + 24);
 
   fill('#777777');
   textSize(12);
   textStyle(NORMAL);
-  text("Motion system", UIX + 25, 46);
+  text("Motion system", UIX + 25, OY + 46);
 
   // Canvas Viewport Frame Coordinates
-  let vpX = 30;
-  let vpY = 20;
-  let vpW = width - 370;
-  let vpH = height - 100;
+  const { x: vpX, y: vpY, w: vpW, h: vpH } = vp();
 
   // Draw base background for the viewport card
   fill(slotColor(0));
@@ -227,10 +239,7 @@ function draw() {
 // =============================================================
 
 function mousePressed() {
-  let vpX = 30;
-  let vpY = 20;
-  let vpW = width - 370;
-  let vpH = height - 100;
+  const { x: vpX, y: vpY, w: vpW, h: vpH } = vp();
 
   if (mouseX >= vpX && mouseX <= vpX + vpW && mouseY >= vpY && mouseY <= vpY + vpH) {
     let mX = mouseX - (vpX + vpW / 2);
@@ -292,10 +301,7 @@ function rememberPickup() {
 }
 
 function mouseMoved() {
-  let vpX = 30;
-  let vpY = 20;
-  let vpW = width - 370;
-  let vpH = height - 100;
+  const { x: vpX, y: vpY, w: vpW, h: vpH } = vp();
 
   let mX = mouseX - (vpX + vpW / 2);
   let mY = mouseY - (vpY + vpH / 2);
@@ -991,17 +997,36 @@ function drawFooterInfo(x, y, w) {
   text(guidelines[currentMotif], x + labelW + 8, y, w - labelW - 8);
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight - HEADER_H);
-  // slide the panel's controls along with its right-hand edge
-  const next = windowWidth - PANEL_W, dx = next - UIX;
-  if (dx) {
+// Moves the controls and sizes the canvas for the current screen: docked beside the artboard, or (phones) stacked under it.
+function measurePanelH() {
+  let low = 0;
+  document.querySelectorAll('main > *').forEach((el) => {
+    if (el.tagName === 'CANVAS' || el.style.position !== 'absolute') return;
+    low = Math.max(low, (parseFloat(el.style.top) || 0) - OY + el.offsetHeight);
+  });
+  return low + 28;
+}
+function applyLayout() {
+  const phone = isPhoneLayout();
+  const nextUIX = phone ? Math.max(0, Math.floor((windowWidth - PANEL_W) / 2)) : windowWidth - PANEL_W;
+  const nextOY = phone ? Math.round((windowHeight - HEADER_H) * 0.5) : 0;
+  const dx = nextUIX - UIX, dy = nextOY - OY;
+  if (dx || dy) {
     // the controls live inside <main> (moved there in setup), the palette menu stays in <body>
     document.querySelectorAll('main > *, body > *').forEach((el) => {
       if (el.tagName === 'CANVAS' || el.tagName === 'MAIN' || el.tagName === 'HEADER' || el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el.hasAttribute('data-demo-ui')) return;
-      if (el.style.position === 'absolute' && el.style.left) el.style.left = (parseFloat(el.style.left) + dx) + 'px';
+      if (el.style.position !== 'absolute') return;
+      if (dx && el.style.left) el.style.left = (parseFloat(el.style.left) + dx) + 'px';
+      if (dy && el.style.top) el.style.top = (parseFloat(el.style.top) + dy) + 'px';
     });
-    UIX = next;
+    if (dy) { lowerEls.forEach(o => { o.top += dy; }); paletteLowerTop += dy; }
+    UIX = nextUIX; OY = nextOY;
   }
+  PANEL_H = measurePanelH();
+  resizeCanvas(windowWidth, phone ? OY + PANEL_H : windowHeight - HEADER_H);
+}
+
+function windowResized() {
+  applyLayout();
   placeTextFarRight();
 }
