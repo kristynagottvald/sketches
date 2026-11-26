@@ -107,7 +107,9 @@ function setup() {
   fontLink.rel = 'stylesheet';
   document.head.appendChild(fontLink);
 
+  // make sure every Poppins weight is loaded before the canvas text relies on it
   textFont('Poppins');
+  ['400','600','700','800'].forEach(w => document.fonts && document.fonts.load(w + ' 16px Poppins').catch(() => {}));
   createUI();
 
   // Keep the controls inside <main> so they sit below the site header with the canvas
