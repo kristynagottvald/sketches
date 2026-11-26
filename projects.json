@@ -175,7 +175,7 @@
     "title": "Palette Compositions",
     "category": "Interactive Tool",
     "year": 2026,
-    "thumbnail": "palette-compositions/thumbnail.jpg?v=17",
+    "thumbnail": "palette-compositions/thumbnail.jpg?v=18",
     "url": "palette-compositions/",
     "blurb": "Randomise the palette, the background or the layout of line, grid and stripe compositions, then export SVG or PNG.",
     "about": "Palette Compositions builds layouts from lines, grids and stripes with contrast rules that keep every colour pairing legible. Use the panel on the right to randomise the colours only, the background only or the whole layout, then export the composition as an SVG or PNG. Click the canvas for a new layout.",
