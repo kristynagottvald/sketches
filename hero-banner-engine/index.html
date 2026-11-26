@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<script src="../demo.js?v=21"></script>
+<script src="../demo.js?v=23"></script>
 <script src="../demo-scripts.js?v=27"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Banner Template Studio • Kristyna Gottvald</title>
@@ -238,6 +238,9 @@ const THEMES = {
 };
 const FONT = '"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif';
 const SERIF = 'Georgia,"Times New Roman",serif';
+/* motion timeline (ms): hold, tiles fly off in a stagger, the Aa tiles beneath type, then flip to the real tiles */
+const T_HOLD=1500, T_EXIT_SPREAD=3200, T_EXIT_DUR=2400, T_FLIP_START=7100, T_FLIP_STAGGER=200, T_FLIP_DUR=950, T_CYCLE=12400;
+const easeIO=t=>{t=Math.min(1,Math.max(0,t));return -(Math.cos(Math.PI*t)-1)/2};
 const BAYER = [[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
 
 const DEFAULTS = {
@@ -383,8 +386,8 @@ function build(S){
       if(p<.05)p=0;
     }
     if(A.big){   // tall format: copy sits high; tiles start a clear gap below it, thin near the copy and thicken toward the bottom edge
-      const y0f=textRect.y1+3.5*UNIT+(1-x)*4*UNIT, tf=py+j*UNIT*1.2;   // the stair climbs to the right: the cluster starts higher on the right edge
-      p=tf<y0f?0:dn*(.2+.6*smooth(y0f,H-2*UNIT,tf));
+      const y0f=textRect.y1+3.5*UNIT+(1-x)*6*UNIT, tf=py+j*UNIT*1.2;   // the stair climbs to the right: the cluster starts higher on the right edge
+      p=tf<y0f?0:dn*(.12+.58*smooth(y0f,H-2*UNIT,tf));
     }
     field[idx(c,r)]=Math.min(1,Math.max(0,p));
   }
@@ -442,7 +445,21 @@ function build(S){
       b.dir=DIRS[Math.floor(rng()*DIRS.length)]; b.top=rng()<.2?.19:0;
     }
   }
-  return {W,H,M,cols,rows,blocks,texts,wm,logoTile,textRect,theme:th,S,margin:MARGIN,forb,
+  /* ---- motion: ~25% of layouts (picked by seed) animate their glyph tiles ---- */
+  const glyphs=blocks.filter(b=>b.type==='glyph');
+  const motion=glyphs.length>0 && (((Math.imul(+S.seed||1,2654435761)>>>14)&3)===0);
+  if(motion){
+    const mr=mulberry32((+S.seed||1)*31+7), order=glyphs.map((_,i)=>i);
+    for(let i=order.length-1;i>0;i--){const j=Math.floor(mr()*(i+1));[order[i],order[j]]=[order[j],order[i]]}
+    glyphs.forEach((b,k)=>{
+      const a=mr()*Math.PI*2, serif=mr()<.5, bgs=th.tiles.filter(c=>c!==b.fill);
+      const abg=bgs[k%bgs.length], inks=[C.indigo,C.lime].filter(c=>contrast(c,abg)>=2);
+      b.mo={dx:Math.cos(a),dy:Math.sin(a),rot:(mr()-.5)*.22,delay:mr()*T_EXIT_SPREAD,order:order[k],
+        types:k%2===1, tgt:serif?'Gg':'Aa',
+        a:{fill:abg,fg:inks[0]||C.indigo,glyph:'Aa',serif,fs:serif?.72:.82}};
+    });
+  }
+  return {W,H,M,cols,rows,blocks,texts,wm,logoTile,textRect,theme:th,S,margin:MARGIN,forb,motion,
           logoText:S.logoText||''};
 }
 
@@ -486,8 +503,50 @@ function drawSelector(ctx,x,y,w,h,sc){
   for(const [hx,hy] of [[x,y],[x+w,y],[x,y+h],[x+w,y+h]]){ctx.fillRect(hx-n/2,hy-n/2,n,n);ctx.strokeRect(hx-n/2,hy-n/2,n,n)}
   ctx.restore();
 }
+function drawFace(ctx,f,x,y,s,sc,sel){
+  ctx.fillStyle=f.fill; fillR(ctx,x,y,s,s,sc);
+  drawGlyph(ctx,f,x,y,s,sc);
+  if(f.caret){   // blinking text caret after the typed letters
+    ctx.save();ctx.scale(sc,sc);ctx.beginPath();ctx.rect(x,y,s,s);ctx.clip();
+    ctx.font='italic normal '+s*f.fs+'px '+SERIF; if(!f.serif)ctx.font='normal bold '+s*f.fs+'px Arial,Helvetica,sans-serif';
+    const w=ctx.measureText(f.glyph).width, capH=s*f.fs*.72, base=y+s*.5+s*f.fs*.35;
+    ctx.fillStyle=f.fg; ctx.fillRect(x+s/2+w/2+6,base-capH,5,capH); ctx.restore();
+  }
+  if(sel)drawSelector(ctx,x,y,s,s,sc);
+}
+function drawMotion(ctx,m,sc,t){
+  const {M,theme}=m, gl=m.blocks.filter(b=>b.type==='glyph'), travel=Math.hypot(m.W,m.H);
+  for(const b of gl){
+    const o=b.mo, x=b.c*M, y=b.r*M, s=b.w*M;
+    const real={fill:b.fill,fg:b.fg,glyph:b.glyph,serif:b.serif,fs:b.fs};
+    // face under the flying tile: "Aa" that types out a new letter pair, then flips to the real tile
+    const a=Object.assign({},o.a), u=t-(T_HOLD+o.delay+T_EXIT_DUR*.7);
+    if(o.types){
+      const seq=['Aa','A','','',o.tgt[0],o.tgt], step=150;
+      if(u>=0&&t<T_FLIP_START){a.glyph=seq[Math.min(Math.floor(u/step),seq.length-1)]; a.caret=u<seq.length*step+700&&Math.floor(t/260)%2===0}
+      else if(t>=T_FLIP_START)a.glyph=o.tgt;
+    }
+    const p=easeIO((t-T_FLIP_START-o.order*T_FLIP_STAGGER)/T_FLIP_DUR);
+    if(p<=0)drawFace(ctx,a,x,y,s,sc,false);
+    else if(p>=1)drawFace(ctx,real,x,y,s,sc,true);
+    else{
+      ctx.fillStyle=theme.bg; fillR(ctx,x,y,s,s,sc);
+      const k=Math.max(Math.abs(1-2*p),.001), cy=(y+s/2)*sc;
+      ctx.save(); ctx.translate(0,cy); ctx.scale(1,k); ctx.translate(0,-cy);
+      drawFace(ctx,p<.5?a:real,x,y,s,sc,p>=.5);
+      ctx.fillStyle='rgba(0,0,0,'+(.31*(1-k)).toFixed(3)+')'; fillR(ctx,x,y,s,s,sc);
+      ctx.restore();
+    }
+    const off=easeIO((t-T_HOLD-o.delay)/T_EXIT_DUR);
+    if(off<1){   // the real tile, selected, drifts off along its own vector
+      const px=x+o.dx*travel*off, py=y+o.dy*travel*off, cx=(px+s/2)*sc, cy2=(py+s/2)*sc;
+      ctx.save(); ctx.translate(cx,cy2); ctx.rotate(o.rot*off); ctx.translate(-cx,-cy2);
+      drawFace(ctx,real,px,py,s,sc,true); ctx.restore();
+    }
+  }
+}
 function draw(ctx,m,sc,opts={}){
-  const {W,H,M,theme}=m;
+  const {W,H,M,theme}=m, anim=m.motion&&opts.t!=null;
   ctx.setTransform(1,0,0,1,0,0);
   ctx.fillStyle=theme.bg; ctx.fillRect(0,0,Math.ceil(W*sc),Math.ceil(H*sc));
 
@@ -495,9 +554,10 @@ function draw(ctx,m,sc,opts={}){
     const x=b.c*M,y=b.r*M,w=b.w*M,h=b.h*M;
     ctx.fillStyle=b.fill; fillR(ctx,x,y,w,h,sc);
     if(b.type==='dither')drawDither(ctx,b,x,y,w,h,sc);
-    else if(b.type==='glyph')drawGlyph(ctx,b,x,y,w,sc);
+    else if(b.type==='glyph'&&!anim)drawGlyph(ctx,b,x,y,w,sc);
   }
-  for(const b of m.blocks)if(b.type==='glyph')drawSelector(ctx,b.c*M,b.r*M,b.w*M,b.h*M,sc);
+  if(anim)drawMotion(ctx,m,sc,opts.t%T_CYCLE);
+  else for(const b of m.blocks)if(b.type==='glyph')drawSelector(ctx,b.c*M,b.r*M,b.w*M,b.h*M,sc);
   if(m.logoTile){
     const L=m.logoTile,x=L.c*M,y=L.r*M,w=L.w*M;
     ctx.fillStyle=theme.logoTile; fillR(ctx,x,y,w,w,sc);
@@ -583,7 +643,8 @@ document.addEventListener('keydown',e=>{
 });
 
 /* ---------- preview ---------- */
-let raf=0;
+let raf=0, animRaf=0;
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function schedule(){cancelAnimationFrame(raf);raf=requestAnimationFrame(renderPreview)}
 function renderPreview(){
   const m=build(state);
@@ -592,10 +653,12 @@ function renderPreview(){
   cv.style.width=m.W*cs+'px'; cv.style.height=m.H*cs+'px';
   const pv=Math.min(1,cs*(window.devicePixelRatio||1));
   cv.width=Math.round(m.W*pv); cv.height=Math.round(m.H*pv);
-  draw(cctx,m,pv,{grid:state.grid});
+  cancelAnimationFrame(animRaf);
+  if(m.motion&&!REDUCED){const t0=performance.now(); const tick=now=>{draw(cctx,m,pv,{grid:state.grid,t:now-t0});animRaf=requestAnimationFrame(tick)}; animRaf=requestAnimationFrame(tick)}
+  else draw(cctx,m,pv,{grid:state.grid});
   const d=outDims(state.aspect);
   $('#metaDims').textContent=`${state.aspect.replace('x',':')} · export ${d.w} × ${d.h}`;
-  $('#metaGrid').textContent=`${m.W/UNIT}×${m.H/UNIT} units · ${m.cols}×${m.rows} cells · ${m.blocks.length} tiles`;
+  $('#metaGrid').textContent=`${m.W/UNIT}×${m.H/UNIT} units · ${m.cols}×${m.rows} cells · ${m.blocks.length} tiles${m.motion?' · ▶ motion':''}`;
 }
 new ResizeObserver(schedule).observe(inner);
 window.addEventListener('resize',schedule);
