@@ -229,8 +229,8 @@ canvas{display:block;image-rendering:auto;background:#000}
 const UNIT = 60;
 const MARGIN = 2 * UNIT;
 const ASPECTS = {
-  '1x1':  {w:1080, h:1080, textW:11*UNIT, wx:.5, bias:.36},
-  '16x9': {w:1920, h:1080, textW:16*UNIT, wx:.7, safeTop:4*UNIT, bias:.38, clear:{x:6.5*UNIT,y:7.5*UNIT}},
+  '1x1':  {w:1080, h:1080, textW:13*UNIT, wx:.5, bias:.17},
+  '16x9': {w:1920, h:1080, textW:16*UNIT, wx:.7, safeTop:4*UNIT, bias:.38, hK:1.15, clear:{x:6.5*UNIT,y:7.5*UNIT}},
   '9x16': {w:1080, h:1920, textW:13*UNIT, wx:.3, safeTop:6*UNIT, bias:.11, eyebrowK:1.4, big:true}
 };
 const C = {navy:'#15153A', indigo:'#3F30F2', ink:'#1B1670', magenta:'#E85DF4', lime:'#E6EA9C', lav:'#A18BFF', coral:'#FF6F5B', white:'#FFFFFF', deepnavy:'#262680'};
@@ -289,7 +289,7 @@ function build(S){
   const rng=mulberry32((+S.seed||1)*7919+13);
 
   /* ---- type (all sizes in grid units => identical in every format) ---- */
-  const hs=1.6*UNIT*ts, es=.38*UNIT*ts*(A.eyebrowK||1), ss=.58*UNIT*ts, wmS=.8*UNIT;
+  const hs=1.6*UNIT*ts*(A.hK||1), es=.38*UNIT*ts*(A.eyebrowK||1), ss=.58*UNIT*ts, wmS=.8*UNIT;
   const hLH=hs*1.08, sLH=ss*1.35, gapE=.6*UNIT*ts, gapS=.5*UNIT*ts;
   const maxW=A.textW;
   mctx.font=`300 ${hs}px ${FONT}`;
