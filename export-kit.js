@@ -57,7 +57,7 @@
     .xk-bar i{display:block;height:100%;width:0;background:#111}
     .xk.busy .xk-bar{display:block}
     .xk-status{min-height:1em;font-size:12px;color:#777}
-    .xk-back{position:fixed;left:0;right:0;bottom:0;z-index:8;background:#efefef;pointer-events:none}
+    .xk-back{position:fixed;left:0;right:0;bottom:0;z-index:8;background-color:#efefef;background-image:radial-gradient(#dcdcdc 2px,transparent 2px);background-size:24px 24px;pointer-events:none}
     .xk-rec{position:absolute;z-index:9;pointer-events:none;outline:1px solid rgba(255,255,255,.35)}
     .xk-rec span{position:absolute;left:10px;top:10px;padding:4px 8px;border-radius:4px;background:rgba(0,0,0,.6);color:#fff;
       font:600 11px system-ui,sans-serif;letter-spacing:.04em}
