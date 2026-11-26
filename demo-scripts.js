@@ -30,29 +30,6 @@ D['ribbon-text'] = async (d) => {
   await d.slider(s[0], 50, 800); await d.slider(s[2], 55, 800);
 };
 
-/* Marketing Minesweeper: opens an area and a couple of safe squares, then steps on a bomb. A fresh board is dealt each time round. */
-D['marketing-mine'] = async (d) => {
-  if (typeof initGame !== 'function' || typeof gridElements === 'undefined') return;
-  initGame();                                                        // a fresh board every loop
-  await d.wait(500);
-  const all = () => gridElements.flat();
-  const nbrs = (c) => all().filter((n) => n !== c && Math.abs(n.x - c.x) <= 1 && Math.abs(n.y - c.y) <= 1);
-  const at = (c) => d.canvasPoint((c.x + 0.5) * s, (c.y + 0.5) * s);
-  const dist = (c) => Math.hypot(c.x - cols / 2, c.y - rows / 2);
-  d.say('Click a square to open an area');
-  const zero = all().filter((c) => !c.isMine && c.neighborCount === 0).sort((a, b) => dist(a) - dist(b))[0];
-  if (zero) { await d.click(at(zero), 900); await d.wait(1100); }
-  d.say('Numbers count the mines next to a square');
-  for (let i = 0; i < 2; i++) {
-    const next = all().filter((c) => !c.revealed && !c.isMine && nbrs(c).some((n) => n.revealed && n.neighborCount > 0))[0];
-    if (!next) break;
-    await d.click(at(next), 800); await d.wait(800);
-  }
-  d.say('One wrong click and it is a mine');
-  const bomb = all().filter((c) => c.isMine && !c.revealed && nbrs(c).some((n) => n.revealed)).sort((a, b) => dist(a) - dist(b))[0] || all().find((c) => c.isMine && !c.revealed);
-  if (bomb) { await d.click(at(bomb), 900); await d.wait(2600); }   // the board then shows every mine
-};
-
 /* Brand Guidelines Mini Site: open sections from the tiles and use their generators (logo, type, colour, motion), coming back to the tiles each time */
 D['thread-brand-guidelines'] = async (d) => {
   const home = async () => { await d.click('.site .logo', 700); await d.wait(1100); };

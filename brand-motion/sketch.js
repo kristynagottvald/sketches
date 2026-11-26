@@ -165,14 +165,15 @@ function draw() {
 
   // Header in Sidebar
   fill('#111111');
-  textSize(22);
+  textSize(15);
   textStyle(BOLD);
   textAlign(LEFT, TOP);
-  text("grubclub", UIX + 25, 22);
+  text("grubclub", UIX + 25, 24);
 
   fill('#777777');
-  textSize(13);
-  text("MOTION SYSTEM", UIX + 25, 56);
+  textSize(12);
+  textStyle(NORMAL);
+  text("Motion system", UIX + 25, 46);
 
   // Canvas Viewport Frame Coordinates
   let vpX = 30;
@@ -855,9 +856,10 @@ function makeWrapper(y, h) {
   w.style('width', '290px');
   w.style('height', h + 'px');
   w.style('box-sizing', 'border-box');
-  w.style('border', '1px solid #e6e6e6');
-  w.style('border-radius', '14px');
-  w.style('background', '#ffffff');
+  w.style('border', '0');
+  w.style('border-top', '1px solid #ececec');
+  w.style('border-radius', '0');
+  w.style('background', 'transparent');
   return w;
 }
 

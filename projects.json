@@ -284,24 +284,5 @@
       }
     ],
     "cta": "Rewrite a prompt"
-  },
-  {
-    "id": "marketing-mine",
-    "title": "Marketing Minesweeper",
-    "category": "Experiment",
-    "year": 2026,
-    "thumbnail": "marketing-mine/thumbnail.jpg?v=7",
-    "url": "marketing-mine/",
-    "blurb": "A minesweeper where every mine reveals a direct mail marketing tip.",
-    "about": "Marketing Minesweeper is minesweeper rebuilt as a direct mail lesson, where every mine you uncover reveals a marketing tip. Click a square to reveal it. Right-click, or press and hold on a touch screen, to flag a suspected mine. Clear the board to win. It is an experiment in extending a brand system into play, turning campaign know-how into something people want to click through.",
-    "caseStudyContent": [
-      {
-        "type": "image",
-        "src": "marketing-mine/thumbnail.jpg",
-        "alt": "Marketing Minesweeper"
-      }
-    ],
-    "preview": "clips/marketing-mine.webp?v=7",
-    "cta": "Play the game"
   }
 ]
