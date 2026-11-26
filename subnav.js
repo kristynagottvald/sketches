@@ -21,8 +21,19 @@
     const here = location.pathname.replace(/index\.html$/, '');
     cur = Math.max(0, list.findIndex((p) => here.endsWith('/' + p.id + '/')));
 
+    // "About this project": a soft-black section under the tool, styled like the home page's About and Contact sections
     const p = list[cur];
-    let sec = null, ft = null;   // the "About this project" section was removed from tool pages
+    let sec = null, ft = null;
+    if (p && (p.about || p.blurb)) {
+      sec = document.createElement('section');
+      sec.className = 'about-project'; sec.id = 'aboutProject'; sec.setAttribute('aria-labelledby', 'apTitle');
+      sec.innerHTML = `<div class="ap-head"><h2 id="apTitle">${esc(p.title)}</h2></div>
+        <div class="ap-body"><p>${esc(p.about || p.blurb)}</p>
+          <div class="ap-rows">
+            <div class="ap-row"><h3>Type</h3><div>${esc(p.category || '')}</div></div>
+            ${p.year ? `<div class="ap-row"><h3>Year</h3><div>${esc(p.year)}</div></div>` : ''}
+          </div></div>`;
+    }
     // Contact + footer, same as the home page, with copy for a visitor who has just seen a tool
     if (!document.getElementById('contact')) {
       ft = document.createElement('footer');
