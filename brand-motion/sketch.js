@@ -109,6 +109,8 @@ function setup() {
 
   // make sure every Poppins weight is loaded before the canvas text relies on it
   textFont('Poppins');
+  // black sliders (the white panel look), set here as well as in the page so a cached index.html can't leave them blue
+  const sliderCss = document.createElement('style'); sliderCss.textContent = 'input[type=range]{accent-color:#111111}'; document.head.appendChild(sliderCss);
   ['400','600','700','800'].forEach(w => document.fonts && document.fonts.load(w + ' 16px Poppins').catch(() => {}));
   createUI();
 
