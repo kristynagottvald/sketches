@@ -190,6 +190,7 @@ D['hero-banner-engine'] = async (d) => {
   const was = (k) => d.$('.seg[data-key="' + k + '"] button[aria-pressed="true"]');
   const layout = was('layout'), aspect = was('aspect'), anchor = was('anchor');
   const h = d.$('#heading'), hv = h ? h.value : '';
+  const eb = d.$('#eyebrow'), ev = eb ? eb.value : '';
   d.say('Pick a format');
   await d.click('.seg[data-key="aspect"] button[data-v="16x9"]'); await d.wait(1200);
   d.say('Change the layout');
@@ -199,7 +200,8 @@ D['hero-banner-engine'] = async (d) => {
   const th = d.$$('#themes > *');
   await d.click(th[2]); await d.wait(1200);   // Lavender
   d.say('Edit the copy');
-  await d.type('#heading', 'Build it once.', 80); await d.wait(1000);
+  await d.type('#heading', 'Build it once.', 80);
+  d.setValue('#eyebrow', "Lob's No-Code Design Suite"); await d.wait(1000);
   d.say('Shuffle the visuals');
   await d.click('#shuffle'); await d.wait(1200);
   if (aspect) await d.click(aspect);
@@ -207,6 +209,7 @@ D['hero-banner-engine'] = async (d) => {
   if (anchor) await d.click(anchor);
   if (th[0]) await d.click(th[0]);
   d.setValue('#heading', hv);
+  d.setValue('#eyebrow', ev);
   await d.wait(600);
 };
 
