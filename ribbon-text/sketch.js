@@ -329,46 +329,57 @@ function drawArtwork() {
       return { x: lerp(p1.x, p2.x, t), y: lerp(p1.y, p2.y, t) };
     }
 
-    // Render continuous wavy ribbon line
-    stroke(col);
-    strokeWeight(thickness);
-    strokeCap(ROUND);
-    strokeJoin(ROUND);
-    noFill();
-    beginShape();
-    for (let i = 0; i < path.length; i += 4) {
-      vertex(path[i].x, path[i].y);
-    }
-    vertex(path[path.length - 1].x, path[path.length - 1].y);
-    endShape();
-
-    // Generate SVG path element
-    let pathSvg = `M ${path[0].x.toFixed(2)} ${path[0].y.toFixed(2)}`;
-    for (let i = 1; i < path.length; i += 4) {
-      pathSvg += ` L ${path[i].x.toFixed(2)} ${path[i].y.toFixed(2)}`;
-    }
-    svgLines.push(`<path d="${pathSvg}" fill="none" stroke="${col}" stroke-width="${thickness}" stroke-linecap="round" stroke-linejoin="round"/>`);
-
-    // Layout letters along exact arc length
-    let currentD = 20;
-    let msgIdx = 0;
-
-    while (currentD < totalD - 20) {
-      let letter = ribbonText[msgIdx % ribbonText.length];
-      let letterW = textWidth(letter);
-
-      let charCenterD = currentD + letterW / 2;
-
-      if (charCenterD < totalD - 10 && letter !== ' ') {
-        let state = getPathState(charCenterD);
-        if (state.x > -100 && state.x < width + 100 && state.y > -100 && state.y < height + 100) {
-           drawAndExportChar(letter, state.x, state.y, state.angle, fontSz, exportFontFamily, exportFontWeight);
+    // Lay the letters out along the exact arc length first
+    let letters = [];
+    {
+      let currentD = 20;
+      let msgIdx = 0;
+      while (currentD < totalD - 20) {
+        let letter = ribbonText[msgIdx % ribbonText.length];
+        let letterW = textWidth(letter);
+        let charCenterD = currentD + letterW / 2;
+        if (charCenterD < totalD - 10 && letter !== ' ') {
+          let state = getPathState(charCenterD);
+          if (state.x > -100 && state.x < width + 100 && state.y > -100 && state.y < height + 100) {
+            letters.push({ letter: letter, d: charCenterD, state: state });
+          }
         }
+        currentD += letterW + letterSpacing;
+        msgIdx++;
       }
-
-      currentD += letterW + letterSpacing;
-      msgIdx++;
     }
+
+    // Paint the ribbon in short pieces, in path order, so a ribbon that crosses over itself (or another) hides what is under it,
+    // lettering included. A piece's letters go on once the next piece's stroke is down, so the round cap of that next stroke
+    // can never cut into them; anything painted later (a later crossing) lands on top of both.
+    const pieceLen = max(thickness * 2, 60);
+    const nPieces = max(1, ceil(totalD / pieceLen));
+    const piecePoints = (k) => {
+      let d0 = k * pieceLen, d1 = min(totalD, (k + 1) * pieceLen), pts = [getPosOnly(d0)];
+      for (let i = 0; i < path.length; i++) if (path[i].d > d0 && path[i].d < d1) pts.push({ x: path[i].x, y: path[i].y });
+      pts.push(getPosOnly(d1));
+      return pts;
+    };
+    const lettersOf = (k) => letters.filter(l => l.d >= k * pieceLen && l.d < (k + 1) * pieceLen);
+    const drawLetters = (k) => {
+      for (const l of lettersOf(k)) drawAndExportChar(l.letter, l.state.x, l.state.y, l.state.angle, fontSz, exportFontFamily, exportFontWeight);
+    };
+    for (let k = 0; k < nPieces; k++) {
+      let pts = piecePoints(k);
+      stroke(col);
+      strokeWeight(thickness);
+      strokeCap(ROUND);
+      strokeJoin(ROUND);
+      noFill();
+      beginShape();
+      for (const q of pts) vertex(q.x, q.y);
+      endShape();
+      let pathSvg = `M ${pts[0].x.toFixed(2)} ${pts[0].y.toFixed(2)}`;
+      for (let i = 1; i < pts.length; i++) pathSvg += ` L ${pts[i].x.toFixed(2)} ${pts[i].y.toFixed(2)}`;
+      svgLines.push(`<path d="${pathSvg}" fill="none" stroke="${col}" stroke-width="${thickness}" stroke-linecap="round" stroke-linejoin="round"/>`);
+      if (k > 0) drawLetters(k - 1);
+    }
+    drawLetters(nPieces - 1);
   }
 
   svgLines.push('</svg>');
