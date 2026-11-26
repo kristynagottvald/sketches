@@ -51,7 +51,7 @@ let currentPaletteIndex = 0;
 let comp = null;          // the current layout; colours are stored as palette slots (0-2) so a new palette keeps the layout
 let bgSlot = 0;           // which palette slot is the background
 
-const GRID = 40, STRIPE = 8, LINE_W = 2;
+const GRID = 40, STRIPE = 20, LINE_W = 2;   // stripes every 20px (they were every 8px, too dense)
 
 function setup() {
   createCanvas(...ExportKit.size());

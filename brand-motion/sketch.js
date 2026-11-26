@@ -150,7 +150,7 @@ function placeTextFarRight() {
 }
 
 function draw() {
-  background('#efefef');   // grey preview panel behind the artboard
+  clear();   // transparent, so the dotted page background shows behind the artboard
 
   // Advance master time based on Speed slider
   let speed = sliders.speed.value();

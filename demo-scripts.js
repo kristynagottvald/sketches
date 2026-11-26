@@ -227,10 +227,11 @@ D['binary-grid'] = async (d) => {
 /* Mail Stack: reshape the ribbon of postcards, then export it */
 D['mail-stack'] = async (d) => {
   const s = d.$$('input[type=range]');
+  if (s[0]) d.setValue(s[0], +s[0].max * 0.75);   // start on a wide curve
   d.say('Hover a postcard');
-  await d.sweep([[0.45, 0.5], [0.6, 0.45]], 900); await d.wait(900);
+  await d.sweep([[0.38, 0.45], [0.42, 0.42]], 900); await d.wait(900);   // lands on a card in the middle of the canvas, beside the docked panel
   d.say('Reshape the path');
-  if (s[0]) await d.slider(s[0], +s[0].max * 0.75, 1100);
+  if (s[0]) await d.slider(s[0], 60, 1100);
   await d.wait(600);
   await d.click(d.byText('button', 'randomize')); await d.wait(1600);
   if (s[0]) await d.slider(s[0], 100, 900);
