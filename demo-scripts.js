@@ -191,9 +191,12 @@ D['reprise-tiles'] = async (d) => {
 /* Banner Template Studio: format, layout, theme, copy, shuffle */
 D['hero-banner-engine'] = async (d) => {
   const was = (k) => d.$('.seg[data-key="' + k + '"] button[aria-pressed="true"]');
-  const layout = was('layout'), aspect = was('aspect'), anchor = was('anchor');
+  const layout = was('layout'), aspect = was('aspect'), anchor = was('anchor'), fmt = was('fmt');
   const h = d.$('#heading'), hv = h ? h.value : '';
   const eb = d.$('#eyebrow'), ev = eb ? eb.value : '';
+  const sd = d.$('#seed'), sv = sd ? sd.value : '';
+  const motion = (m) => { if (typeof state !== 'undefined') { state.motion = m; if (typeof schedule === 'function') schedule(); } };
+  motion('off');   // the layouts stay still until the final export, which is the one place the motion plays
   d.say('Pick a format');
   await d.click('.seg[data-key="aspect"] button[data-v="16x9"]'); await d.wait(1200);
   d.say('Change the layout');
@@ -210,14 +213,25 @@ D['hero-banner-engine'] = async (d) => {
   d.setValue('#eyebrow', "Lob's No-Code Design Suite"); await d.wait(1000);
   d.say('Shuffle the visuals');
   await d.click('#shuffle'); await d.wait(1200);
-  await d.click('#shuffle'); await d.wait(2600);   // hold on the final banner for a beat before resetting and looping
-  if (aspect) await d.click(aspect);
+  await d.click('#shuffle'); await d.wait(1600);
+  // the finale: the Lob No-Code banner on Indigo, square, exported as an MP4 with the motion playing in the preview
+  d.say('Back to the Lob No-Code banner on Indigo');
+  d.setValue('#heading', hv); d.setValue('#eyebrow', ev);
+  await d.click(th[0]); await d.click('.seg[data-key="aspect"] button[data-v="1x1"]');
   if (layout) await d.click(layout);
+  d.setValue('#seed', 11); motion('on'); await d.wait(900);
+  d.say('Export a 1:1 MP4');
+  await d.click('.seg[data-key="fmt"] button[data-v="mp4"]'); await d.wait(500);
+  await d.click('#dl', 900);   // untrusted click: a dry run that shows the progress and downloads nothing
+  d.say('The preview plays the motion as it exports');
+  await d.wait(9500);          // the progress runs, then the preview holds for a few beats on the animated banner
+  motion('off');
+  if (fmt) await d.click(fmt);
+  if (aspect) await d.click(aspect);
   if (anchor) await d.click(anchor);
-  if (th[0]) await d.click(th[0]);
-  d.setValue('#heading', hv);
-  d.setValue('#eyebrow', ev);
-  await d.wait(1600);   // let the reset banner settle before the loop starts again
+  d.setValue('#seed', sv);
+  motion('auto');
+  await d.wait(1200);   // let the reset banner settle before the loop starts again
 };
 
 /* No-Code Binary Motif: the mouse flips the grid in a wave */
