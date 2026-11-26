@@ -33,25 +33,22 @@ function setup() {
   // --- UI Setup ---
   uiContainer = createDiv('');
   uiContainer.style('position', 'absolute').style('right', '20px').style('left', 'auto').style('top', (NAV_H + 20) + 'px');
-  uiContainer.style('font-family', 'sans-serif');
-  uiContainer.style('color', 'white');
-  uiContainer.style('background', 'rgba(0, 0, 0, 0.5)');
-  uiContainer.style('padding', '15px');
-  uiContainer.style('border-radius', '8px');
+  uiContainer.addClass('wp');   // white panel, see ../panel-white.css
+  uiContainer.style('padding', '20px');
   uiContainer.style('max-width', '240px');
   
   // Curve Spread Slider
-  createDiv('<b>Curve Spread Width</b>').parent(uiContainer).style('margin-bottom', '4px');
+  createDiv('<b>Curve Spread Width</b>').parent(uiContainer);
   curveSpreadSlider = createSlider(10, 200, 100); 
   curveSpreadSlider.parent(uiContainer).style('margin-bottom', '10px');
 
   // Float Bobbing Motion Slider
-  createDiv('<b>Float Intensity</b>').parent(uiContainer).style('margin-bottom', '4px');
+  createDiv('<b>Float Intensity</b>').parent(uiContainer);
   floatSlider = createSlider(0, 100, 20);
   floatSlider.parent(uiContainer).style('margin-bottom', '10px');
 
   // Density Slider
-  createDiv('<b>Stack Density</b>').parent(uiContainer).style('margin-bottom', '4px');
+  createDiv('<b>Stack Density</b>').parent(uiContainer);
   densitySlider = createSlider(10, 400, 200);
   densitySlider.parent(uiContainer).style('margin-bottom', '15px');
 
@@ -75,21 +72,17 @@ function setup() {
   randomizeBtn.parent(uiContainer);
   randomizeBtn.style('width', '100%');
   randomizeBtn.style('padding', '8px');
-  randomizeBtn.style('background', '#9DD437');
-  randomizeBtn.style('border', 'none');
-  randomizeBtn.style('border-radius', '4px');
-  randomizeBtn.style('font-weight', 'bold');
-  randomizeBtn.style('cursor', 'pointer');
+  randomizeBtn.addClass('pri');
   randomizeBtn.mousePressed(randomizeCurveShape);
 
   // Export the ribbon as an MP4 or GIF loop
-  ExportKit.motion({ mount: uiContainer.elt, name: 'mail-stack', accent: '#9DD437', accentText: '#1a1a1a' });
+  ExportKit.motion({ mount: uiContainer.elt, name: 'mail-stack' });
 
   // On phones the controls sit in a sheet at the bottom, opened from a button
   panelBtn = createButton('Controls').parent(document.body);
   panelBtn.style('position', 'fixed').style('right', '12px').style('bottom', '12px').style('z-index', '11')
     .style('padding', '10px 16px').style('border-radius', '999px').style('border', 'none')
-    .style('background', '#9DD437').style('color', '#1a1a1a').style('font-weight', 'bold').style('box-shadow', '0 4px 16px rgba(0,0,0,0.3)');
+    .style('background', '#fff').style('color', '#111').style('font-weight', '500').style('box-shadow', '0 4px 16px rgba(0,0,0,0.3)');
   panelBtn.mousePressed(() => { panelOpen = !panelOpen; panelBtn.html(panelOpen ? 'Close' : 'Controls'); layoutPanel(); });
   layoutPanel();
 }

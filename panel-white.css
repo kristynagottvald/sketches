@@ -1,0 +1,17 @@
+/* The white tool panel, matched to HOB Studio: white card, hairline border, grey controls, black pressed state.
+   Add class "wp" to a panel; controls inside inherit the look. Tools that build their own markup copy these tokens. */
+.wp{box-sizing:border-box;background:#fff;color:#111;border:1px solid #e6e6e6;border-radius:14px;padding:20px;
+  font:400 13px/1.35 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;box-shadow:0 8px 28px rgba(0,0,0,.12)}
+.wp *{box-sizing:border-box}
+.wp b,.wp h2,.wp h3{display:block;margin:0 0 8px;font:600 13px/1.2 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;color:#111}
+.wp label,.wp .lbl,.wp .cap{font:500 12px/1.35 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;color:#777}
+.wp input[type=range]{width:100%;margin:0 0 12px;accent-color:#111}
+.wp input[type=checkbox]{accent-color:#111}
+.wp input[type=text],.wp input[type=number],.wp textarea,.wp select{width:100%;background:#f3f3f3;border:0;border-radius:8px;padding:9px 10px;
+  font:500 12px "Inter",sans-serif;color:#111}
+.wp button{background:#f3f3f3;color:#111;border:0;border-radius:8px;padding:10px 8px;font:500 12px "Inter",sans-serif;cursor:pointer}
+.wp button:hover{background:#e8e8e8}
+.wp button[aria-pressed="true"],.wp button.pri{background:#111;color:#fff}
+.wp button.pri:hover{background:#2a2a2a}
+.wp button:focus-visible,.wp input:focus-visible,.wp select:focus-visible,.wp textarea:focus-visible{outline:2px solid #3d4ee0;outline-offset:2px}
+.wp .sec{padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid #ececec}

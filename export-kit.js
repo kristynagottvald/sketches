@@ -22,35 +22,39 @@
   /* ---------- styles ---------- */
   const css = document.createElement('style');
   css.textContent = `
-    .xk-panel{position:absolute;right:20px;width:240px;z-index:10;padding:18px;border-radius:12px;font:13px/1.35 system-ui,sans-serif;
-      color:#1a1a1a;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
-      border:1px solid rgba(0,0,0,.1);box-shadow:0 8px 32px rgba(0,0,0,.18);box-sizing:border-box}
-    .xk-panel > b{display:block;margin-bottom:12px;font-size:14px}
+    /* the white panel look shared by every tool: white card, hairline border, grey controls, black pressed state */
+    .xk-panel{position:absolute;right:20px;width:260px;z-index:10;padding:20px;border-radius:14px;font:400 13px/1.35 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+      color:#111;background:#fff;border:1px solid #e6e6e6;box-shadow:0 8px 28px rgba(0,0,0,.12);box-sizing:border-box;-webkit-font-smoothing:antialiased}
+    .xk-panel > b{display:block;margin-bottom:14px;font-size:13px;font-weight:600}
     .xk-toggle{display:none;position:fixed;right:12px;bottom:12px;z-index:11;padding:10px 16px;border-radius:999px;border:0;
-      background:#fff;color:#1a1a1a;font:600 13px system-ui,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+      background:#fff;color:#111;font:500 13px "Inter",system-ui,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.25)}
     @media (max-width:699px){
       .xk-panel{position:fixed;left:12px;right:12px;top:auto!important;bottom:62px;width:auto;max-height:55vh;overflow:auto;display:none}
       .xk-panel.open{display:block}
       .xk-toggle{display:block}
     }
-    .xk{--xk-accent:#1a1a1a;--xk-on:#fff;display:grid;gap:9px}
-    :not(b) + .xk{margin-top:16px;padding-top:14px;border-top:1px solid rgba(127,127,127,.3)}
-    .xk-h{font-weight:700}
-    .xk-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .xk-row output{font-variant-numeric:tabular-nums;opacity:.75}
-    .xk input[type=range]{width:100%;margin:0;accent-color:var(--xk-accent)}
-    .xk-seg{display:inline-flex;border:1px solid rgba(127,127,127,.45);border-radius:6px;overflow:hidden}
-    .xk-seg button{border:0;padding:5px 10px;background:transparent;color:inherit;font:600 12px system-ui,sans-serif;cursor:pointer}
-    .xk-seg button[aria-pressed=true]{background:var(--xk-accent);color:var(--xk-on)}
-    .xk-btn{width:100%;padding:9px 10px;border:0;border-radius:6px;background:var(--xk-accent);color:var(--xk-on);
-      font:700 13px system-ui,sans-serif;cursor:pointer}
-    .xk-btn.ghost{background:transparent;color:inherit;border:1px solid rgba(127,127,127,.45)}
-    .xk-btn:disabled{opacity:.55;cursor:default}
+    .xk{--xk-accent:#111;--xk-on:#fff;display:grid;gap:10px;color:#111;font:500 12px/1.35 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif}
+    :not(b) + .xk{margin-top:18px;padding-top:18px;border-top:1px solid #ececec}
+    .xk-h{font-weight:600;font-size:13px}
+    .xk-row{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#777}
+    .xk-row output{font-variant-numeric:tabular-nums;color:#111}
+    .xk input[type=range]{width:100%;margin:0;accent-color:#111}
+    .xk-seg{display:inline-flex;gap:3px;padding:3px;border-radius:10px;background:#f3f3f3}
+    .xk-seg button{border:0;padding:6px 10px;border-radius:7px;background:transparent;color:#111;font:500 12px "Inter",system-ui,sans-serif;cursor:pointer}
+    .xk-seg button:hover{background:#e8e8e8}
+    .xk-seg button[aria-pressed=true]{background:#fff;color:#111;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+    .xk-btn{width:100%;padding:10px 8px;border:0;border-radius:8px;background:#111;color:#fff;
+      font:500 12px "Inter",system-ui,sans-serif;cursor:pointer}
+    .xk-btn:hover{background:#2a2a2a}
+    .xk-btn.ghost{background:#f3f3f3;color:#111;border:0}
+    .xk-btn.ghost:hover{background:#e8e8e8}
+    .xk-btn:focus-visible,.xk-seg button:focus-visible{outline:2px solid #3d4ee0;outline-offset:2px}
+    .xk-btn:disabled{opacity:.45;cursor:default}
     .xk-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .xk-bar{height:4px;border-radius:2px;background:rgba(127,127,127,.25);overflow:hidden;display:none}
-    .xk-bar i{display:block;height:100%;width:0;background:var(--xk-accent)}
+    .xk-bar{height:4px;border-radius:2px;background:#ececec;overflow:hidden;display:none}
+    .xk-bar i{display:block;height:100%;width:0;background:#111}
     .xk.busy .xk-bar{display:block}
-    .xk-status{min-height:1em;font-size:12px;opacity:.75}
+    .xk-status{min-height:1em;font-size:12px;color:#777}
     .xk-rec{position:absolute;z-index:9;pointer-events:none;outline:1px solid rgba(255,255,255,.35)}
     .xk-rec span{position:absolute;left:10px;top:10px;padding:4px 8px;border-radius:4px;background:rgba(0,0,0,.6);color:#fff;
       font:600 11px system-ui,sans-serif;letter-spacing:.04em}
@@ -85,8 +89,6 @@
     const mount = opts.mount || panel(null, 'Export');
     const state = { len: opts.length || 6, fmt: 'MP4', ratio: '16:9' };
     const box = el('section', { className: 'xk' });
-    if (opts.accent) box.style.setProperty('--xk-accent', opts.accent);
-    if (opts.accentText) box.style.setProperty('--xk-on', opts.accentText);
     box.innerHTML = `<div class="xk-h">${opts.heading || 'Export motion'}</div>
       <div class="xk-row"><span>Length</span><output>${state.len} s</output></div>
       <input type="range" min="2" max="15" step="1" value="${state.len}" aria-label="Export length in seconds">`;
