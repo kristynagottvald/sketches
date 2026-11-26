@@ -31,9 +31,10 @@
     .xk-toggle{display:none;position:fixed;right:12px;bottom:12px;z-index:11;padding:10px 16px;border-radius:999px;border:0;
       background:#fff;color:#111;font:500 13px "Inter",system-ui,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.25)}
     @media (max-width:699px){
-      .xk-panel{position:fixed;left:12px;right:12px;top:auto!important;bottom:62px;width:auto;max-height:55vh;overflow:auto;display:none}
-      .xk-panel.open{display:block}
-      .xk-toggle{display:block}
+      /* phones: the canvas takes the top half of the screen and the panel stacks under it, no hidden sheet */
+      html,body{overflow:auto!important;height:auto!important}
+      .xk-panel{position:relative!important;left:auto;right:auto;top:auto!important;bottom:auto;width:auto;max-height:none;overflow:visible;display:block;border-left:0;border-top:1px solid #e6e6e6;z-index:auto}
+      .xk-toggle{display:none!important}
     }
     .xk{--xk-accent:#111;--xk-on:#fff;display:grid;gap:10px;color:#111;font:500 12px/1.35 "Inter","Helvetica Neue",Helvetica,Arial,sans-serif}
     :not(b) + .xk{margin-top:18px;padding-top:18px;border-top:1px solid #ececec}
@@ -126,6 +127,7 @@
 
   function size() {
     if (rec) return rec.size.slice();
+    if (window.innerWidth < 700) return [window.innerWidth, Math.floor((window.innerHeight - navH()) * 0.5)];   // phones: the panel stacks under the canvas
     return [window.innerWidth - dockW(), window.innerHeight - navH()];
   }
 

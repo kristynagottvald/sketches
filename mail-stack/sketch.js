@@ -95,9 +95,10 @@ function layoutPanel() {
     panelBtn.hide();
     return;
   }
-  panelBtn.show();
-  uiContainer.style('position', 'fixed').style('left', '12px').style('right', '12px').style('top', 'auto').style('bottom', '62px')
-    .style('max-width', 'none').style('max-height', '55vh').style('overflow', 'auto').style('display', panelOpen ? 'block' : 'none');
+  panelBtn.hide();   // phones: the controls stack under the canvas, no hidden sheet
+  uiContainer.style('position', 'relative').style('left', 'auto').style('right', 'auto').style('top', 'auto').style('bottom', 'auto')
+    .style('width', 'auto').style('max-width', 'none').style('max-height', 'none').style('overflow', 'visible').style('display', 'block')
+    .style('border-radius', '0').style('border-width', '1px 0 0 0').style('box-shadow', 'none');
 }
 
 function randomizeCurveShape() {

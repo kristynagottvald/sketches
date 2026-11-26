@@ -26,7 +26,8 @@ html,body{height:100%}
 body{background:var(--bg);color:var(--text);font:400 14px/1.4 var(--font);-webkit-font-smoothing:antialiased;display:flex;flex-direction:column;overflow:hidden}
 button{font:inherit;color:inherit;cursor:pointer}
 .app{flex:1;min-height:0;display:flex;flex-direction:column}
-.tools{margin-left:auto;display:flex;align-items:center;gap:10px}
+.tools{display:none!important}   /* the Library / Audit / Decision switch, scrubber and Pause were removed from the nav; the timeline still runs on its own */
+.tools-old{margin-left:auto;display:flex;align-items:center;gap:10px}
 .sw{display:flex;gap:3px;border:1px solid #333;border-radius:999px;padding:2px}
 .sw button{font:500 12px/1 "Inter",Arial,sans-serif;color:#8d8d8d;background:none;border:0;border-radius:999px;padding:6px 11px}
 .sw button:hover{color:#fff}.sw button.on{background:#fff;color:#000}
@@ -153,7 +154,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-o
   .decide{margin-top:0}
   .ehead{padding:12px 14px 0;font-size:11px}.ebar{height:44px;padding:0 14px;font-size:13px}
 }@media (max-width:640px){
-  .site-nav{height:auto;padding-bottom:8px}
+  .site-nav{height:auto;min-height:var(--nav-h);padding-bottom:8px}
   .site-nav .hb-bar{flex-wrap:wrap;height:auto;row-gap:8px;padding-bottom:0}
   .site-nav .hb-bar>.logo,.site-nav .hb-bar>.hb-label,.site-nav .hb-bar>.hb-toggle{height:44px;display:inline-flex;align-items:center}
   .site-nav .tools{order:5;flex:1 0 100%;margin:0;justify-content:space-between;gap:8px;padding-bottom:2px}

@@ -22,8 +22,11 @@ let textInputArea;
 let weightSelect;
 let panelBtn, panelOpen = false;
 
+// Wide screens: the canvas fills the page beside a docked 300px panel. Phones: the canvas sits on top (half the screen) and the panel stacks below it.
+const canvasSize = () => (windowWidth < 700 ? [windowWidth, floor((windowHeight - NAV_H) * 0.5)] : [windowWidth - 300, windowHeight - NAV_H]);
+
 function setup() {
-  createCanvas(windowWidth - (windowWidth >= 700 ? 300 : 0), windowHeight - NAV_H);
+  createCanvas(...canvasSize());
   textAlign(CENTER, CENTER);
   
   ribbonSeed = floor(random(1000000)); // Initial unique layout seed
@@ -33,12 +36,12 @@ function setup() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth - (windowWidth >= 700 ? 300 : 0), windowHeight - NAV_H);
+  resizeCanvas(...canvasSize());
   layoutPanel();
   drawArtwork();
 }
 
-// On phones the controls sit in a sheet at the bottom, opened from a button
+// On phones the controls stack under the canvas and the page scrolls
 function layoutPanel() {
   const phone = windowWidth < 700;
   if (!phone) {
@@ -47,9 +50,9 @@ function layoutPanel() {
     panelBtn.hide();
     return;
   }
-  panelBtn.show();
-  uiPanel.style('position', 'fixed').style('left', '12px').style('right', '12px').style('top', 'auto').style('bottom', '12px')
-    .style('width', 'auto').style('max-height', '58vh').style('overflow', 'auto').style('display', panelOpen ? 'block' : 'none');
+  panelBtn.hide();
+  uiPanel.style('position', 'relative').style('display', 'block').style('left', 'auto').style('right', 'auto').style('top', 'auto').style('bottom', 'auto')
+    .style('width', 'auto').style('max-height', 'none').style('overflow', 'visible').style('border-radius', '0').style('border-width', '1px 0 0 0').style('box-shadow', 'none');
 }
 
 function buildUIPanel() {

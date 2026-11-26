@@ -1,4 +1,4 @@
-const CSS = "\n  :root {\n    --bg: #ffffff; --plate: #f3f3f3; --fg: #111111; --grey: #777777; --line: #e6e6e6;\n    --orange: #ff4a14; --yellow: #f5b800; --blue: #009dff; --green: #006837; --purple: #7a2fb4; --ink: #26292b;\n  }\n  * { box-sizing: border-box; }\n  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; }\n  #panel { position: fixed; right: 0; top: " + NAV_H + "px; bottom: 0; width: 344px; z-index: 5; overflow-y: auto; padding: 20px 20px 40px; background: var(--bg); border-left: 1px solid var(--line); }\n  #caption { position: fixed; left: 0; right: 344px; bottom: 0; height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 20px; background: var(--bg); border-top: 1px solid var(--line); font-size: 13px; color: var(--grey); }\n  #caption b { color: #111; letter-spacing: .6px; font-size: 11px; margin-right: 10px; }\n  #caption .r { white-space: nowrap; font-size: 12px; }\n\n  .eyebrow { display: none; }\n  #panel h1 { font: 600 13px/1.2 Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0 0 16px; }\n  .rule4 { height: 1px; background: #ececec; margin-bottom: 16px; }\n\n  #panel section { border-top: 1px solid #ececec; padding: 18px 0 6px; margin-top: 16px; }\n  #panel h3 { margin: 0 0 12px; font-size: 13px; letter-spacing: 0; font-weight: 600; color: #111; display: flex; gap: 10px; }\n  #panel h3 span { color: #999; font-weight: 400; }\n  .group { margin-bottom: 14px; transition: opacity .15s; }\n  .group.off { opacity: .3; pointer-events: none; }\n  .hide { display: none !important; }\n  .lbl { font-size: 12px; letter-spacing: 0; font-weight: 500; text-transform: none; color: var(--grey); margin: 0 0 7px; display: block; }\n\n  .motifs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }\n  .motifs button { text-align: left; padding: 11px 12px; background: var(--plate); color: #111; border: 0; font: 500 12px Inter, Arial, sans-serif; cursor: pointer; display: flex; gap: 9px; border-radius: 8px; }\n  .motifs button b { opacity: .45; font-weight: 700; }\n  .motifs button:hover { background: #e8e8e8; }\n  .motifs button.on { background: #111; color: #fff; }\n  .motifs button.on b { opacity: .6; }\n\n  .seg { display: flex; gap: 3px; padding: 3px; border-radius: 10px; background: var(--plate); }\n  .seg button { flex: 1; padding: 10px 6px; background: transparent; color: #111; border: 0; font: 500 12px Inter, Arial, sans-serif; cursor: pointer; border-radius: 7px; }\n  .seg button:hover { background: #e8e8e8; }\n  .seg button.on { background: #111; color: #fff; }\n\n  .dirs { display: grid; grid-template-columns: repeat(3, 44px); gap: 4px; }\n  .dirs button { height: 44px; background: var(--plate); color: #111; border: 0; font-size: 18px; cursor: pointer; border-radius: 8px; }\n  .dirs button:hover { background: #e8e8e8; }\n  .dirs button.on { background: #111; color: #fff; }\n  .dirrow { display: flex; gap: 18px; align-items: flex-start; }\n\n  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--plate); color: #111; font: 500 12px Inter, Arial, sans-serif; border: 0; cursor: pointer; border-radius: 8px; }\n  .chip i { width: 10px; height: 10px; border: 2px solid #999; border-radius: 2px; display: block; }\n  .chip.on { background: #111; color: #fff; } .chip.on i { background: #fff; border-color: #fff; }\n\n  .sl { display: grid; grid-template-columns: 1fr auto; row-gap: 5px; margin-bottom: 13px; font-size: 12px; color: #111; }\n  .sl span { font-size: 12px; letter-spacing: 0; font-weight: 500; color: var(--grey); }\n  .sl output { font-size: 12px; color: #111; font-variant-numeric: tabular-nums; }\n  .sl input { grid-column: 1 / 3; width: 100%; margin: 0; accent-color: #111; }\n\n  input[type=text] { width: 100%; padding: 10px 12px; background: var(--plate); border: 0; color: #111; font: 500 12px Inter, Arial, sans-serif; letter-spacing: 0; border-radius: 8px; margin-top: 8px; }\n  input[type=text]:focus { outline: 2px solid #3d4ee0; outline-offset: 2px; }\n\n  .sw { display: flex; flex-wrap: wrap; gap: 6px; }\n  .sw button { width: 30px; height: 30px; border: 1px solid rgba(0,0,0,.12); cursor: pointer; padding: 0; border-radius: 8px; }\n  .sw button.on { outline: 2px solid #111; outline-offset: 2px; }\n  .sw .multi { background: conic-gradient(var(--orange) 0 25%, var(--green) 0 50%, var(--blue) 0 75%, var(--yellow) 0); }\n\n  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 18px; }\n  .actions button { padding: 12px; border: 0; font: 500 12px Inter, Arial, sans-serif; letter-spacing: 0; cursor: pointer; background: var(--plate); color: #111; border-radius: 8px; }\n  .actions button:hover { background: #e8e8e8; }\n  .actions .primary { background: #111; color: #fff; grid-column: 1 / 3; }\n  .actions .primary:hover { background: #2a2a2a; }\n  .note { margin: 8px 0 10px; font-size: 11px; line-height: 1.45; color: var(--grey); }\n\n  \n  html, body { overflow: hidden; }\n";
+const CSS = "\n  :root {\n    --bg: #ffffff; --plate: #f3f3f3; --fg: #111111; --grey: #777777; --line: #e6e6e6;\n    --orange: #ff4a14; --yellow: #f5b800; --blue: #009dff; --green: #006837; --purple: #7a2fb4; --ink: #26292b;\n  }\n  * { box-sizing: border-box; }\n  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; }\n  #panel { position: fixed; right: 0; top: " + NAV_H + "px; bottom: 0; width: 344px; z-index: 5; overflow-y: auto; padding: 20px 20px 40px; background: var(--bg); border-left: 1px solid var(--line); }\n  #caption { position: fixed; left: 0; right: 344px; bottom: 0; height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 20px; background: var(--bg); border-top: 1px solid var(--line); font-size: 13px; color: var(--grey); }\n  #caption b { color: #111; letter-spacing: .6px; font-size: 11px; margin-right: 10px; }\n  #caption .r { white-space: nowrap; font-size: 12px; }\n\n  .eyebrow { display: none; }\n  #panel h1 { font: 600 13px/1.2 Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0 0 16px; }\n  .rule4 { height: 1px; background: #ececec; margin-bottom: 16px; }\n\n  #panel section { border-top: 1px solid #ececec; padding: 18px 0 6px; margin-top: 16px; }\n  #panel h3 { margin: 0 0 12px; font-size: 13px; letter-spacing: 0; font-weight: 600; color: #111; display: flex; gap: 10px; }\n  #panel h3 span { color: #999; font-weight: 400; }\n  .group { margin-bottom: 14px; transition: opacity .15s; }\n  .group.off { opacity: .3; pointer-events: none; }\n  .hide { display: none !important; }\n  .lbl { font-size: 12px; letter-spacing: 0; font-weight: 500; text-transform: none; color: var(--grey); margin: 0 0 7px; display: block; }\n\n  .motifs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }\n  .motifs button { text-align: left; padding: 11px 12px; background: var(--plate); color: #111; border: 0; font: 500 12px Inter, Arial, sans-serif; cursor: pointer; display: flex; gap: 9px; border-radius: 8px; }\n  .motifs button b { opacity: .45; font-weight: 700; }\n  .motifs button:hover { background: #e8e8e8; }\n  .motifs button.on { background: #111; color: #fff; }\n  .motifs button.on b { opacity: .6; }\n\n  .seg { display: flex; gap: 3px; padding: 3px; border-radius: 10px; background: var(--plate); }\n  .seg button { flex: 1; padding: 10px 6px; background: transparent; color: #111; border: 0; font: 500 12px Inter, Arial, sans-serif; cursor: pointer; border-radius: 7px; }\n  .seg button:hover { background: #e8e8e8; }\n  .seg button.on { background: #111; color: #fff; }\n\n  .dirs { display: grid; grid-template-columns: repeat(3, 44px); gap: 4px; }\n  .dirs button { height: 44px; background: var(--plate); color: #111; border: 0; font-size: 18px; cursor: pointer; border-radius: 8px; }\n  .dirs button:hover { background: #e8e8e8; }\n  .dirs button.on { background: #111; color: #fff; }\n  .dirrow { display: flex; gap: 18px; align-items: flex-start; }\n\n  .chip { display: inline-flex; align-items: center; gap: 8px; padding: 9px 12px; background: var(--plate); color: #111; font: 500 12px Inter, Arial, sans-serif; border: 0; cursor: pointer; border-radius: 8px; }\n  .chip i { width: 10px; height: 10px; border: 2px solid #999; border-radius: 2px; display: block; }\n  .chip.on { background: #111; color: #fff; } .chip.on i { background: #fff; border-color: #fff; }\n\n  .sl { display: grid; grid-template-columns: 1fr auto; row-gap: 5px; margin-bottom: 13px; font-size: 12px; color: #111; }\n  .sl span { font-size: 12px; letter-spacing: 0; font-weight: 500; color: var(--grey); }\n  .sl output { font-size: 12px; color: #111; font-variant-numeric: tabular-nums; }\n  .sl input { grid-column: 1 / 3; width: 100%; margin: 0; accent-color: #111; }\n\n  input[type=text] { width: 100%; padding: 10px 12px; background: var(--plate); border: 0; color: #111; font: 500 12px Inter, Arial, sans-serif; letter-spacing: 0; border-radius: 8px; margin-top: 8px; }\n  input[type=text]:focus { outline: 2px solid #3d4ee0; outline-offset: 2px; }\n\n  .sw { display: flex; flex-wrap: wrap; gap: 6px; }\n  .sw button { width: 30px; height: 30px; border: 1px solid rgba(0,0,0,.12); cursor: pointer; padding: 0; border-radius: 8px; }\n  .sw button.on { outline: 2px solid #111; outline-offset: 2px; }\n  .sw .multi { background: conic-gradient(var(--orange) 0 25%, var(--green) 0 50%, var(--blue) 0 75%, var(--yellow) 0); }\n\n  .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 18px; }\n  .actions button { padding: 12px; border: 0; font: 500 12px Inter, Arial, sans-serif; letter-spacing: 0; cursor: pointer; background: var(--plate); color: #111; border-radius: 8px; }\n  .actions button:hover { background: #e8e8e8; }\n  .actions .primary { background: #111; color: #fff; grid-column: 1 / 3; }\n  .actions .primary:hover { background: #2a2a2a; }\n  .note { margin: 8px 0 10px; font-size: 11px; line-height: 1.45; color: var(--grey); }\n\n  \n  html, body { overflow: hidden; } #caption { display: none; } @media (max-width: 759px) { html, body { overflow: auto; height: auto; } #panel { position: relative; top: auto; right: auto; bottom: auto; width: auto; border-left: 0; border-top: 1px solid #e6e6e6; } #caption { display: none; } }\n";
 
 
 const PAL = {
@@ -91,7 +91,16 @@ let FX = 0, FY = 0, GCH = '', GA = 0;
 let maskCv = null, maskData = null, maskKey = '', fontsReady = 0;
 let cnv, dragging = false;
 
-const PANEL_W = 344, CAP_H = 46;
+const CAP_H = 0;   // the bottom caption bar was removed
+let PANEL_W = 344;   // the docked panel; 0 on phones, where the panel stacks under the canvas instead
+const isPhone = () => windowWidth < 760;
+const cnvSize = () => (isPhone() ? [windowWidth, round((windowHeight - NAV_H) * 0.55)] : [max(400, windowWidth), max(300, windowHeight - NAV_H)]);
+function applyLayout() {
+  PANEL_W = isPhone() ? 0 : 344;
+  const p = document.getElementById('panel');
+  const nav = document.querySelector('.site-nav');
+  if (p) p.style.marginTop = isPhone() ? Math.max(0, NAV_H + height - (nav ? nav.offsetHeight : NAV_H)) + 'px' : '';   // the canvas is absolutely placed, so the stacked panel starts below it
+}
 
 function setup() {
   const st = document.createElement('style');
@@ -113,8 +122,9 @@ function setup() {
   cap.id = 'caption';
   cap.innerHTML = '<div><b id="capName"></b><span id="capHint"></span></div><div class="r" id="capR"></div>';
   document.body.appendChild(cap);
-  cnv = createCanvas(max(400, windowWidth), max(300, windowHeight - NAV_H));
+  cnv = createCanvas(...cnvSize());
   cnv.position(0, NAV_H);
+  applyLayout();
   pixelDensity(min(2, displayDensity()));
   if (document.fonts) document.fonts.load('40px Anton').then(() => { fontsReady = 1; });
   buildUI();
@@ -130,7 +140,7 @@ function setup() {
 let panelImg = null, snapBusy = false, snapTimer = 0;
 
 function snapPanel() {
-  if (!window.html2canvas || snapBusy) return;
+  if (!window.html2canvas || snapBusy || !PANEL_W) return;
   snapBusy = true;
   html2canvas(document.getElementById('panel'), { backgroundColor: '#ffffff', scale: 1, logging: false }).then(c => { panelImg = c; snapBusy = false; }).catch(() => { snapBusy = false; });
 }
@@ -142,10 +152,13 @@ function queueSnap() {
 
 function drawChrome(ctx) {
   const W = width - PANEL_W, H = height - CAP_H;
-  if (panelImg) ctx.drawImage(panelImg, W, 0, panelImg.width * (PANEL_W / panelImg.width), min(height, panelImg.height * (PANEL_W / panelImg.width)));
-  else { ctx.fillStyle = '#ffffff'; ctx.fillRect(W, 0, PANEL_W, height); }
-  ctx.fillStyle = '#e6e6e6';
-  ctx.fillRect(W, 0, 1, height);
+  if (PANEL_W) {
+    if (panelImg) ctx.drawImage(panelImg, W, 0, panelImg.width * (PANEL_W / panelImg.width), min(height, panelImg.height * (PANEL_W / panelImg.width)));
+    else { ctx.fillStyle = '#ffffff'; ctx.fillRect(W, 0, PANEL_W, height); }
+    ctx.fillStyle = '#e6e6e6';
+    ctx.fillRect(W, 0, 1, height);
+  }
+  if (!CAP_H) return;   // no caption bar under the artboard
   ctx.fillStyle = '#ffffff';
   ctx.fillRect(0, H, W, CAP_H);
   ctx.fillStyle = '#e6e6e6';
@@ -175,7 +188,8 @@ function drawChrome(ctx) {
 }
 
 function windowResized() {
-  resizeCanvas(max(400, windowWidth), max(300, windowHeight - NAV_H));
+  resizeCanvas(...cnvSize());
+  applyLayout();
   queueSnap();
 }
 
