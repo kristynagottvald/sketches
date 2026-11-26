@@ -383,8 +383,8 @@ function build(S){
       if(p<.05)p=0;
     }
     if(A.big){   // tall format: copy sits high; tiles start a clear gap below it, thin near the copy and thicken toward the bottom edge
-      const y0f=textRect.y1+3.5*UNIT, tf=py+j*UNIT*1.2;
-      p=tf<y0f?0:dn*(.12+.58*smooth(y0f,H-2*UNIT,tf));
+      const y0f=textRect.y1+3.5*UNIT+(1-x)*4*UNIT, tf=py+j*UNIT*1.2;   // the stair climbs to the right: the cluster starts higher on the right edge
+      p=tf<y0f?0:dn*(.2+.6*smooth(y0f,H-2*UNIT,tf));
     }
     field[idx(c,r)]=Math.min(1,Math.max(0,p));
   }
